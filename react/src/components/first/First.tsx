@@ -6,15 +6,11 @@ interface State {}
 
 class First extends React.Component<{}, State> {
   componentDidUpdate() {
-    console.log('component is update');
+    console.log('component "First" is update');
   }
 
   componentDidMount() {
-    console.log('component is mount');
-    axios
-      .get('/get')
-      .then(console.log)
-      .catch((res) => console.log('error: ' + res));
+    console.log('component "First" is mount');
   }
   render() {
     return (

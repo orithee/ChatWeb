@@ -1,22 +1,23 @@
 import style from './Validation.module.scss';
-import { WsConnection } from '../../App';
+import { WsConnection, ReadMessage } from '../../App';
 import { useContext } from 'react';
+import { Link, Outlet } from 'react-router-dom';
 
 function Validation() {
-  const connection = useContext(WsConnection);
+  const connection = useContext<WebSocket>(WsConnection);
+  const message = useContext<string>(ReadMessage);
+  console.log(message);
 
   const sendMessage = () => {
     connection.send('validation');
   };
 
-  connection.onmessage = (event) => {
-    console.log(event.data);
-  };
-
   return (
-    <div style={{ display: 'flex' }}>
+    <div>
       <div>validation</div>
       <button onClick={sendMessage}>send message</button>
+      <Link to="/register">register</Link>
+      <Outlet />
     </div>
   );
 }

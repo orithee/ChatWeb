@@ -31,7 +31,8 @@ ws.on('connection', (client: Client) => {
   client.on('message', (msg: any) => {
     console.log('client: ' + msg);
     if (msg.toString() === 'validation') {
-      client.send('Hey validation');
+      // client.send('Hey validation');
+      client.send(Math.random().toString());
     }
   });
 

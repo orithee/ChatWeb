@@ -21,15 +21,18 @@ const server = express()
 const ws = new Server({ server });
 type Client = {
   send: (arg0: string) => void;
-  on: (arg0: string, arg1: { (msg: string): void }) => void;
+  on: (arg0: string, arg1: { (msg: any): void }) => void;
 };
 
 ws.on('connection', (client: Client) => {
   console.log('Client connected');
   client.send('Hey client from WebSocket!');
 
-  client.on('message', (msg: string) => {
-    console.log('Message from client: ' + msg);
+  client.on('message', (msg: any) => {
+    console.log('client: ' + msg);
+    if (msg.toString() === 'validation') {
+      client.send('Hey validation');
+    }
   });
 
   client.on('close', () => console.log('Client disconnected'));

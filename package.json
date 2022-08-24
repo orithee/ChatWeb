@@ -24,6 +24,7 @@
     "@types/jest": "^28.1.4",
     "@types/node": "^18.0.3",
     "@types/pg": "^8.6.5",
+    "@types/ws": "^8.5.3",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-rename": "^2.0.0",

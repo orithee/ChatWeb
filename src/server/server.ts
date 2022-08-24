@@ -3,9 +3,8 @@ import { json } from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { join } from 'path';
+import { Server } from 'ws';
 dotenv.config({ path: join(__dirname, '../../.env') });
-
-const { Server } = require('ws');
 
 // Initialize the server + port:
 const PORT = process.env.PORT;

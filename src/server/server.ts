@@ -1,34 +1,48 @@
 import { Server } from 'ws';
 import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
+import { postgresConnect, createTables } from '../db/createDB';
 
-// Turning the express server to 'WebSocket':
-const ws = new Server({ server: expressServer });
+init();
+async function init() {
+  try {
+    await postgresConnect();
+    await createTables();
+    await webSocketConnect();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-ws.on('connection', (client: Client) => {
-  console.log('Client connected');
-  client.send('Hey client from WebSocket!');
+async function webSocketConnect() {
+  // Turning the express server to 'WebSocket':
+  const ws = new Server({ server: expressServer });
 
-  client.on('message', (msg: any) => {
-    const message: MessageTypes = toJson(msg);
-    console.log(message);
+  ws.on('connection', (client: Client) => {
+    console.log('Client connected');
+    client.send('Hey client from WebSocket!');
 
-    if (message.type === 'initial') {
-      client.send('initial from server');
-    }
-    if (message.type === 'register') {
-      client.send('register from server');
-    }
-    if (message.type === 'login') {
-      client.send('login from server');
-    }
-    if (message.type === 'error') {
-      client.send('error from server');
-    }
+    client.on('message', (msg: any) => {
+      const message: MessageTypes = toJson(msg);
+      console.log(message);
+
+      if (message.type === 'initial') {
+        client.send('initial from server');
+      }
+      if (message.type === 'register') {
+        client.send('register from server');
+      }
+      if (message.type === 'login') {
+        client.send('login from server');
+      }
+      if (message.type === 'error') {
+        client.send('error from server');
+      }
+    });
+
+    client.on('close', () => console.log('Client disconnected'));
   });
-
-  client.on('close', () => console.log('Client disconnected'));
-});
+}
 
 function toJson(msg: any): MessageTypes {
   // A function that checks the value from the client and converts it to JSON:

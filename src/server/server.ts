@@ -1,31 +1,9 @@
-import express, { Request, Response } from 'express';
-import { json } from 'body-parser';
-import cors from 'cors';
-import dotenv from 'dotenv';
-import { join } from 'path';
 import { Server } from 'ws';
-import { MessageTypes } from './Interfaces';
-dotenv.config({ path: join(__dirname, '../../.env') });
-
-// TODO: Divided the 'express' server and the 'WebSocket' server to separate files.
-
-// Initialize the server + port:
-const PORT = process.env.PORT;
-const server = express()
-  .use((req: Request, res: Response) => {
-    console.log('Request: ' + req.path);
-    res.sendFile(req.path || 'index.html', {
-      root: './dist',
-    });
-  })
-  .listen(PORT, () => console.log(`Hosted: http://localhost:${PORT}`));
+import { MessageTypes, Client } from './types';
+import { expressServer } from './express';
 
 // Turning the express server to 'WebSocket':
-const ws = new Server({ server });
-type Client = {
-  send: (arg0: string) => void;
-  on: (arg0: string, arg1: { (msg: any): void }) => void;
-};
+const ws = new Server({ server: expressServer });
 
 ws.on('connection', (client: Client) => {
   console.log('Client connected');

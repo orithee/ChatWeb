@@ -30,6 +30,31 @@ export async function createTables() {
               email TEXT NOT NULL
               );`
     );
+
+    await postgres.query(
+      `CREATE TABLE IF NOT EXISTS groups(
+              group_id SERIAL PRIMARY KEY,
+              group_name TEXT NOT NULL,
+              user_admin_id INTEGER,
+              CONSTRAINT fk_user_admin_id FOREIGN KEY(user_admin_id)
+              REFERENCES users(user_id)
+              );`
+    );
+
+    await postgres.query(
+      `CREATE TABLE IF NOT EXISTS group_messages(
+              message_id SERIAL PRIMARY KEY,
+              message_text TEXT NOT NULL,
+              created_at TIME DEFAULT CURRENT_TIME,
+              created_on DATE DEFAULT CURRENT_DATE,
+              user_id INTEGER,
+              group_id INTEGER,
+              CONSTRAINT fk_user_id FOREIGN KEY(user_id)
+              REFERENCES users(user_id),
+              CONSTRAINT fk_group_id FOREIGN KEY(group_id)
+              REFERENCES groups(group_id)
+              );`
+    );
   } catch (error) {
     console.log(error);
   } finally {

@@ -1,18 +1,24 @@
 import style from './Validation.module.scss';
-import { WsConnection } from '../../App';
-import { useContext } from 'react';
+import { useOutletContext } from 'react-router-dom';
+import { toStr } from '../../assets/jsonConvert';
 
+const registerMsg = {
+  type: 'register',
+  username: 'ori',
+  password: '12345',
+  mail: 'mail@mm',
+};
 function Register() {
-  const connection = useContext(WsConnection);
+  const connection = useOutletContext<WebSocket>();
 
   const sendMessage = () => {
-    connection.send('validation');
+    connection.send(toStr(registerMsg));
   };
 
   return (
     <div>
       <div>register</div>
-      <button onClick={sendMessage}>send message</button>
+      <button onClick={sendMessage}>register message</button>
     </div>
   );
 }

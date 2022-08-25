@@ -7,6 +7,7 @@ function Validation() {
   const connection = useContext<WebSocket>(WsConnection);
   const message = useContext<string>(ReadMessage);
   console.log(message);
+  // TODO: Check if the user is authenticated - if true - go to '/main'...
 
   const sendMessage = () => {
     connection.send('validation');
@@ -15,9 +16,10 @@ function Validation() {
   return (
     <div>
       <div>validation</div>
-      <button onClick={sendMessage}>send message</button>
+      <button onClick={sendMessage}>validation message</button>
       <Link to="/register">register</Link>
-      <Outlet />
+      <Link to="/login">login</Link>
+      <Outlet context={connection} />
     </div>
   );
 }

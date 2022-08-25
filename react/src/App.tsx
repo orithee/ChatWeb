@@ -9,6 +9,11 @@ import { WsConnect } from './assets/WsConnect';
 import React from 'react';
 
 // TODO: Merge the default with the value in the provider.
+// TODO: Improve the message - reduce the times the components renders -
+//       Need to separate the CreateContext to useStates in App component -
+//       That all children under app will change only when the message is relevant to them..
+// TODO: Understand all code in wsConnect. especially the RegExp...
+
 const WebSocketConnection = WsConnect();
 export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
 export const ReadMessage = React.createContext<string>('');
@@ -17,7 +22,6 @@ function App() {
   const [message, setMessage] = useState('');
 
   WebSocketConnection.onmessage = (event) => {
-    console.log(event.data);
     setMessage(event.data);
   };
 

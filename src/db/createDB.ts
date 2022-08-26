@@ -25,7 +25,7 @@ export async function createTables() {
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS users(
               user_id SERIAL PRIMARY KEY,
-              username TEXT NOT NULL,
+              user_name TEXT NOT NULL,
               password TEXT NOT NULL,
               email TEXT NOT NULL
               );`

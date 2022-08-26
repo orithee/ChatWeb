@@ -2,7 +2,7 @@ import { Server } from 'ws';
 import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/createDB';
-import { createNewUser } from '../db/create';
+import { createUser as createUser } from '../db/create';
 import { checkLogin } from '../db/read';
 
 init();
@@ -12,6 +12,7 @@ async function init() {
     await createTables();
     await webSocketConnect();
   } catch (error) {
+    console.log('"init" function failed:');
     console.log(error);
   }
 }
@@ -24,30 +25,27 @@ async function webSocketConnect() {
     console.log('Client connected');
     client.send('Hey client from WebSocket!');
 
-    client.on('message', (msg: any) => {
+    client.on('message', async (msg: any) => {
       const message: MessageTypes = toJson(msg);
       console.log(message);
 
       if (message.type === 'initial') {
         client.send('initial from server');
       }
+
+      // Adding a new user to the database:
       if (message.type === 'register') {
-        try {
-          createNewUser(message);
-          client.send('Registration succeeded !');
-        } catch (error) {
-          client.send('Registration failed !');
-        }
+        if (await createUser(message)) client.send('Registration succeeded !');
+        else client.send('Registration succeeded !');
       }
+
+      // Checks the username and password:
       if (message.type === 'login') {
-        try {
-          checkLogin(message);
-          client.send('Login succeeded !');
-        } catch (error) {
-          client.send('Login failed !');
-        }
-        client.send('login from server');
+        if (await checkLogin(message)) client.send('Login succeeded !');
+        else client.send('Login failed !');
       }
+
+      // Sending an error message to the client:
       if (message.type === 'error') {
         client.send('error from server');
       }

@@ -1,7 +1,7 @@
 {
   "name": "chat-web",
   "scripts": {
-    "start": "nodemon --watch ./src/server ./src/server/server.ts",
+    "start": "nodemon --watch ./src ./src/server/server.ts",
     "deploy": "npx tsc && gulp deploy",
     "jest": "jest"
   },

@@ -17,7 +17,7 @@ interface Register {
   type: 'register';
   username: string;
   password: string;
-  mail: string;
+  email: string;
 }
 
 interface Initial {

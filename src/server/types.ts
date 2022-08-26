@@ -7,13 +7,13 @@ export type Client = {
 // Messages Types:
 export type MessageTypes = Initial | Register | Login | Error;
 
-interface Login {
+export interface Login {
   type: 'login';
   username: string;
   password: string;
 }
 
-interface Register {
+export interface Register {
   type: 'register';
   username: string;
   password: string;

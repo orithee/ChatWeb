@@ -46,7 +46,7 @@ img {
 }
 ::-webkit-scrollbar-thumb {
   background: $background-bright;
-  width: 2rem;
+  width: 1rem;
   border-radius: 10px;
 }
 
@@ -89,38 +89,19 @@ button {
   }
 }
 
-form {
-  position: fixed;
-  width: auto;
-  min-height: 280px;
-  max-height: auto;
-  padding: 10px;
-  background-color: #aea1a1b6;
-  border-radius: 10px;
-  @include center();
-  flex-direction: column;
-  flex-wrap: wrap;
-  left: 50%;
-  top: 60%;
-  transform: translate(-50%, -50%);
-  padding-bottom: 40px;
-}
-
 input {
   font-family: inherit;
-  width: 80%;
+  width: 20%;
   outline: none;
   background-color: #f1f1f1;
   border-radius: 4px;
-  border: none;
   padding: 0.2rem 0.2rem;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   font-size: 17px;
   color: #4a4a4a;
   text-indent: 8px;
-  margin-top: 5px;
-  transition: transform 0.3s;
+  transition: transform 0.5s;
   &:hover {
-    transform: scale(1.02);
+    transform: scale(1.01);
   }
 }

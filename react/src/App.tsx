@@ -7,6 +7,7 @@ import Register from './components/register/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WsConnect } from './assets/WsConnect';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 // TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -

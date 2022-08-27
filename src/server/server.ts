@@ -1,7 +1,7 @@
 import { Server } from 'ws';
 import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
-import { postgresConnect, createTables } from '../db/createDB';
+import { postgresConnect, createTables } from '../db/buildDB';
 import { createUser as createUser } from '../db/create';
 import { checkLogin } from '../db/read';
 

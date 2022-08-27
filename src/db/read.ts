@@ -1,5 +1,5 @@
 import { Login } from '../server/types';
-import { postgres } from './createDB';
+import { postgres } from './buildDB';
 
 export async function checkLogin(user: Login): Promise<boolean> {
   // Check if the user exists:

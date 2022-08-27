@@ -1,5 +1,5 @@
 import { Register } from 'src/server/types';
-import { postgres } from './createDB';
+import { postgres } from './buildDB';
 
 export async function createUser(user: Register): Promise<boolean> {
   // Create a new user.

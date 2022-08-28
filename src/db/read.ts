@@ -3,7 +3,7 @@ import { Initial, Login, Register } from '../server/types';
 import { postgres } from './buildDB';
 
 export async function checkLogin(user: Login): Promise<boolean> {
-  // Check if the user exists:
+  // Checking the trying to log in to the website:
   const sql = `SELECT * FROM users WHERE user_name=$1 AND password=$2;`;
   const values = [user.username, sha1(user.password + user.username)];
   return new Promise<boolean>((resolve, _reject) => {
@@ -20,7 +20,7 @@ export async function checkLogin(user: Login): Promise<boolean> {
   });
 }
 
-export async function checkRegister(user: Register): Promise<boolean> {
+export async function checkUsername(user: Register): Promise<boolean> {
   // Checks if the username is already in use in the database:
   const sql = `SELECT * FROM users WHERE user_name=$1;`;
   const values = [user.username];
@@ -41,7 +41,7 @@ export async function checkRegister(user: Register): Promise<boolean> {
 export async function checkToken(
   initialMsg: Initial
 ): Promise<boolean | Object> {
-  // Checks if the username is already in use in the database:
+  // Checking if there is a username that matches the token from the client :
   const sql = `SELECT user_name FROM users WHERE password=$1;`;
   const values = [initialMsg.token];
   return new Promise<boolean | Object>((resolve, _reject) => {

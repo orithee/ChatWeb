@@ -3,11 +3,13 @@ import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
 import { createUser } from '../db/create';
-import { checkLogin, checkRegister, checkToken } from '../db/read';
+import { toObj, toStr } from './auxiliaryFunc';
+import { checkLogin, checkUsername, checkToken } from '../db/read';
 import sha1 from 'sha1';
 
 init();
 async function init() {
+  // A function that initializes the server and the database:
   try {
     await postgresConnect();
     await createTables();
@@ -24,10 +26,9 @@ async function webSocketConnect() {
 
   ws.on('connection', (client: Client) => {
     console.log('Client connected');
-    client.send('Hey client from WebSocket!');
 
-    client.on('message', async (msg: any) => {
-      const message: MessageTypes = toJson(msg);
+    client.on('message', async (msg) => {
+      const message: MessageTypes = toObj(msg);
       console.log(message);
 
       // Check if the token is worth some token on the database:
@@ -39,7 +40,7 @@ async function webSocketConnect() {
 
       // Adding a new user to the database:
       if (message.type === 'register') {
-        if (await checkRegister(message)) {
+        if (await checkUsername(message)) {
           if (await createUser(message)) {
             client.send(
               toStr({
@@ -73,21 +74,4 @@ async function webSocketConnect() {
 
     client.on('close', () => console.log('Client disconnected'));
   });
-}
-
-function toJson(msg: any): MessageTypes {
-  // A function that checks the value from the client and converts it to JSON:
-  try {
-    const msgToJson = JSON.parse(msg);
-    return msgToJson;
-  } catch (error) {
-    console.log('error!  This message is string');
-    return { type: 'error' };
-  }
-}
-
-function toStr(msg: Object): string {
-  // A function that Convert object to string:
-  const objToStr = JSON.stringify(msg);
-  return objToStr;
 }

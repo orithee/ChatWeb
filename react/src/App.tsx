@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WsConnect } from './assets/WsConnect';
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { messageFilter } from './app/messageFilter';
 
 // TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -
@@ -21,9 +23,12 @@ export const ReadMessage = React.createContext<string>('');
 
 function App() {
   const [message, setMessage] = useState('');
+  const userName = useSelector((state: any) => state.global.userName);
+  const dispatch = useDispatch();
+  console.log('userName: ', userName);
 
   WebSocketConnection.onmessage = (event) => {
-    setMessage(event.data);
+    messageFilter(event, dispatch);
   };
 
   return (

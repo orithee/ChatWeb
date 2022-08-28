@@ -1,3 +1,14 @@
-.button {
-  background-color: rgb(150, 139, 139);
+@use '../../style/mixins' as *;
+
+.container {
+  @include center();
+}
+
+.sub_container {
+  width: 100%;
+  padding: 10px;
+}
+
+.link {
+  color: antiquewhite;
 }

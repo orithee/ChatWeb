@@ -1,5 +1,5 @@
 import style from './Register.module.scss';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { toStr } from '../../assets/jsonConvert';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
@@ -47,7 +47,6 @@ function Register() {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
@@ -58,7 +57,6 @@ function Register() {
             required
           />
         </Form.Group>
-
         <Form.Group className="mb-3">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -70,6 +68,9 @@ function Register() {
           />
         </Form.Group>
         <button type="submit">Submit</button>
+        <button>
+          <Link to="/">back</Link>
+        </button>
         <button onClick={sendMessage}>default message</button>
       </Form>
     </div>

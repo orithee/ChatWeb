@@ -14,12 +14,24 @@ function Validation() {
   };
 
   return (
-    <div>
-      <div>validation</div>
-      <button onClick={sendMessage}>validation message</button>
-      <Link to="/register">register</Link>
-      <Link to="/login">login</Link>
-      <Outlet context={connection} />
+    <div className={style.container}>
+      <div className={style.sub_container}>
+        <button onClick={sendMessage}>validation message</button>
+      </div>
+      <div className={style.sub_container}>
+        <button>
+          <Link className={style.link} to="/register">
+            register
+          </Link>
+        </button>
+        <button>
+          <Link className={style.link} to="/login">
+            login
+          </Link>
+        </button>
+        <Outlet context={connection} />
+      </div>
+      <div className={style.sub_container}>validation</div>
     </div>
   );
 }

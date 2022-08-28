@@ -1,5 +1,5 @@
 import style from './Login.module.scss';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { toStr } from '../../assets/jsonConvert';
 import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
@@ -56,6 +56,9 @@ function Login() {
           />
         </Form.Group>
         <button type="submit">Submit</button>
+        <button>
+          <Link to="/">back</Link>
+        </button>
         <button onClick={sendMessage}>default message</button>
       </Form>
     </div>

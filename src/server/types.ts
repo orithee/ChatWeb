@@ -20,7 +20,7 @@ export interface Register {
   email: string;
 }
 
-interface Initial {
+export interface Initial {
   type: 'initial';
   token: string | undefined;
 }

@@ -3,7 +3,8 @@ import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
 import { createUser } from '../db/create';
-import { checkLogin, checkRegister as checkRegister } from '../db/read';
+import { checkLogin, checkRegister, checkToken } from '../db/read';
+import sha1 from 'sha1';
 
 init();
 async function init() {
@@ -29,23 +30,39 @@ async function webSocketConnect() {
       const message: MessageTypes = toJson(msg);
       console.log(message);
 
+      // Check if the token is worth some token on the database:
       if (message.type === 'initial') {
-        client.send('initial from server');
+        const login = await checkToken(message);
+        if (login) client.send(toStr(login));
+        else client.send('no match');
       }
 
       // Adding a new user to the database:
       if (message.type === 'register') {
         if (await checkRegister(message)) {
-          if (await createUser(message))
-            client.send('Registration succeeded !');
-          else client.send('Registration failed !');
-        } else client.send('Registration failed !');
+          if (await createUser(message)) {
+            client.send(
+              toStr({
+                type: 'login',
+                username: message.username,
+                token: sha1(message.password + message.username),
+              })
+            );
+          } else client.send('Registration failed !');
+        } else client.send('Change username !');
       }
 
       // Checks the username and password:
       if (message.type === 'login') {
-        if (await checkLogin(message)) client.send('Login succeeded !');
-        else client.send('Login failed !');
+        if (await checkLogin(message)) {
+          client.send(
+            toStr({
+              type: 'login',
+              username: message.username,
+              token: sha1(message.password + message.username),
+            })
+          );
+        } else client.send('Login failed !');
       }
 
       // Sending an error message to the client:
@@ -67,4 +84,10 @@ function toJson(msg: any): MessageTypes {
     console.log('error!  This message is string');
     return { type: 'error' };
   }
+}
+
+function toStr(msg: Object): string {
+  // A function that Convert object to string:
+  const objToStr = JSON.stringify(msg);
+  return objToStr;
 }

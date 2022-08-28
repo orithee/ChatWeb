@@ -11,9 +11,16 @@ export function messageFilter(
   const message = toObj(event.data);
   if (message.type === 'login') {
     dispatch(updateUserLogged(message.username));
+    setToken(message.token);
   }
 
-  dispatch(updateCurrentMessage(message));
+  // dispatch(updateCurrentMessage(message));
+}
+
+function setToken(value: string) {
+  const expire = new Date();
+  expire.setTime(new Date().getTime() + 3600000 * 24 * 14);
+  document.cookie = 'token=' + value + ';expires=' + expire.toUTCString();
 }
 
 function toObj(msg: string): MessageTypes {

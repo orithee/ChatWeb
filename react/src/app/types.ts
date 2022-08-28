@@ -1,9 +1,10 @@
 // Messages Types:
-export type MessageTypes = Login | Error;
+export type MessageTypes = LoginToClient | Error;
 
-export interface Login {
+export interface LoginToClient {
   type: 'login';
   username: string;
+  token: string;
 }
 
 interface Error {

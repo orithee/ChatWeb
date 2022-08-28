@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface State {
+export interface State {
   userName: string | undefined;
+  message: any;
 }
 
 const initialState: State = {
   userName: undefined,
+  message: '',
 };
 
 export const globalSlice = createSlice({
@@ -15,9 +17,12 @@ export const globalSlice = createSlice({
     updateUserLogged: (state, action) => {
       state.userName = action.payload;
     },
+    updateCurrentMessage: (state, action) => {
+      state.message = action.payload;
+    },
   },
 });
 
-export const { updateUserLogged } = globalSlice.actions;
+export const { updateUserLogged, updateCurrentMessage } = globalSlice.actions;
 
 export default globalSlice.reducer;

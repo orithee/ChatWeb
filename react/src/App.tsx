@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import style from './App.module.scss';
 import Validation from './components/validation/Validation';
 import Main from './components/main/Main';
@@ -10,6 +9,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageFilter } from './app/messageFilter';
+import { globalState } from './app/store';
 
 // TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -
@@ -19,13 +19,16 @@ import { messageFilter } from './app/messageFilter';
 
 const WebSocketConnection = WsConnect();
 export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
-export const ReadMessage = React.createContext<string>('');
 
 function App() {
-  const [message, setMessage] = useState('');
-  const userName = useSelector((state: any) => state.global.userName);
+  const [userName, currentMessage] = useSelector((state: globalState) => [
+    state.global.userName,
+    state.global.message,
+  ]);
+
   const dispatch = useDispatch();
   console.log('userName: ', userName);
+  console.log('currentMessage: ', currentMessage);
 
   WebSocketConnection.onmessage = (event) => {
     messageFilter(event, dispatch);
@@ -33,22 +36,20 @@ function App() {
 
   return (
     <div className={style}>
-      <ReadMessage.Provider value={message}>
-        <WsConnection.Provider value={WebSocketConnection}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Validation />}>
-                <Route path="login" element={<Login />} />
-                <Route path="register" element={<Register />} />
-              </Route>
-              <Route path="/main" element={<Main />}></Route>
-            </Routes>
-          </BrowserRouter>
-          {/* TODO: If the user after authentication: changes location to "/main"
+      <WsConnection.Provider value={WebSocketConnection}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Validation />}>
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+            </Route>
+            <Route path="/main" element={<Main />}></Route>
+          </Routes>
+        </BrowserRouter>
+        {/* TODO: If the user after authentication: changes location to "/main"
                 Else: changes location to "/login || /register..."
       */}
-        </WsConnection.Provider>
-      </ReadMessage.Provider>
+      </WsConnection.Provider>
     </div>
   );
 }

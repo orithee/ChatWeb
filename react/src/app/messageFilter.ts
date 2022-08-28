@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
-import { updateUserLogged } from './appSlice';
+import { updateUserLogged, updateCurrentMessage } from './appSlice';
 import { MessageTypes } from './types';
 
 export function messageFilter(
@@ -12,6 +12,8 @@ export function messageFilter(
   if (message.type === 'login') {
     dispatch(updateUserLogged(message.username));
   }
+
+  dispatch(updateCurrentMessage(message));
 }
 
 function toObj(msg: string): MessageTypes {

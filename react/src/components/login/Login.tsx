@@ -1,8 +1,9 @@
 import style from './Login.module.scss';
-import { Link, useOutletContext } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { toStr } from '../../assets/jsonConvert';
 import Form from 'react-bootstrap/Form';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { WsConnection } from '../../App';
 
 const loginMsg = {
   type: 'login',
@@ -11,7 +12,7 @@ const loginMsg = {
 };
 
 function Login() {
-  const connection = useOutletContext<WebSocket>();
+  const connection = useContext<WebSocket>(WsConnection);
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');

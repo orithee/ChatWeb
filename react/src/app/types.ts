@@ -9,4 +9,6 @@ export interface LoginToClient {
 
 interface Error {
   type: 'error';
+  problem: string;
+  title: string;
 }

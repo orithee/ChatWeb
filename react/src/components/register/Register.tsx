@@ -1,27 +1,19 @@
 import style from './Register.module.scss';
 import { Link } from 'react-router-dom';
-import { toStr } from '../../assets/jsonConvert';
+import { toStr } from '../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../App';
-
-const registerMsg = {
-  type: 'register',
-  username: 'ori',
-  password: '12345',
-  mail: 'mail@mm',
-};
+import { globalState } from '../../app/store';
+import { useSelector } from 'react-redux';
 
 function Register() {
   const connection = useContext<WebSocket>(WsConnection);
+  const message = useSelector((state: globalState) => state.global.message);
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-
-  const sendMessage = () => {
-    connection.send(toStr(registerMsg));
-  };
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,6 +39,11 @@ function Register() {
             placeholder="your name"
             required
           />
+          {message.type === 'error' && message.problem === 'register' && (
+            <Form.Text className="text-muted">
+              This username already exists in the system! try another name.
+            </Form.Text>
+          )}
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
@@ -72,7 +69,6 @@ function Register() {
         <button>
           <Link to="/">back</Link>
         </button>
-        <button onClick={sendMessage}>default message</button>
       </Form>
     </div>
   );

@@ -1,25 +1,18 @@
 import style from './Login.module.scss';
 import { Link } from 'react-router-dom';
-import { toStr } from '../../assets/jsonConvert';
+import { toStr } from '../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../App';
-
-const loginMsg = {
-  type: 'login',
-  username: 'ori',
-  password: '12345',
-};
+import { globalState } from '../../app/store';
+import { useSelector } from 'react-redux';
 
 function Login() {
   const connection = useContext<WebSocket>(WsConnection);
+  const message = useSelector((state: globalState) => state.global.message);
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-
-  const sendMessage = () => {
-    connection.send(toStr(loginMsg));
-  };
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,12 +48,16 @@ function Login() {
             placeholder="your Password"
             required
           />
+          {message.type === 'error' && message.problem === 'login' && (
+            <Form.Text className="text-muted">
+              Login failed. Try again...
+            </Form.Text>
+          )}
         </Form.Group>
         <button type="submit">Submit</button>
         <button>
           <Link to="/">back</Link>
         </button>
-        <button onClick={sendMessage}>default message</button>
       </Form>
     </div>
   );

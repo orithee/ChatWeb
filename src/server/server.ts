@@ -50,7 +50,14 @@ async function webSocketConnect() {
               })
             );
           } else client.send('Registration failed !');
-        } else client.send('Change username !');
+        } else
+          client.send(
+            toStr({
+              type: 'error',
+              problem: 'register',
+              title: 'username',
+            })
+          );
       }
 
       // Checks the username and password:
@@ -63,7 +70,14 @@ async function webSocketConnect() {
               token: sha1(message.password + message.username),
             })
           );
-        } else client.send('Login failed !');
+        } else
+          client.send(
+            toStr({
+              type: 'error',
+              problem: 'login',
+              title: 'no match',
+            })
+          );
       }
 
       // Sending an error message to the client:

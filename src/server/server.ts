@@ -10,7 +10,7 @@ import {
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
 import { createGroup, createUser } from '../db/create';
-import { toObj, toStr } from './auxiliaryFunc';
+import { toObj, toStr, sendError } from './auxiliaryFunc';
 import {
   checkLogin,
   checkUsername,
@@ -54,13 +54,11 @@ async function webSocketConnect() {
       if (message.type === 'login') loginFunction(client, message);
 
       // Adding a new group to the database:
-      if (message.type === 'createNewGroup') {
-        createNewGroupFunction(client, message);
-      }
+      if (message.type === 'createNewGroup') newGroupFunction(client, message);
 
       // Sending an error message to the client:
       if (message.type === 'error') {
-        client.send('error from server');
+        client.send(sendError('error', 'error', 'error from server'));
       }
     });
 
@@ -68,23 +66,10 @@ async function webSocketConnect() {
   });
 }
 
-async function loginFunction(client: Client, message: Login) {
-  if (await checkLogin(message)) {
-    client.send(
-      toStr({
-        type: 'login',
-        username: message.username,
-        token: sha1(message.password + message.username),
-      })
-    );
-  } else
-    client.send(
-      toStr({
-        type: 'error',
-        problem: 'login',
-        title: 'no match',
-      })
-    );
+async function initialFunction(client: Client, message: Initial) {
+  const login = await checkToken(message);
+  if (login) client.send(toStr(login));
+  else client.send(sendError('error', 'initial', 'no match'));
 }
 
 async function registerFunction(client: Client, message: Register) {
@@ -97,33 +82,26 @@ async function registerFunction(client: Client, message: Register) {
           token: sha1(message.password + message.username),
         })
       );
-    } else client.send('Registration failed !');
-  } else
+    } else client.send(sendError('error', 'register', 'failed'));
+  } else client.send(sendError('error', 'register', 'username'));
+}
+
+async function loginFunction(client: Client, message: Login) {
+  if (await checkLogin(message)) {
     client.send(
       toStr({
-        type: 'error',
-        problem: 'register',
-        title: 'username',
+        type: 'login',
+        username: message.username,
+        token: sha1(message.password + message.username),
       })
     );
+  } else client.send(sendError('error', 'login', 'no match'));
 }
 
-async function initialFunction(client: Client, message: Initial) {
-  const login = await checkToken(message);
-  if (login) client.send(toStr(login));
-  else client.send('no match');
-}
-
-async function createNewGroupFunction(client: Client, message: NewGroup) {
-  if (await checkGroupName(message)) {
-    const checking = await checkMembers(message.members);
-    if (checking != 'success') {
-      return toStr({
-        type: 'error',
-        problem: 'createNewGroup',
-        title: checking,
-      });
-    } else {
+async function newGroupFunction(client: Client, message: NewGroup) {
+  const checking = await checkMembers(message.members);
+  if (checking.length === 0) {
+    if (await checkGroupName(message)) {
       if (await createGroup(message)) {
         client.send(
           toStr({
@@ -131,23 +109,7 @@ async function createNewGroupFunction(client: Client, message: NewGroup) {
             userName: message.userName,
           })
         );
-      } else {
-        client.send(
-          toStr({
-            type: 'error',
-            problem: 'createNewGroup',
-            title: 'fail',
-          })
-        );
-      }
-    }
-  } else {
-    client.send(
-      toStr({
-        type: 'error',
-        problem: 'createNewGroup',
-        title: 'groupName',
-      })
-    );
-  }
+      } else client.send(sendError('error', 'createNewGroup', 'failed'));
+    } else client.send(sendError('error', 'createNewGroup', 'groupName'));
+  } else client.send(sendError('error', 'createNewGroup', checking));
 }

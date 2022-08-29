@@ -42,11 +42,6 @@ export async function createGroup(group: NewGroup): Promise<boolean> {
 
 export async function groupMembers(group: NewGroup): Promise<boolean> {
   // Create a new group:
-  console.log('groupMembers');
-  const checking = await checkMembers(group.members);
-  if (checking != 'success') {
-    return false;
-  }
   try {
     let insert = 'INSERT INTO user_groups (user_name, group_name) VALUES ';
     let values = `('${group.userName}','${group.groupName}'),`;

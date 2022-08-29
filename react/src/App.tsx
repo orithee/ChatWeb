@@ -5,7 +5,7 @@ import Login from './components/login/Login';
 import Register from './components/register/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WsConnect } from './assets/WsConnect';
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageFilter } from './app/messageFilter';
@@ -26,8 +26,13 @@ function App() {
   const userName = useSelector((state: globalState) => state.global.userName);
   const message = useSelector((state: globalState) => state.global.message);
 
-  console.log('user connected:: ', userName);
-  console.log('current message: ', message);
+  useEffect(() => {
+    console.log('user connected: ', userName);
+  }, [userName]);
+
+  useEffect(() => {
+    console.log('current message: ', message);
+  }, [message]);
 
   WebSocketConnection.onmessage = (event) => {
     messageFilter(event, dispatch);
@@ -45,9 +50,6 @@ function App() {
             <Route path="/main" element={<Main />}></Route>
           </Routes>
         </BrowserRouter>
-        {/* TODO: If the user after authentication: changes location to "/main"
-                Else: changes location to "/login || /register..."
-      */}
       </WsConnection.Provider>
     </div>
   );

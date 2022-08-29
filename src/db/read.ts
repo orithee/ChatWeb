@@ -84,12 +84,12 @@ export async function checkGroupName(newGroup: NewGroup): Promise<boolean> {
 export async function checkMembers(members: string[]) {
   // Checks if the members exists in the database:
   const sql = `SELECT user_name FROM users;`;
-  return new Promise<string | string[]>((resolve, _reject) => {
+  return new Promise<string[]>((resolve, _reject) => {
     postgres.query(sql, (err, res) => {
       if (err) {
         console.log(err.stack);
         // TODO: Find a good solution for that resolve case:
-        resolve([]);
+        resolve(['error']);
       } else {
         const rows = res.rows.map((row) => row.user_name);
         const membersNotExists = members.filter((member) => {
@@ -98,7 +98,7 @@ export async function checkMembers(members: string[]) {
         console.log('membersNotExists', membersNotExists);
 
         if (membersNotExists.length != 0) resolve(membersNotExists);
-        else resolve('success');
+        else resolve([]);
       }
     });
   });

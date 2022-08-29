@@ -16,3 +16,15 @@ export function toStr(msg: Object): string {
   const objToStr = JSON.stringify(msg);
   return objToStr;
 }
+
+export function sendError(
+  type: string,
+  problem: string,
+  title: string | string[]
+) {
+  return toStr({
+    type: type,
+    problem: problem,
+    title: title,
+  });
+}

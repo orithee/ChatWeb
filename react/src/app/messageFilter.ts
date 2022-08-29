@@ -8,9 +8,7 @@ export function messageFilter(
   dispatch: Dispatch<AnyAction>
 ) {
   // A function that filters the messages from the server and updates the reducer:
-  console.log('messageFilter:', event.data);
   const message = toObj(event.data);
-
   if (message.type === 'login') {
     dispatch(updateUserLogged(message.username));
     setToken(message.token);

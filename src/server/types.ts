@@ -5,7 +5,7 @@ export type Client = {
 };
 
 // Messages Types:
-export type MessageTypes = Initial | Register | Login | Error;
+export type MessageTypes = Initial | Register | Login | NewGroup | Error;
 
 export interface Login {
   type: 'login';
@@ -23,6 +23,13 @@ export interface Register {
 export interface Initial {
   type: 'initial';
   token: string | undefined;
+}
+
+export interface NewGroup {
+  type: 'createNewGroup';
+  userName: string;
+  groupName: string;
+  member: string;
 }
 
 interface Error {

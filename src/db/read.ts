@@ -1,5 +1,5 @@
 import sha1 from 'sha1';
-import { Initial, Login, Register } from '../server/types';
+import { Initial, Login, NewGroup, Register } from '../server/types';
 import { postgres } from './buildDB';
 
 export async function checkLogin(user: Login): Promise<boolean> {
@@ -57,6 +57,24 @@ export async function checkToken(
             username: res.rows[0].user_name,
             token: initialMsg.token,
           });
+        else resolve(false);
+      }
+    });
+  });
+}
+
+export async function checkGroupName(newGroup: NewGroup): Promise<boolean> {
+  // Checks if the group name is already in use in the database:
+  const sql = `SELECT * FROM groups WHERE group_name=$1;`;
+  const values = [newGroup.groupName];
+  return new Promise<boolean>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(false);
+      } else {
+        console.log(res.rows.length);
+        if (res.rows.length === 0) resolve(true);
         else resolve(false);
       }
     });

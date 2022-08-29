@@ -2,9 +2,14 @@ import { Server } from 'ws';
 import { MessageTypes, Client } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
-import { createUser } from '../db/create';
+import { createGroup, createUser } from '../db/create';
 import { toObj, toStr } from './auxiliaryFunc';
-import { checkLogin, checkUsername, checkToken } from '../db/read';
+import {
+  checkLogin,
+  checkUsername,
+  checkToken,
+  checkGroupName,
+} from '../db/read';
 import sha1 from 'sha1';
 
 init();
@@ -78,6 +83,36 @@ async function webSocketConnect() {
               title: 'no match',
             })
           );
+      }
+
+      if (message.type === 'createNewGroup') {
+        if (await checkGroupName(message)) {
+          if (await createGroup(message)) {
+            console.log('createNewGroup');
+            // client.send(
+            //   toStr({
+            //     type: 'createNewGroup',
+            //     title: '',
+            //   })
+            // );
+          } else {
+            client.send(
+              toStr({
+                type: 'error',
+                problem: 'createNewGroup',
+                title: 'fail',
+              })
+            );
+          }
+        } else {
+          client.send(
+            toStr({
+              type: 'error',
+              problem: 'createNewGroup',
+              title: 'groupName',
+            })
+          );
+        }
       }
 
       // Sending an error message to the client:

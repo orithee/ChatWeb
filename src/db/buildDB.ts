@@ -24,8 +24,8 @@ export async function createTables() {
   try {
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS users(
-              user_id SERIAL PRIMARY KEY,
-              user_name TEXT NOT NULL,
+              user_id SERIAL,
+              user_name TEXT NOT NULL PRIMARY KEY,
               password TEXT NOT NULL,
               email TEXT NOT NULL
               );`
@@ -33,11 +33,11 @@ export async function createTables() {
 
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS groups(
-              group_id SERIAL PRIMARY KEY,
-              group_name TEXT NOT NULL,
-              user_admin_id INTEGER,
-              CONSTRAINT fk_user_admin_id FOREIGN KEY(user_admin_id)
-              REFERENCES users(user_id)
+              group_id SERIAL,
+              group_name TEXT NOT NULL PRIMARY KEY,
+              admin_name TEXT,
+              CONSTRAINT fk_admin_name FOREIGN KEY(admin_name)
+              REFERENCES users(user_name)
               );`
     );
 
@@ -47,12 +47,12 @@ export async function createTables() {
               message_text TEXT NOT NULL,
               created_at TIME DEFAULT CURRENT_TIME,
               created_on DATE DEFAULT CURRENT_DATE,
-              user_id INTEGER,
-              group_id INTEGER,
-              CONSTRAINT fk_user_id FOREIGN KEY(user_id)
-              REFERENCES users(user_id),
-              CONSTRAINT fk_group_id FOREIGN KEY(group_id)
-              REFERENCES groups(group_id)
+              user_name TEXT,
+              group_name TEXT,
+              CONSTRAINT fk_user_name FOREIGN KEY(user_name)
+              REFERENCES users(user_name),
+              CONSTRAINT fk_group_name FOREIGN KEY(group_name)
+              REFERENCES groups(group_name)
               );`
     );
   } catch (error) {

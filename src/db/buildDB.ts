@@ -22,6 +22,7 @@ export async function postgresConnect() {
 export async function createTables() {
   // Create the tables if their not exists:
   try {
+    // Users:
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS users(
               user_id SERIAL,
@@ -31,6 +32,7 @@ export async function createTables() {
               );`
     );
 
+    // Groups:
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS groups(
               group_id SERIAL,
@@ -41,15 +43,28 @@ export async function createTables() {
               );`
     );
 
+    // Groups that the user is in:
+    await postgres.query(
+      `CREATE TABLE IF NOT EXISTS user_groups(
+              user_name TEXT,
+              group_name TEXT,
+              CONSTRAINT fk_user_name FOREIGN KEY(user_name)
+              REFERENCES users(user_name),
+              CONSTRAINT fk_group_name FOREIGN KEY(group_name)
+              REFERENCES groups(group_name)
+              );`
+    );
+
+    // All messages:
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS group_messages(
               message_id SERIAL PRIMARY KEY,
               message_text TEXT NOT NULL,
               created_at TIME DEFAULT CURRENT_TIME,
               created_on DATE DEFAULT CURRENT_DATE,
-              user_name TEXT,
+              sent_by TEXT,
               group_name TEXT,
-              CONSTRAINT fk_user_name FOREIGN KEY(user_name)
+              CONSTRAINT fk_sent_by  FOREIGN KEY(sent_by )
               REFERENCES users(user_name),
               CONSTRAINT fk_group_name FOREIGN KEY(group_name)
               REFERENCES groups(group_name)

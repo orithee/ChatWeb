@@ -1,6 +1,9 @@
 import { NewGroup, Register } from 'src/server/types';
 import { postgres } from './buildDB';
 import sha1 from 'sha1';
+import { checkMembers } from './read';
+// TODO: String validation !!
+// TODO: Prevent errors in 'create group' and 'groupMembers' functions...
 
 export async function createUser(user: Register): Promise<boolean> {
   // Create a new user:
@@ -28,7 +31,31 @@ export async function createGroup(group: NewGroup): Promise<boolean> {
       'INSERT INTO groups (group_name, admin_name) VALUES ($1, $2);';
     const values = [group.groupName, group.userName];
     await postgres.query(insertNewGroup, values);
+    if (!(await groupMembers(group))) return false;
     console.log('Finish createGroup: ', group.groupName);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+export async function groupMembers(group: NewGroup): Promise<boolean> {
+  // Create a new group:
+  console.log('groupMembers');
+  const checking = await checkMembers(group.members);
+  if (checking != 'success') {
+    return false;
+  }
+  try {
+    let insert = 'INSERT INTO user_groups (user_name, group_name) VALUES ';
+    let values = `('${group.userName}','${group.groupName}'),`;
+    for (let i = 0; i < group.members.length; i++) {
+      values += `('${group.members[i]}','${group.groupName}'),`;
+    }
+    insert = insert + values.slice(0, -1) + ';';
+    await postgres.query(insert);
+    console.log('Finish groupMembers: ', [group.userName], group.members);
     return true;
   } catch (error) {
     console.log(error);

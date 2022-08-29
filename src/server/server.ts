@@ -16,6 +16,7 @@ import {
   checkUsername,
   checkToken,
   checkGroupName,
+  checkMembers,
 } from '../db/read';
 import sha1 from 'sha1';
 
@@ -41,7 +42,7 @@ async function webSocketConnect() {
 
     client.on('message', async (msg) => {
       const message: MessageTypes = toObj(msg);
-      console.log(message.type, 'request');
+      console.log('request: ', message.type);
 
       // Check if the token is worth some token on the database:
       if (message.type === 'initial') initialFunction(client, message);
@@ -114,23 +115,31 @@ async function initialFunction(client: Client, message: Initial) {
 }
 
 async function createNewGroupFunction(client: Client, message: NewGroup) {
-  console.log(message.members);
   if (await checkGroupName(message)) {
-    if (await createGroup(message)) {
-      client.send(
-        toStr({
-          type: 'createNewGroup',
-          userName: message.userName,
-        })
-      );
+    const checking = await checkMembers(message.members);
+    if (checking != 'success') {
+      return toStr({
+        type: 'error',
+        problem: 'createNewGroup',
+        title: checking,
+      });
     } else {
-      client.send(
-        toStr({
-          type: 'error',
-          problem: 'createNewGroup',
-          title: 'fail',
-        })
-      );
+      if (await createGroup(message)) {
+        client.send(
+          toStr({
+            type: 'createNewGroup',
+            userName: message.userName,
+          })
+        );
+      } else {
+        client.send(
+          toStr({
+            type: 'error',
+            problem: 'createNewGroup',
+            title: 'fail',
+          })
+        );
+      }
     }
   } else {
     client.send(

@@ -1,3 +1,15 @@
-.button {
-  background-color: rgb(150, 139, 139);
+@use '../../style/mixins' as *;
+
+.main_container {
+  @include center();
+}
+
+.group_list {
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.chat_container {
+  padding: 10px;
+  flex-grow: 2;
 }

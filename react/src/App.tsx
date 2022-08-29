@@ -21,14 +21,13 @@ const WebSocketConnection = WsConnect();
 export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
 
 function App() {
-  const [userName, currentMessage] = useSelector((state: globalState) => [
-    state.global.userName,
-    state.global.message,
-  ]);
-
   const dispatch = useDispatch();
-  console.log('userName: ', userName);
-  console.log('currentMessage: ', currentMessage);
+
+  const userName = useSelector((state: globalState) => state.global.userName);
+  const message = useSelector((state: globalState) => state.global.message);
+
+  console.log('user connected:: ', userName);
+  console.log('current message: ', message);
 
   WebSocketConnection.onmessage = (event) => {
     messageFilter(event, dispatch);

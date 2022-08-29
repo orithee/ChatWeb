@@ -1,22 +1,20 @@
 import style from './Validation.module.scss';
-import { useContext } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { WsConnection } from '../../App';
+import { globalState } from '../../app/store';
 
 function Validation() {
-  const connection = useContext<WebSocket>(WsConnection);
-  const userName = useSelector((state: any) => state.global.userName);
-  // TODO: Check if the user is authenticated - if true - go to '/main'...
+  const userName = useSelector((state: globalState) => state.global.userName);
+  const navigate = useNavigate();
 
-  const sendMessage = () => {
-    connection.send('validation');
-  };
+  useEffect(() => {
+    if (userName) navigate('/main', { replace: true });
+  });
 
   return (
     <div className={style.container}>
       <div className={style.sub_container}>
-        <button onClick={sendMessage}>validation message</button>
         <p>userName: {userName}</p>
       </div>
       <div className={style.sub_container}>

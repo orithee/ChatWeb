@@ -50,7 +50,7 @@ export async function checkToken(
         console.log(err.stack);
         resolve(false);
       } else {
-        console.log(res.rows);
+        console.log(res.rows[0] || { user_name: undefined });
         if (res.rows.length === 1)
           resolve({
             type: 'login',

@@ -29,7 +29,7 @@ export interface NewGroup {
   type: 'createNewGroup';
   userName: string;
   groupName: string;
-  member: string;
+  members: string[];
 }
 
 interface Error {

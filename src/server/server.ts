@@ -114,15 +114,15 @@ async function initialFunction(client: Client, message: Initial) {
 }
 
 async function createNewGroupFunction(client: Client, message: NewGroup) {
+  console.log(message.members);
   if (await checkGroupName(message)) {
     if (await createGroup(message)) {
-      console.log('createNewGroup');
-      // client.send(
-      //   toStr({
-      //     type: 'createNewGroup',
-      //     title: '',
-      //   })
-      // );
+      client.send(
+        toStr({
+          type: 'createNewGroup',
+          userName: message.userName,
+        })
+      );
     } else {
       client.send(
         toStr({

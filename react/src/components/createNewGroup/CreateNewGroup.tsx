@@ -14,17 +14,25 @@ function CreateNewGroup({ openNew, userName }: Props) {
 
   const [groupName, setGroupName] = useState<string>('');
   const [member, setMember] = useState<string>('');
+  const [members, setMembers] = useState<string[]>([]);
+
+  const AddMember = () => {
+    setMembers((members) => [...members, member]);
+    setMember('');
+  };
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    connection.send(
-      toStr({
-        type: 'createNewGroup',
-        userName: userName,
-        groupName: groupName,
-        member: member,
-      })
-    );
+    if (members.length != 0) {
+      connection.send(
+        toStr({
+          type: 'createNewGroup',
+          userName: userName,
+          groupName: groupName,
+          members: members,
+        })
+      );
+    }
   };
 
   return (
@@ -48,8 +56,15 @@ function CreateNewGroup({ openNew, userName }: Props) {
             value={member}
             type="text"
             placeholder="member name"
-            required
           />
+          Members:
+          {members.map((member, index) => {
+            return <div key={index}>{member}</div>;
+          })}
+          <br></br>
+          <button type="button" onClick={() => AddMember()}>
+            Add
+          </button>
         </Form.Group>
         <button type="submit">Submit</button>
         <button onClick={() => openNew(false)}>close</button>

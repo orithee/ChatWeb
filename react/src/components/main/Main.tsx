@@ -1,12 +1,18 @@
 import style from './Main.module.scss';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../app/store';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CreateNewGroup from '../createNewGroup/CreateNewGroup';
+import { useNavigate } from 'react-router-dom';
 
 function Main() {
   const userName = useSelector((state: globalState) => state.global.userName);
   const [addGroup, setAddGroup] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userName) navigate('/', { replace: true });
+  });
 
   return (
     <div className={style.main_container}>

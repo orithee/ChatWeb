@@ -1,3 +1,5 @@
+import { toStr } from './auxiliaryFunc';
+
 export function WsConnect() {
   let url: string = '';
   if (process.env.NODE_ENV === 'development') {
@@ -11,15 +13,20 @@ export function WsConnect() {
   let ws = new WebSocket(url);
   ws.onopen = () => {
     console.log('WebSocket connected successfully');
-    ws.send(JSON.stringify({ type: 'initial', token: getCookie('token') }));
+    ws.send(toStr({ type: 'initial', token: getToken() }));
+  };
+
+  ws.onclose = () => {
+    // document.location.reload();
+    console.log('WebSocket is closed!');
   };
 
   return ws;
 }
 
-function getCookie(name: string): string | undefined {
-  // A function that gets the cookie name and returns its value if exists:
-  const re = new RegExp(name + '=([^;]+)');
+function getToken(): string | undefined {
+  // A function returns the token value if exists:
+  const re = new RegExp('token=([^;]+)');
   const value = re.exec(document.cookie);
   return value != null ? unescape(value[1]) : undefined;
 }

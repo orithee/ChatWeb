@@ -107,6 +107,7 @@ async function newGroupFunction(client: Client, message: NewGroup) {
           toStr({
             type: 'createNewGroup',
             userName: message.userName,
+            members: message.members,
           })
         );
       } else client.send(sendError('error', 'createNewGroup', 'failed'));

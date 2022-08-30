@@ -3,6 +3,8 @@ import { useContext, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import { WsConnection } from '../../App';
 import { toStr } from '../../assets/auxiliaryFunc';
+import { useSelector } from 'react-redux';
+import { globalState } from '../../app/store';
 
 interface Props {
   openNew: Function;
@@ -11,6 +13,7 @@ interface Props {
 
 function CreateNewGroup({ openNew, userName }: Props) {
   const connection = useContext<WebSocket>(WsConnection);
+  const message = useSelector((state: globalState) => state.global.message);
 
   const [groupName, setGroupName] = useState<string>('');
   const [member, setMember] = useState<string>('');
@@ -19,6 +22,14 @@ function CreateNewGroup({ openNew, userName }: Props) {
   const AddMember = () => {
     setMembers((members) => [...members, member]);
     setMember('');
+  };
+
+  const removeMember = (name: string) => {
+    setMembers((members) =>
+      members.filter((value) => {
+        if (value != name) return value;
+      })
+    );
   };
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,6 +58,13 @@ function CreateNewGroup({ openNew, userName }: Props) {
             placeholder="group name"
             required
           />
+          {message.type === 'error' &&
+            message.problem === 'createNewGroup' &&
+            message.title === 'groupName' && (
+              <Form.Text className="text-muted">
+                This group name already exists in the system! try another name.
+              </Form.Text>
+            )}
         </Form.Group>
 
         <Form.Group className="mb-3">
@@ -58,13 +76,39 @@ function CreateNewGroup({ openNew, userName }: Props) {
             placeholder="member name"
           />
           Members:
-          {members.map((member, index) => {
-            return <div key={index}>{member}</div>;
-          })}
+          <div>
+            {members.map((name, index) => {
+              return (
+                <div onClick={() => removeMember(name)} key={index}>
+                  {name}
+                </div>
+              );
+            })}
+          </div>
+          {message.type === 'error' &&
+            message.problem === 'createNewGroup' &&
+            Array.isArray(message.title) && (
+              <Form.Text className="text-muted">
+                {message.title.map((member, index) => {
+                  return <span key={index}>'{member}', </span>;
+                })}
+                <div>
+                  These users do not exist in the system! Click on these users
+                  to remove them.
+                </div>
+              </Form.Text>
+            )}
           <br></br>
           <button type="button" onClick={() => AddMember()}>
             Add
           </button>
+          {message.type === 'error' &&
+            message.problem === 'createNewGroup' &&
+            message.title === 'failed' && (
+              <Form.Text className="text-muted">
+                'Create new group' failed, try again....
+              </Form.Text>
+            )}
         </Form.Group>
         <button type="submit">Submit</button>
         <button onClick={() => openNew(false)}>close</button>

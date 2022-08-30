@@ -1,7 +1,6 @@
 import { NewGroup, Register } from 'src/server/types';
 import { postgres } from './buildDB';
 import sha1 from 'sha1';
-import { checkMembers } from './read';
 // TODO: String validation !!
 // TODO: Prevent errors in 'create group' and 'groupMembers' functions...
 

@@ -4,7 +4,7 @@
   @include center();
 }
 
-.group_list {
+.nav_bar {
   @include center();
   flex-direction: column;
   padding: 10px;
@@ -18,7 +18,7 @@
   flex-grow: 2;
 }
 
-.nav_bar {
+.options {
   display: flex;
   background-color: antiquewhite;
   padding: 10px;
@@ -26,4 +26,11 @@
 
 .add_new_group {
   @include centerAbs();
+}
+
+.group_list {
+  display: flex;
+  height: 100%;
+  background-color: antiquewhite;
+  padding: 10px;
 }

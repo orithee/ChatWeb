@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { MessageTypes } from './types';
 
-export interface State {
+export interface globalInterface {
   userName: string | undefined;
   message: MessageTypes;
 }
 
-const initialState: State = {
+const initialState: globalInterface = {
   userName: undefined,
   message: { type: 'initial' },
 };

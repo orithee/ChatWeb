@@ -47,7 +47,9 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
             </Route>
-            <Route path="/main" element={<Main />}></Route>
+            <Route path="/main" element={<Main />}>
+              <Route path=":groupId" element={<Login />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </WsConnection.Provider>

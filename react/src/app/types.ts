@@ -3,7 +3,8 @@ export type MessageTypes =
   | LoginFromServer
   | ErrorFromServer
   | NewGroupFromServer
-  | Initial;
+  | Initial
+  | GroupListFromServer;
 
 export interface LoginFromServer {
   type: 'login';
@@ -25,4 +26,9 @@ interface NewGroupFromServer {
 
 interface Initial {
   type: 'initial';
+}
+
+interface GroupListFromServer {
+  type: 'groupList';
+  list: string[];
 }

@@ -1,14 +1,18 @@
 import style from './Main.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { globalState } from '../../app/store';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import CreateNewGroup from '../createNewGroup/CreateNewGroup';
 import { useNavigate } from 'react-router-dom';
+import { WsConnection } from '../../App';
+import { updateUserLogged } from '../../app/appSlice';
 
 function Main() {
+  const connection = useContext<WebSocket>(WsConnection);
   const userName = useSelector((state: globalState) => state.global.userName);
   const [addGroup, setAddGroup] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!userName) navigate('/', { replace: true });
@@ -16,25 +20,28 @@ function Main() {
 
   const logOut = () => {
     document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 2000 00:00:01 GMT;';
-    document.location.reload();
+    dispatch(updateUserLogged(undefined));
+    navigate('/', { replace: true });
   };
 
   return (
     <div className={style.main_container}>
       {addGroup && (
         <div className={style.add_new_group}>
-          {' '}
           <CreateNewGroup openNew={setAddGroup} userName={userName} />
         </div>
       )}
-      <div className={style.group_list}>
-        <div className={style.nav_bar}>
+      <div className={style.nav_bar}>
+        <div className={style.options}>
+          {/* 1. Option to create new group. */}
+          {/* 4. Option to search group by name. */}
           <button onClick={() => setAddGroup(true)}>create new group</button>
         </div>
-        {'group_list ' + userName}
-        {/* 1. Option to create new group. */}
-        {/* 2. Option to see group messages. */}
-        {/* 3. Option to search group by name. */}
+        <div className={style.group_list}>
+          {'group_list ' + userName}
+          {/* 2. Option to see group list. */}
+          {/* 3. Option to see specific group messages by click the group. */}
+        </div>
       </div>
       <div className={style.chat_container}>
         <button onClick={() => logOut()}>log out</button>

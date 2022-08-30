@@ -17,8 +17,12 @@ export function WsConnect() {
   };
 
   ws.onclose = () => {
-    // document.location.reload();
     console.log('WebSocket is closed!');
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        document.location.reload();
+      }, 2000);
+    }
   };
 
   return ws;

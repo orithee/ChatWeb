@@ -6,6 +6,7 @@ import {
   Register,
   Initial,
   NewGroup,
+  GetGroupList,
 } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
@@ -17,6 +18,7 @@ import {
   checkToken,
   checkGroupName,
   checkMembers,
+  getGroupList,
 } from '../db/read';
 import sha1 from 'sha1';
 
@@ -68,8 +70,15 @@ async function webSocketConnect() {
 
 async function initialFunction(client: Client, message: Initial) {
   const login = await checkToken(message);
-  if (login) client.send(toStr(login));
-  else client.send(sendError('error', 'initial', 'no match'));
+  if (typeof login != 'boolean') {
+    client.send(toStr(login));
+    client.send(
+      toStr({
+        type: 'groupList',
+        list: await getGroupList(login.username),
+      })
+    );
+  } else client.send(sendError('error', 'initial', 'no match'));
 }
 
 async function registerFunction(client: Client, message: Register) {
@@ -93,6 +102,12 @@ async function loginFunction(client: Client, message: Login) {
         type: 'login',
         username: message.username,
         token: sha1(message.password + message.username),
+      })
+    );
+    client.send(
+      toStr({
+        type: 'groupList',
+        list: await getGroupList(message.username),
       })
     );
   } else client.send(sendError('error', 'login', 'no match'));

@@ -5,7 +5,13 @@ export type Client = {
 };
 
 // Messages Types:
-export type MessageTypes = Initial | Register | Login | NewGroup | Error;
+export type MessageTypes =
+  | Initial
+  | Register
+  | Login
+  | NewGroup
+  | Error
+  | GetGroupList;
 
 export interface Login {
   type: 'login';
@@ -32,6 +38,16 @@ export interface NewGroup {
   members: string[];
 }
 
+export interface GetGroupList {
+  type: 'getGroupList';
+  username: string;
+}
+
+export interface LoginToClient {
+  type: 'login';
+  username: string;
+  token: string | undefined;
+}
 interface Error {
   type: 'error';
 }

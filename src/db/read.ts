@@ -1,5 +1,11 @@
 import sha1 from 'sha1';
-import { Initial, Login, NewGroup, Register } from '../server/types';
+import {
+  Initial,
+  Login,
+  LoginToClient,
+  NewGroup,
+  Register,
+} from '../server/types';
 import { postgres } from './buildDB';
 
 export async function checkLogin(user: Login): Promise<boolean> {
@@ -40,11 +46,11 @@ export async function checkUsername(user: Register): Promise<boolean> {
 
 export async function checkToken(
   initialMsg: Initial
-): Promise<boolean | Object> {
+): Promise<boolean | LoginToClient> {
   // Checking if there is a username that matches the token from the client :
   const sql = `SELECT user_name FROM users WHERE password=$1;`;
   const values = [initialMsg.token];
-  return new Promise<boolean | Object>((resolve, _reject) => {
+  return new Promise<boolean | LoginToClient>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
@@ -99,6 +105,26 @@ export async function checkMembers(members: string[]) {
 
         if (membersNotExists.length != 0) resolve(membersNotExists);
         else resolve([]);
+      }
+    });
+  });
+}
+
+export async function getGroupList(username: string) {
+  // Checks if the members exists in the database:
+  const sql = `SELECT group_name FROM user_groups WHERE user_name=$1;`;
+  const values = [username];
+  return new Promise<any[]>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        // TODO: Reject the error
+        // TODO: Explain that resolve....
+        resolve([]);
+      } else {
+        const rows = res.rows.map((row) => row.group_name);
+        console.log(rows);
+        resolve(rows);
       }
     });
   });

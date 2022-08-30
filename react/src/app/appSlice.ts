@@ -1,13 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { MessageTypes } from './types';
 
 export interface State {
   userName: string | undefined;
-  message: any;
+  message: MessageTypes;
 }
 
 const initialState: State = {
   userName: undefined,
-  message: '',
+  message: { type: 'initial' },
 };
 
 export const globalSlice = createSlice({

@@ -39,11 +39,14 @@ function Register() {
             placeholder="your name"
             required
           />
-          {message.type === 'error' && message.problem === 'register' && (
-            <Form.Text className="text-muted">
-              This username already exists in the system! try another name.
-            </Form.Text>
-          )}
+
+          {message.type === 'error' &&
+            message.problem === 'register' &&
+            message.title === 'username' && (
+              <Form.Text className="text-muted">
+                This username already exists in the system! try another name.
+              </Form.Text>
+            )}
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
@@ -64,6 +67,13 @@ function Register() {
             placeholder="your email"
             required
           />
+          {message.type === 'error' &&
+            message.problem === 'register' &&
+            message.title === 'failed' && (
+              <Form.Text className="text-muted">
+                Registration failed, try again....
+              </Form.Text>
+            )}
         </Form.Group>
         <button type="submit">Submit</button>
         <button>

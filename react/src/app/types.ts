@@ -1,14 +1,28 @@
 // Messages Types:
-export type MessageTypes = LoginToClient | Error;
+export type MessageTypes =
+  | LoginFromServer
+  | ErrorFromServer
+  | NewGroupFromServer
+  | Initial;
 
-export interface LoginToClient {
+export interface LoginFromServer {
   type: 'login';
   username: string;
   token: string;
 }
 
-interface Error {
+interface ErrorFromServer {
   type: 'error';
   problem: string;
   title: string | string[];
+}
+
+interface NewGroupFromServer {
+  type: 'createNewGroup';
+  userName: string;
+  members: string[];
+}
+
+interface Initial {
+  type: 'initial';
 }

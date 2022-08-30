@@ -86,6 +86,12 @@ async function registerFunction(client: Client, message: Register) {
     if (await createUser(message)) {
       client.send(
         toStr({
+          type: 'groupList',
+          list: [],
+        })
+      );
+      client.send(
+        toStr({
           type: 'login',
           username: message.username,
           token: sha1(message.password + message.username),

@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageFilter } from './app/messageFilter';
 import { globalState } from './app/store';
+import Opening from './components/opening/Opening';
 
 // TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -
@@ -46,6 +47,7 @@ function App() {
             <Route path="/" element={<Validation />}>
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route index element={<Opening />} />
             </Route>
             <Route path="/main" element={<Main />}>
               <Route path=":groupId" element={<Login />} />

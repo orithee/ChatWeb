@@ -1,6 +1,6 @@
 import style from './Validation.module.scss';
 import { useEffect } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../app/store';
 
@@ -13,25 +13,15 @@ function Validation() {
   });
 
   return (
-    <div className={style.container}>
-      <div className={style.sub_container}>
-        <p>userName: {userName}</p>
+    <>
+      <div className={style.up}>
+        <div className={style.title}>
+          <h1>Chat Web </h1>
+        </div>
       </div>
-      <div className={style.sub_container}>
-        <button>
-          <Link className={style.link} to="/register">
-            register
-          </Link>
-        </button>
-        <button>
-          <Link className={style.link} to="/login">
-            login
-          </Link>
-        </button>
-        <Outlet />
-      </div>
-      <div className={style.sub_container}>validation</div>
-    </div>
+      <div className={style.bottom}></div>
+      <Outlet />
+    </>
   );
 }
 

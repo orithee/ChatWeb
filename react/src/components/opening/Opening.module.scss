@@ -3,9 +3,12 @@
 .container {
   @include centerAbs();
   @include center();
-  position: fixed;
-  padding: 10px;
+  flex-direction: column;
   background-color: #ffffff;
+  position: fixed;
+  // width: 50%;
+  // height: 50%;
+  padding: 10px;
   padding: 22px;
   margin: 10px;
   border-radius: 10px;

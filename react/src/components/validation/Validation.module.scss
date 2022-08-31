@@ -1,14 +1,18 @@
 @use '../../style/mixins' as *;
+@use '../../style/variables' as *;
 
-.container {
+.up {
   @include center();
+  background-color: $background1;
+  height: 30vh;
 }
 
-.sub_container {
+.bottom {
+  background-color: #e3e2e2;
   width: 100%;
-  padding: 10px;
+  height: 70vh;
 }
 
-.link {
-  color: antiquewhite;
+.title {
+  @include posAbs(10%, 10%);
 }

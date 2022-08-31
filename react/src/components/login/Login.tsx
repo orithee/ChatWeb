@@ -1,15 +1,16 @@
 import style from './Login.module.scss';
-import { Link } from 'react-router-dom';
 import { toStr } from '../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../App';
 import { globalState } from '../../app/store';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const connection = useContext<WebSocket>(WsConnection);
   const message = useSelector((state: globalState) => state.global.message);
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -55,9 +56,7 @@ function Login() {
           )}
         </Form.Group>
         <button type="submit">Submit</button>
-        <button>
-          <Link to="/">back</Link>
-        </button>
+        <button onClick={() => navigate('/')}>Back</button>
       </Form>
     </div>
   );

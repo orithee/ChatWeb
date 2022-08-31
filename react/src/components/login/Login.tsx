@@ -3,7 +3,7 @@ import { toStr } from '../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../App';
-import { globalState } from '../../app/store';
+import { globalState } from '../../redux/store';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,8 +1,8 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
-import { updateUserLogged, updateCurrentMessage } from './appSlice';
-import { toObj, setToken } from '../assets/auxiliaryFunc';
-import { updateGroupList } from '../components/main/mainSlice';
+import { updateUserLogged, updateCurrentMessage } from '../redux/appSlice';
+import { toObj, setToken } from './auxiliaryFunc';
+import { updateGroupList } from '../redux/mainSlice';
 
 export function messageFilter(
   event: MessageEvent<any>,

@@ -1,10 +1,10 @@
-import style from './Validation.module.scss';
+import style from './Home.module.scss';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { globalState } from '../../app/store';
+import { globalState } from '../../redux/store';
 
-function Validation() {
+function Home() {
   const userName = useSelector((state: globalState) => state.global.userName);
   const navigate = useNavigate();
 
@@ -25,4 +25,4 @@ function Validation() {
   );
 }
 
-export default Validation;
+export default Home;

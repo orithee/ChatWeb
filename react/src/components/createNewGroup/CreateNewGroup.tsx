@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/esm/Form';
 import { WsConnection } from '../../App';
 import { toStr } from '../../assets/auxiliaryFunc';
 import { useSelector } from 'react-redux';
-import { globalState } from '../../app/store';
+import { globalState } from '../../redux/store';
 
 interface Props {
   openNew: Function;

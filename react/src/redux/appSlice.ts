@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MessageTypes } from './types';
+import { MessageTypes } from '../assets/types';
 
 export interface globalInterface {
   userName: string | undefined;

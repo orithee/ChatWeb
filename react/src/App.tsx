@@ -1,5 +1,5 @@
 import style from './App.module.scss';
-import Validation from './components/validation/Validation';
+import Home from './components/home/Home';
 import Main from './components/main/Main';
 import Login from './components/login/Login';
 import Register from './components/register/Register';
@@ -8,8 +8,8 @@ import { WsConnect } from './assets/WsConnect';
 import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { messageFilter } from './app/messageFilter';
-import { globalState } from './app/store';
+import { messageFilter } from './assets/messageFilter';
+import { globalState } from './redux/store';
 import Opening from './components/opening/Opening';
 
 // TODO: Merge the default with the value in the provider.
@@ -44,7 +44,7 @@ function App() {
       <WsConnection.Provider value={WebSocketConnection}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Validation />}>
+            <Route path="/" element={<Home />}>
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
               <Route index element={<Opening />} />

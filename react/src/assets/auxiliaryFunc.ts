@@ -1,4 +1,4 @@
-import { MessageTypes } from '../app/types';
+import { MessageTypes } from './types';
 
 export function toStr(msg: Object): string {
   // A function that Convert object to string:

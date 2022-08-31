@@ -1,11 +1,11 @@
 import style from './Main.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
-import { globalState, chatState } from '../../app/store';
+import { globalState, chatState } from '../../redux/store';
 import { useContext, useEffect, useState } from 'react';
 import CreateNewGroup from '../createNewGroup/CreateNewGroup';
 import { useNavigate } from 'react-router-dom';
 import { WsConnection } from '../../App';
-import { updateUserLogged } from '../../app/appSlice';
+import { updateUserLogged } from '../../redux/appSlice';
 
 function Main() {
   const connection = useContext<WebSocket>(WsConnection);

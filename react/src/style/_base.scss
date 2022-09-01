@@ -46,7 +46,7 @@ button {
   padding: 5px 10px;
   transition: transform 0.3s;
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.02);
     color: orange;
   }
 }
@@ -54,7 +54,6 @@ button {
 input {
   font-family: inherit;
   width: 20%;
-  outline: none;
   background-color: #f1f1f1;
   border-radius: 4px;
   padding: 0.2rem 0.2rem;
@@ -62,8 +61,4 @@ input {
   font-size: 17px;
   color: #4a4a4a;
   text-indent: 8px;
-  transition: transform 0.5s;
-  &:hover {
-    transform: scale(1.01);
-  }
 }

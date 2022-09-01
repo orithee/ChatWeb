@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 
 function Opening() {
   const navigate = useNavigate();
-  const navigateTo = (value: string) => {
-    navigate(`/${value}`);
-  };
 
   return (
-    <div className={style.container}>
-      <p>Welcome to Chat Web !</p>
-      <div>
-        <button onClick={() => navigateTo('register')}>register</button>
-        <button onClick={() => navigateTo('login')}>login</button>
+    <div>
+      <h3>Welcome to Chat Web !</h3>
+      <div className={style.bottom}>
+        <button onClick={() => navigate('/login')}>login</button>
+        <button onClick={() => navigate('/register')}>register</button>
+        <div>
+          <p>Continue as guest</p>
+        </div>
       </div>
     </div>
   );

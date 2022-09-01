@@ -1,15 +1,40 @@
 @use '../../style/mixins' as *;
+@use '../../style/variables' as *;
 
-.container {
-  @include centerAbs();
-  @include center();
-  flex-direction: column;
-  background-color: #ffffff;
-  position: fixed;
-  // width: 50%;
-  // height: 50%;
-  padding: 10px;
-  padding: 22px;
-  margin: 10px;
-  border-radius: 10px;
+.bottom {
+  display: flex;
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  button {
+    margin: 0.4rem;
+    border-radius: 5px;
+  }
+  .back {
+    background-color: $background-bright;
+    border: 1px solid $background2;
+    color: $background2;
+    transition: transform 0.3s;
+    &:hover {
+      transform: scale(1.02);
+      color: orange;
+    }
+  }
+  div {
+    position: relative;
+    width: 100%;
+    p {
+      position: absolute;
+      right: 17%;
+      bottom: -8%;
+      border-radius: 5px;
+      color: $background2;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.5s;
+      &:hover {
+        transform: scale(1.06);
+      }
+    }
+  }
 }

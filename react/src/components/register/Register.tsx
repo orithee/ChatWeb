@@ -29,7 +29,9 @@ function Register() {
   };
 
   return (
-    <div className={style.container}>
+    <div>
+      <h2>Register</h2>
+
       <Form onSubmit={(e) => submitForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
@@ -55,7 +57,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
             value={password}
             type="password"
-            placeholder="your Password"
+            placeholder="your password"
             required
           />
         </Form.Group>
@@ -76,8 +78,15 @@ function Register() {
               </Form.Text>
             )}
         </Form.Group>
-        <button type="submit">Submit</button>
-        <button onClick={() => navigate('/')}>Back</button>
+        <div className={style.bottom}>
+          <button type="submit">Register</button>
+          <button className={style.back} onClick={() => navigate('/')}>
+            Back
+          </button>
+          <div>
+            <p>Continue as guest</p>
+          </div>
+        </div>
       </Form>
     </div>
   );

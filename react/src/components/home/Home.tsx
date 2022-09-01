@@ -20,7 +20,9 @@ function Home() {
         </div>
       </div>
       <div className={style.bottom}></div>
-      <Outlet />
+      <div className={style.container}>
+        <Outlet />
+      </div>
     </>
   );
 }

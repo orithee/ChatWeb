@@ -12,7 +12,7 @@ function Main() {
   const connection = useContext<WebSocket>(WsConnection);
   const userName = useSelector((state: globalState) => state.global.userName);
   const groupList = useSelector((state: chatState) => state.chat.groupList);
-  const [addGroup, setAddGroup] = useState<boolean>(false);
+  const [addGroupBtn, setAddGroupBtn] = useState<boolean>(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -33,18 +33,28 @@ function Main() {
 
   return (
     <div className={style.main_container}>
-      {addGroup && (
-        <div className={style.add_new_group}>
-          <CreateNewGroup openNew={setAddGroup} userName={userName} />
-        </div>
+      {addGroupBtn && (
+        <CreateNewGroup openNew={setAddGroupBtn} userName={userName} />
       )}
+
       <div className={style.nav_bar}>
         <div>{userName}</div>
         <div className={style.options}>
           {/* 4. Option to search group by name. */}
-          <button onClick={() => setAddGroup(true)}>create new group</button>
-          <button onClick={() => logOut()}>log out</button>
+          <button
+            className={style.button}
+            onClick={() => {
+              setAddGroupBtn(true);
+              console.log('click');
+            }}
+          >
+            create new group
+          </button>
+          <button className={style.button} onClick={() => logOut()}>
+            log out
+          </button>
         </div>
+
         <div className={style.group_list_container}>
           <ListGroup className={style.list}>
             {groupList &&

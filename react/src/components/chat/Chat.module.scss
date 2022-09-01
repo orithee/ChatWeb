@@ -1,6 +1,7 @@
 @use '../../style/mixins' as *;
 
 .container {
+  position: absolute;
   padding: 10px;
   padding: 22px;
   width: 100%;
@@ -9,13 +10,13 @@
 }
 
 .up {
-  height: 10vh;
+  height: 10%;
 }
 
 .main {
-  height: 75vh;
+  height: 75%;
 }
 
 .bottom {
-  height: 15vh;
+  height: 15%;
 }

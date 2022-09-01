@@ -20,6 +20,7 @@ function CreateNewGroup({ openNew, userName }: Props) {
   const [members, setMembers] = useState<string[]>([]);
 
   const AddMember = () => {
+    if (member === '') return;
     setMembers((members) => [...members, member]);
     setMember('');
   };
@@ -47,7 +48,7 @@ function CreateNewGroup({ openNew, userName }: Props) {
   };
 
   return (
-    <div className={style.container}>
+    <div className={style.main_container}>
       <Form onSubmit={(e) => submitForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>group</Form.Label>
@@ -79,9 +80,13 @@ function CreateNewGroup({ openNew, userName }: Props) {
           <div>
             {members.map((name, index) => {
               return (
-                <div onClick={() => removeMember(name)} key={index}>
+                <button
+                  className={style.memberBtn}
+                  onClick={() => removeMember(name)}
+                  key={index}
+                >
                   {name}
-                </div>
+                </button>
               );
             })}
           </div>
@@ -93,8 +98,8 @@ function CreateNewGroup({ openNew, userName }: Props) {
                   return <span key={index}>'{member}', </span>;
                 })}
                 <div>
-                  These users do not exist in the system! Click on these users
-                  to remove them.
+                  <div>These users do not exist in the system!</div>
+                  <div>Click on these users to remove them.</div>
                 </div>
               </Form.Text>
             )}

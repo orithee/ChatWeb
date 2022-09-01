@@ -1,25 +1,21 @@
 @use '../../style/mixins' as *;
 
 .main_container {
-  @include center();
-}
-
-.group_list {
-  @include center();
-  flex-direction: column;
+  @include centerAbs();
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.54);
+  border-radius: 10px;
   padding: 10px;
-  flex-grow: 1;
-}
+  z-index: 1;
+  button {
+    margin: 0.4rem;
+    border-radius: 5px;
+  }
 
-.chat_container {
-  @include center();
-  flex-direction: column;
-  padding: 10px;
-  flex-grow: 2;
-}
-
-.nav_bar {
-  display: flex;
-  background-color: antiquewhite;
-  padding: 10px;
+  .memberBtn {
+    background-color: #e3e2e2;
+    color: black;
+    outline: none;
+    border: none;
+  }
 }

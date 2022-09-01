@@ -1,10 +1,14 @@
 import style from './Chat.module.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatState } from '../../redux/store';
+import { useContext, useState } from 'react';
+import { WsConnection } from '../../App';
 
 function Chat() {
-  let params = useParams();
-  let groupIdParam = params.groupId;
-  console.log(groupIdParam);
+  const connection = useContext<WebSocket>(WsConnection);
+  const messages = useSelector((state: chatState) => state.chat.groupMessages);
+  let groupIdParam = useParams().groupId;
 
   return (
     <div className={style.container}>
@@ -12,6 +16,8 @@ function Chat() {
       <div className={style.main}>
         <div>main:</div>
         {groupIdParam}
+        <br />
+        <div>{messages}</div>
       </div>
       <div className={style.bottom}>bottom</div>
     </div>

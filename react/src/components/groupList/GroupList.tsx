@@ -1,18 +1,28 @@
 import style from './GroupList.module.scss';
-import { useNavigate, useParams } from 'react-router-dom';
-import { updateUserLogged } from '../../redux/appSlice';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { chatState } from '../../redux/store';
+import { updateCurrentGroup, updateGroupMessages } from '../../redux/mainSlice';
+import { useContext, useState } from 'react';
+import { WsConnection } from '../../App';
+import { toStr } from '../../assets/auxiliaryFunc';
 
 function GroupList() {
   const groupList = useSelector((state: chatState) => state.chat.groupList);
+  const connection = useContext<WebSocket>(WsConnection);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const openChat = (groupName: string) => {
-    // dispatch(updateUserLogged(undefined));
+    dispatch(updateCurrentGroup(groupName));
+    connection.send(
+      toStr({
+        type: 'getGroupMessages',
+        groupName: groupName,
+      })
+    );
     navigate('/main/' + groupName);
   };
 

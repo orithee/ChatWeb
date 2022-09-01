@@ -11,7 +11,8 @@ export type MessageTypes =
   | Login
   | NewGroup
   | Error
-  | GetGroupList;
+  | GetGroupList
+  | GetGroupMessages;
 
 export interface Login {
   type: 'login';
@@ -48,9 +49,12 @@ export interface LoginToClient {
   username: string;
   token: string | undefined;
 }
+
+export interface GetGroupMessages {
+  type: 'getGroupMessages';
+  groupName: string;
+}
+
 interface Error {
   type: 'error';
 }
-
-// verified: boolean;
-// userId: number;

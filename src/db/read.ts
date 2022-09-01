@@ -129,3 +129,22 @@ export async function getGroupList(username: string) {
     });
   });
 }
+
+export async function getMessages(groupName: string) {
+  // Checks if the members exists in the database:
+  const sql = `SELECT * FROM group_messages WHERE group_name=$1;`;
+  const values = [groupName];
+  return new Promise<any[]>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve([]);
+      } else {
+        // const rows = res.rows.map((row) => row.group_name);
+        // console.log(rows);
+        console.log('res.rows', res.rows);
+        resolve(res.rows);
+      }
+    });
+  });
+}

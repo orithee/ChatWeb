@@ -7,6 +7,7 @@ import {
   Initial,
   NewGroup,
   GetGroupList,
+  GetGroupMessages,
 } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
@@ -19,6 +20,7 @@ import {
   checkGroupName,
   checkMembers,
   getGroupList,
+  getMessages,
 } from '../db/read';
 import sha1 from 'sha1';
 
@@ -57,6 +59,10 @@ async function webSocketConnect() {
 
       // Adding a new group to the database:
       if (message.type === 'createNewGroup') newGroupFunction(client, message);
+
+      // Adding a new group to the database:
+      if (message.type === 'getGroupMessages')
+        GroupMessagesFunction(client, message);
 
       // Sending an error message to the client:
       if (message.type === 'error') {
@@ -134,4 +140,12 @@ async function newGroupFunction(client: Client, message: NewGroup) {
       } else client.send(sendError('error', 'createNewGroup', 'failed'));
     } else client.send(sendError('error', 'createNewGroup', 'groupName'));
   } else client.send(sendError('error', 'createNewGroup', checking));
+}
+
+async function GroupMessagesFunction(
+  client: Client,
+  message: GetGroupMessages
+) {
+  console.log(message);
+  const messages = await getMessages(message.groupName);
 }

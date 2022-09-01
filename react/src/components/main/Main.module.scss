@@ -7,6 +7,8 @@
 .nav_bar {
   @include center();
   flex-direction: column;
+  background-color: azure;
+  height: 100vh;
   padding: 10px;
   flex-grow: 1;
 }
@@ -14,13 +16,18 @@
 .chat_container {
   @include center();
   flex-direction: column;
+  // background-image: url('../../assets/chat-background.jpeg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-color: rgb(184, 154, 116);
   padding: 10px;
-  flex-grow: 2;
+  flex-grow: 3;
+  height: 100vh;
 }
 
 .options {
   display: flex;
-  background-color: antiquewhite;
+  // background-color: antiquewhite;
   padding: 10px;
 }
 
@@ -28,9 +35,16 @@
   @include centerAbs();
 }
 
-.group_list {
+.group_list_container {
   display: flex;
   height: 100%;
-  background-color: antiquewhite;
-  padding: 10px;
+  width: 100%;
+  .list {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    // .item {
+    //   width: 100%;
+    // }
+  }
 }

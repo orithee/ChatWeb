@@ -6,6 +6,7 @@ import CreateNewGroup from '../createNewGroup/CreateNewGroup';
 import { useNavigate } from 'react-router-dom';
 import { WsConnection } from '../../App';
 import { updateUserLogged } from '../../redux/appSlice';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 function Main() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -33,19 +34,23 @@ function Main() {
         </div>
       )}
       <div className={style.nav_bar}>
-        {'group_list ' + userName}
+        <div>{userName}</div>
         <div className={style.options}>
-          {/* 1. Option to create new group. */}
           {/* 4. Option to search group by name. */}
           <button onClick={() => setAddGroup(true)}>create new group</button>
         </div>
-        <div className={style.group_list}>
-          {groupList &&
-            groupList.map((groupName, index) => {
-              return <div key={index}>{groupName}, </div>;
-            })}
-          {/* 2. Option to see group list. */}
-          {/* 3. Option to see specific group messages by click the group. */}
+        <div className={style.group_list_container}>
+          <ListGroup className={style.list}>
+            {groupList &&
+              groupList.map((groupName, index) => {
+                return (
+                  <ListGroup.Item className={style.item} key={index}>
+                    {groupName}
+                  </ListGroup.Item>
+                );
+              })}
+            {/* 3. Option to see specific group messages by click the group. */}
+          </ListGroup>
         </div>
       </div>
       <div className={style.chat_container}>

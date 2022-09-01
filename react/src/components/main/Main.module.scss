@@ -6,7 +6,7 @@
   position: relative;
 }
 
-.nav_bar {
+.bar_container {
   @include center();
   flex-direction: column;
   background-color: azure;
@@ -33,12 +33,6 @@
   // background-color: antiquewhite;
   padding: 10px;
 }
-
-// .add_new_group {
-//   @include centerAbs();
-//   background-color: rgba(255, 255, 255, 0.3);
-//   border-radius: 10px;
-// }
 
 .group_list_container {
   display: flex;

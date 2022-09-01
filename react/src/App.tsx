@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { messageFilter } from './assets/messageFilter';
 import { globalState } from './redux/store';
 import Opening from './components/opening/Opening';
+import Chat from './components/chat/Chat';
 
 // TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -
@@ -50,7 +51,7 @@ function App() {
               <Route index element={<Opening />} />
             </Route>
             <Route path="/main" element={<Main />}>
-              <Route path=":groupId" element={<Login />} />
+              <Route path=":groupId" element={<Chat />} />
             </Route>
           </Routes>
         </BrowserRouter>

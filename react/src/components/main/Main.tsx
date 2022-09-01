@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { globalState, chatState } from '../../redux/store';
 import { useContext, useEffect, useState } from 'react';
 import CreateNewGroup from '../createNewGroup/CreateNewGroup';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { WsConnection } from '../../App';
 import { updateUserLogged } from '../../redux/appSlice';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -26,6 +26,11 @@ function Main() {
     navigate('/', { replace: true });
   };
 
+  const openChat = (groupName: string) => {
+    // dispatch(updateUserLogged(undefined));
+    navigate('/main/' + groupName);
+  };
+
   return (
     <div className={style.main_container}>
       {addGroup && (
@@ -38,13 +43,18 @@ function Main() {
         <div className={style.options}>
           {/* 4. Option to search group by name. */}
           <button onClick={() => setAddGroup(true)}>create new group</button>
+          <button onClick={() => logOut()}>log out</button>
         </div>
         <div className={style.group_list_container}>
           <ListGroup className={style.list}>
             {groupList &&
               groupList.map((groupName, index) => {
                 return (
-                  <ListGroup.Item className={style.item} key={index}>
+                  <ListGroup.Item
+                    onClick={() => openChat(groupName)}
+                    className={style.item}
+                    key={index}
+                  >
                     {groupName}
                   </ListGroup.Item>
                 );
@@ -54,8 +64,7 @@ function Main() {
         </div>
       </div>
       <div className={style.chat_container}>
-        <button onClick={() => logOut()}>log out</button>
-        chat_container
+        <Outlet />
         {/* 1. Reload the messages by the user and by a selected group. */}
         {/* 2. Option to send a message - send it to the database and return it to all members. */}
       </div>

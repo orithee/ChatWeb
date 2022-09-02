@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
 
-  height: 70%;
+  height: 76%;
   background-color: #202c3323;
   border-radius: 10px;
   padding: 2%;
@@ -62,5 +62,15 @@
 }
 
 .bottom {
-  height: 15%;
+  position: relative;
+  height: 9%;
+  background-color: #202c33;
+  border-radius: 8px;
+  @include center();
+  form {
+    input {
+      width: fit-content;
+      border-radius: 8px;
+    }
+  }
 }

@@ -58,3 +58,12 @@ export interface GetGroupMessages {
 interface Error {
   type: 'error';
 }
+
+export interface GroupMessage {
+  message_id: number;
+  message_text: string;
+  created_at: string;
+  created_on: object;
+  sent_by: string;
+  group_name: string;
+}

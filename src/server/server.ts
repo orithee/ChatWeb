@@ -60,7 +60,7 @@ async function webSocketConnect() {
       // Adding a new group to the database:
       if (message.type === 'createNewGroup') newGroupFunction(client, message);
 
-      // Adding a new group to the database:
+      // Get messages of specific group:
       if (message.type === 'getGroupMessages')
         GroupMessagesFunction(client, message);
 
@@ -146,6 +146,11 @@ async function GroupMessagesFunction(
   client: Client,
   message: GetGroupMessages
 ) {
-  console.log(message);
   const messages = await getMessages(message.groupName);
+  client.send(
+    toStr({
+      type: 'groupMessagesFromServer',
+      messages: messages,
+    })
+  );
 }

@@ -4,6 +4,7 @@ export type MessageTypes =
   | ErrorFromServer
   | NewGroupFromServer
   | Initial
+  | GroupMessagesFromServer
   | GroupListFromServer;
 
 export interface LoginFromServer {
@@ -31,4 +32,17 @@ interface Initial {
 interface GroupListFromServer {
   type: 'groupList';
   list: string[];
+}
+export interface GroupMessagesFromServer {
+  type: 'groupMessagesFromServer';
+  messages: GroupMessage[] | [];
+}
+
+export interface GroupMessage {
+  message_id: number;
+  message_text: string;
+  created_at: string;
+  created_on: object;
+  sent_by: string;
+  group_name: string;
 }

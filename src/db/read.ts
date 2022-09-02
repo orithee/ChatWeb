@@ -1,5 +1,6 @@
 import sha1 from 'sha1';
 import {
+  GroupMessage,
   Initial,
   Login,
   LoginToClient,
@@ -114,7 +115,7 @@ export async function getGroupList(username: string) {
   // Checks if the members exists in the database:
   const sql = `SELECT group_name FROM user_groups WHERE user_name=$1;`;
   const values = [username];
-  return new Promise<any[]>((resolve, _reject) => {
+  return new Promise<string[] | []>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
@@ -123,7 +124,7 @@ export async function getGroupList(username: string) {
         resolve([]);
       } else {
         const rows = res.rows.map((row) => row.group_name);
-        console.log(rows);
+        console.log('rows', rows);
         resolve(rows);
       }
     });
@@ -132,16 +133,14 @@ export async function getGroupList(username: string) {
 
 export async function getMessages(groupName: string) {
   // Checks if the members exists in the database:
-  const sql = `SELECT * FROM group_messages WHERE group_name=$1;`;
+  const sql = `SELECT * FROM group_messages WHERE group_name=$1 ORDER BY created_at ASC, created_on ASC;`;
   const values = [groupName];
-  return new Promise<any[]>((resolve, _reject) => {
+  return new Promise<GroupMessage[] | []>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
         resolve([]);
       } else {
-        // const rows = res.rows.map((row) => row.group_name);
-        // console.log(rows);
         console.log('res.rows', res.rows);
         resolve(res.rows);
       }

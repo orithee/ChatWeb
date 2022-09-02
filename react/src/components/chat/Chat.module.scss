@@ -3,14 +3,46 @@
 .container {
   position: absolute;
   padding: 10px;
-  padding: 22px;
   width: 100%;
   height: 100%;
   border-radius: 10px;
+  color: aliceblue;
 }
 
 .up {
+  position: relative;
   height: 10%;
+  background-color: #202c33;
+  border-radius: 8px;
+  @include center();
+  .up_left {
+    position: absolute;
+    left: 3%;
+    p {
+      font-weight: 700;
+    }
+  }
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 2%;
+  background-color: #202c33;
+  border-radius: 8px;
+  width: auto;
+  max-width: 70%;
+  min-width: 20%;
+  .sent_by {
+    color: greenyellow;
+  }
+  .text {
+    color: white;
+  }
+  .time {
+    color: aquamarine;
+  }
 }
 
 .main {

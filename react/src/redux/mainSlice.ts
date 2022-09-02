@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { GroupMessage } from '../assets/types';
 
 export interface chatInterface {
   groupList: string[] | undefined;
   currentGroup: string | undefined;
-  groupMessages: string[] | undefined;
+  groupMessages: GroupMessage[] | undefined;
   currentMessage: string | undefined;
 }
 

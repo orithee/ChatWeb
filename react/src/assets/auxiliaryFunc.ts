@@ -19,6 +19,7 @@ export function toObj(msg: string): MessageTypes {
 
 export function setToken(value: string) {
   // After logging in define token-cookie for the next enter:
+  document.cookie = 'token=; Path=*; Expires=Thu, 01 Jan 2000 00:00:01 GMT;';
   const expire = new Date();
   expire.setTime(new Date().getTime() + 3600000 * 24 * 14);
   document.cookie = 'token=' + value + ';expires=' + expire.toUTCString();

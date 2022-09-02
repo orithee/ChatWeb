@@ -5,7 +5,8 @@ export type MessageTypes =
   | NewGroupFromServer
   | Initial
   | GroupMessagesFromServer
-  | GroupListFromServer;
+  | GroupListFromServer
+  | NewMessage;
 
 export interface LoginFromServer {
   type: 'login';
@@ -36,6 +37,11 @@ interface GroupListFromServer {
 export interface GroupMessagesFromServer {
   type: 'groupMessagesFromServer';
   messages: GroupMessage[] | [];
+}
+
+export interface NewMessage {
+  type: 'newMessage';
+  data: GroupMessage;
 }
 
 export interface GroupMessage {

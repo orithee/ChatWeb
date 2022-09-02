@@ -6,12 +6,12 @@ import {
   Register,
   Initial,
   NewGroup,
-  GetGroupList,
   GetGroupMessages,
+  MessageSent,
 } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
-import { createGroup, createUser } from '../db/create';
+import { createGroup, createUser, insertMessage } from '../db/create';
 import { toObj, toStr, sendError } from './auxiliaryFunc';
 import {
   checkLogin,
@@ -62,7 +62,10 @@ async function webSocketConnect() {
 
       // Get messages of specific group:
       if (message.type === 'getGroupMessages')
-        GroupMessagesFunction(client, message);
+        groupMessagesFunction(client, message);
+
+      // New message:
+      if (message.type === 'chatMessage') messageSentFunction(ws, message);
 
       // Sending an error message to the client:
       if (message.type === 'error') {
@@ -142,7 +145,7 @@ async function newGroupFunction(client: Client, message: NewGroup) {
   } else client.send(sendError('error', 'createNewGroup', checking));
 }
 
-async function GroupMessagesFunction(
+async function groupMessagesFunction(
   client: Client,
   message: GetGroupMessages
 ) {
@@ -153,4 +156,22 @@ async function GroupMessagesFunction(
       messages: messages,
     })
   );
+}
+
+async function messageSentFunction(ws: Server, message: MessageSent) {
+  const insertMsg = await insertMessage(message);
+  if (insertMsg) {
+    console.log(insertMsg);
+    ws.clients.forEach((client) => {
+      client.send(
+        toStr({
+          type: 'newMessage',
+          data: insertMsg,
+        })
+      );
+    });
+  } else {
+    // TODO: Send error to the specific client that send this message...
+    console.log('error in message:', message);
+  }
 }

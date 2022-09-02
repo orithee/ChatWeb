@@ -26,8 +26,22 @@ export const chatSlice = createSlice({
     updateCurrentGroup: (state, action) => {
       state.currentGroup = action.payload;
     },
-    updateGroupMessages: (state, action) => {
+    getGroupMessages: (state, action) => {
       state.groupMessages = action.payload;
+    },
+    updateNewMessage: (
+      state,
+      action: {
+        payload: GroupMessage;
+        type: string;
+      }
+    ) => {
+      if (
+        state.groupMessages != undefined &&
+        action.payload.group_name === state.currentGroup
+      ) {
+        state.groupMessages = [...state.groupMessages, action.payload];
+      }
     },
     updateCurrentMessage: (state, action) => {
       state.currentMessage = action.payload;
@@ -38,7 +52,8 @@ export const chatSlice = createSlice({
 export const {
   updateGroupList,
   updateCurrentGroup,
-  updateGroupMessages,
+  getGroupMessages,
+  updateNewMessage,
   updateCurrentMessage,
 } = chatSlice.actions;
 

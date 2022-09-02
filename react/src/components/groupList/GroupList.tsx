@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { chatState } from '../../redux/store';
-import { updateCurrentGroup, updateGroupMessages } from '../../redux/mainSlice';
-import { useContext, useState } from 'react';
+import { updateCurrentGroup } from '../../redux/mainSlice';
+import { useContext } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../assets/auxiliaryFunc';
 

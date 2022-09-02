@@ -2,7 +2,11 @@ import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import { updateUserLogged, updateCurrentMessage } from '../redux/appSlice';
 import { toObj, setToken } from './auxiliaryFunc';
-import { updateGroupList, updateGroupMessages } from '../redux/mainSlice';
+import {
+  updateGroupList,
+  getGroupMessages,
+  updateNewMessage,
+} from '../redux/mainSlice';
 
 export function messageFilter(
   event: MessageEvent<any>,
@@ -10,6 +14,7 @@ export function messageFilter(
 ) {
   // A function that filters the messages from the server and updates the reducer:
   const message = toObj(event.data);
+
   if (message.type === 'login') {
     dispatch(updateUserLogged(message.username));
     setToken(message.token);
@@ -17,7 +22,9 @@ export function messageFilter(
     dispatch(updateGroupList(message.list));
   } else if (message.type === 'groupMessagesFromServer') {
     console.log(message);
-    dispatch(updateGroupMessages(message.messages));
+    dispatch(getGroupMessages(message.messages));
+  } else if (message.type === 'newMessage') {
+    dispatch(updateNewMessage(message.data));
   } else {
     dispatch(updateCurrentMessage(message));
   }

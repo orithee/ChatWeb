@@ -12,7 +12,8 @@ export type MessageTypes =
   | NewGroup
   | Error
   | GetGroupList
-  | GetGroupMessages;
+  | GetGroupMessages
+  | MessageSent;
 
 export interface Login {
   type: 'login';
@@ -57,6 +58,13 @@ export interface GetGroupMessages {
 
 interface Error {
   type: 'error';
+}
+
+export interface MessageSent {
+  type: 'chatMessage';
+  username: string;
+  group: string;
+  text: string;
 }
 
 export interface GroupMessage {

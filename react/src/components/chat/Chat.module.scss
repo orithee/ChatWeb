@@ -27,6 +27,7 @@
 .main {
   display: flex;
   flex-direction: column;
+  position: relative;
 
   height: 76%;
   background-color: #202c3323;
@@ -38,25 +39,35 @@
   overflow: auto;
   align-items: flex-start;
   // TODO: Change to flex-end
-  .message {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    // TODO: Change to flex-end
-    padding: 4%;
-    background-color: #202c33;
-    border-radius: 8px;
-    width: fit-content;
-    min-width: 30%;
-    margin: 2%;
-    .sent_by {
-      color: greenyellow;
-    }
-    .text {
-      color: white;
-    }
-    .time {
-      color: aquamarine;
+  .item {
+    width: 100%;
+    .message {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      // TODO: Change to flex-end
+      padding: 2%;
+      background-color: #202c33;
+      border-radius: 8px;
+      width: fit-content;
+      min-width: 25%;
+      max-width: 75%;
+      margin: 1%;
+      .sent_by {
+        color: greenyellow;
+      }
+      .text {
+        color: white;
+        inline-size: 100%;
+        text-align: start;
+        overflow-wrap: break-word;
+      }
+      .hour {
+        color: aquamarine;
+        inline-size: 100%;
+        text-align: end;
+      }
     }
   }
 }

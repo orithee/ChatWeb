@@ -1,4 +1,9 @@
-import { NewGroup, Register } from 'src/server/types';
+import {
+  GroupMessage,
+  MessageSent,
+  NewGroup,
+  Register,
+} from 'src/server/types';
 import { postgres } from './buildDB';
 import sha1 from 'sha1';
 // TODO: String validation !!
@@ -55,4 +60,22 @@ export async function groupMembers(group: NewGroup): Promise<boolean> {
     console.log(error);
     return false;
   }
+}
+
+export async function insertMessage(message: MessageSent) {
+  // Insert a new message into the data base:
+  const sql =
+    'INSERT INTO group_messages (message_text, sent_by, group_name) VALUES ($1, $2, $3) RETURNING *;';
+  const values = [message.text, message.username, message.group];
+  return new Promise<GroupMessage | undefined>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(undefined);
+      } else {
+        console.log('res.rows', res.rows);
+        resolve(res.rows[0]);
+      }
+    });
+  });
 }

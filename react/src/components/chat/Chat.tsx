@@ -1,8 +1,8 @@
 import style from './Chat.module.scss';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { chatState } from '../../redux/store';
-import { useContext, useState } from 'react';
+import { chatState, globalState } from '../../redux/store';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../assets/auxiliaryFunc';
@@ -10,8 +10,10 @@ import { toStr } from '../../assets/auxiliaryFunc';
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
+  const userName = useSelector((state: globalState) => state.global.userName);
   let groupIdParam = useParams().groupId;
   const [inputMsg, setInputMsg] = useState<string>('');
+  const mainContainer = useRef<null | HTMLDivElement>(null);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -20,12 +22,20 @@ function Chat() {
     connection.send(
       toStr({
         type: 'chatMessage',
+        username: userName,
         group: groupIdParam,
-        message: inputMsg,
+        text: inputMsg,
       })
     );
     setInputMsg('');
   };
+
+  useEffect(() => {
+    if (mainContainer.current) {
+      const scrolling = mainContainer.current;
+      scrolling.scrollTop = scrolling.scrollHeight;
+    }
+  });
 
   return (
     <div className={style.container}>
@@ -35,16 +45,18 @@ function Chat() {
           <p>{groupIdParam}</p>
         </div>
       </div>
-      <div className={style.main}>
+      <div ref={mainContainer} className={style.main}>
         {messages &&
           messages.length != 0 &&
           messages.map((message, index) => {
             return (
-              <ListGroup.Item className={style.message1} key={index}>
+              <ListGroup.Item className={style.item} key={index}>
                 <div className={style.message}>
                   <div className={style.sent_by}>{message.sent_by}</div>
                   <div className={style.text}>{message.message_text}</div>
-                  <div className={style.hour}>{message.created_at}</div>
+                  <div className={style.hour}>
+                    {message.created_at.slice(0, 5)}
+                  </div>
                 </div>
               </ListGroup.Item>
             );

@@ -1,8 +1,8 @@
 import style from './App.module.scss';
 import Home from './components/home/Home';
 import Main from './components/main/Main';
-import Login from './components/login/Login';
-import Register from './components/register/Register';
+import Login from './components/home/login/Login';
+import Register from './components/home/register/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WsConnect } from './assets/WsConnect';
 import React, { useEffect } from 'react';
@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { messageFilter } from './assets/messageFilter';
 import { globalState } from './redux/store';
-import Opening from './components/opening/Opening';
+import Opening from './components/home/opening/Opening';
 import Chat from './components/chat/Chat';
 
 // TODO: Merge the default with the value in the provider.

@@ -1,10 +1,10 @@
 import style from './Register.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { toStr } from '../../assets/auxiliaryFunc';
+import { toStr } from '../../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
-import { WsConnection } from '../../App';
-import { globalState } from '../../redux/store';
+import { WsConnection } from '../../../App';
+import { globalState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
 
 function Register() {

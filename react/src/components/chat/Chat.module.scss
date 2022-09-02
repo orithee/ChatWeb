@@ -24,29 +24,41 @@
   }
 }
 
-.message {
+.main {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 2%;
-  background-color: #202c33;
-  border-radius: 8px;
-  width: auto;
-  max-width: 70%;
-  min-width: 20%;
-  .sent_by {
-    color: greenyellow;
-  }
-  .text {
-    color: white;
-  }
-  .time {
-    color: aquamarine;
-  }
-}
 
-.main {
-  height: 75%;
+  height: 70%;
+  background-color: #202c3323;
+  border-radius: 10px;
+  padding: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  scroll-behavior: smooth;
+  overflow: auto;
+  align-items: flex-start;
+  // TODO: Change to flex-end
+  .message {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    // TODO: Change to flex-end
+    padding: 4%;
+    background-color: #202c33;
+    border-radius: 8px;
+    width: fit-content;
+    min-width: 30%;
+    margin: 2%;
+    .sent_by {
+      color: greenyellow;
+    }
+    .text {
+      color: white;
+    }
+    .time {
+      color: aquamarine;
+    }
+  }
 }
 
 .bottom {

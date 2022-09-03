@@ -20,7 +20,7 @@ function Login() {
     connection.send(
       toStr({
         type: 'login',
-        username: username,
+        userName: username,
         password: password,
       })
     );

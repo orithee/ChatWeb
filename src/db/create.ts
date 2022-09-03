@@ -2,8 +2,9 @@ import {
   GroupMessage,
   LoginToClient,
   MessageSent,
-  NewGroup,
+  CreateNewGroup,
   Register,
+  Group,
 } from 'src/server/types';
 import { postgres } from './buildDB';
 import sha1 from 'sha1';
@@ -52,24 +53,31 @@ export async function createUser(user: Register) {
   // }
 }
 
-export async function createGroup(group: NewGroup) {
+export async function createGroup(group: CreateNewGroup) {
   // Create a new group:
-  try {
-    const insertNewGroup =
-      'INSERT INTO groups (admin_id, group_name) VALUES ($1, $2);';
-    const values = [group.userId, group.groupName];
-    await postgres.query(insertNewGroup, values);
-    if (!(await groupMembers(group))) return false;
+  const sql = 'INSERT INTO groups (admin_id, group_name) VALUES ($1, $2);';
+  const values = [group.userId, group.groupName];
+  const NewGroup = await new Promise<undefined | Group>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(undefined);
+      } else {
+        console.log(res.rows);
+        if (res.rows.length === 1) resolve(res.rows[0]);
+        else resolve(undefined);
+      }
+    });
+  });
+  if (!(await groupMembers(group))) return undefined;
+  else {
     console.log('Finish createGroup: ', group.groupName);
-    return true;
-  } catch (error) {
-    console.log(error);
-    return false;
+    return NewGroup;
   }
 }
 
-export async function groupMembers(group: NewGroup) {
-  // Create a new group:
+export async function groupMembers(group: CreateNewGroup) {
+  // Create a new uses_groups:
   try {
     let insert = 'INSERT INTO user_groups (user_name, group_name) VALUES ';
     let values = `('${group.userId}','${group.groupName}'),`;

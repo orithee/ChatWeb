@@ -5,13 +5,14 @@ import { WsConnection } from '../../App';
 import { toStr } from '../../assets/auxiliaryFunc';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
+import { User } from '../../assets/types';
 
 interface Props {
   openNew: Function;
-  userName: string | undefined;
+  user: User;
 }
 
-function CreateNewGroup({ openNew, userName }: Props) {
+function CreateNewGroup({ openNew, user }: Props) {
   const connection = useContext<WebSocket>(WsConnection);
   const message = useSelector((state: globalState) => state.global.message);
 
@@ -39,7 +40,8 @@ function CreateNewGroup({ openNew, userName }: Props) {
       connection.send(
         toStr({
           type: 'createNewGroup',
-          userName: userName,
+          userName: user.user_name,
+          userId: user.user_id,
           groupName: groupName,
           members: members,
         })

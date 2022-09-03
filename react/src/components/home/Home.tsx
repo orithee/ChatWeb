@@ -5,11 +5,11 @@ import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
 
 function Home() {
-  const userName = useSelector((state: globalState) => state.global.userName);
+  const user = useSelector((state: globalState) => state.global.user);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (userName) navigate('/main', { replace: true });
+    if (user) navigate('/main', { replace: true });
   });
 
   return (

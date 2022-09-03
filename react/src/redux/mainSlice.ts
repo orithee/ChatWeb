@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { GroupMessage } from '../assets/types';
+import { Group, GroupMessage } from '../assets/types';
 
 export interface chatInterface {
   groupList: string[] | undefined;
-  currentGroup: string | undefined;
+  currentGroup: Group | undefined;
   groupMessages: GroupMessage[] | undefined;
   currentMessage: string | undefined;
 }
@@ -38,7 +38,7 @@ export const chatSlice = createSlice({
     ) => {
       if (
         state.groupMessages != undefined &&
-        action.payload.group_name === state.currentGroup
+        action.payload.group_name === state.currentGroup?.group_name
       ) {
         state.groupMessages = [...state.groupMessages, action.payload];
       }

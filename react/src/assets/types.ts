@@ -52,3 +52,20 @@ export interface GroupMessage {
   sent_by: string;
   group_name: string;
 }
+
+export interface User {
+  user_id: number;
+  user_name: string;
+  password: string;
+  email: string;
+  nickname: string;
+  image: string;
+  online: boolean;
+}
+
+export interface Group {
+  group_id: number;
+  admin_id: number;
+  group_name: string;
+  image: string;
+}

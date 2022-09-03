@@ -25,7 +25,7 @@ export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
 function App() {
   const dispatch = useDispatch();
 
-  const userName = useSelector((state: globalState) => state.global.userName);
+  const userName = useSelector((state: globalState) => state.global.user);
   const message = useSelector((state: globalState) => state.global.message);
 
   useEffect(() => {

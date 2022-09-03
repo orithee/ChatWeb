@@ -5,7 +5,7 @@ import {
   Login,
   Register,
   Initial,
-  NewGroup,
+  CreateNewGroup,
   GetGroupMessages,
   MessageSent,
 } from './types';
@@ -118,16 +118,19 @@ async function loginFunction(client: Client, message: Login) {
   } else client.send(sendError('error', 'login', 'no match'));
 }
 
-async function newGroupFunction(client: Client, message: NewGroup) {
+async function newGroupFunction(client: Client, message: CreateNewGroup) {
   // TODO: Think about the group_name / group_id...
+  // TODO: Send to all clients the new group...
   const checking = await checkMembers(message.members);
   if (checking.length === 0) {
     if (await checkGroupName(message)) {
-      if (await createGroup(message)) {
+      const newGroup = await createGroup(message);
+      if (newGroup) {
         client.send(
           toStr({
             type: 'createNewGroup',
             userName: message.userName,
+            group: newGroup,
             members: message.members,
           })
         );

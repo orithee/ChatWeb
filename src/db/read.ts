@@ -4,7 +4,7 @@ import {
   Initial,
   Login,
   LoginToClient,
-  NewGroup,
+  CreateNewGroup,
   Register,
   UserGroups,
 } from '../server/types';
@@ -72,7 +72,9 @@ export async function checkToken(initialMsg: Initial) {
   });
 }
 
-export async function checkGroupName(newGroup: NewGroup): Promise<boolean> {
+export async function checkGroupName(
+  newGroup: CreateNewGroup
+): Promise<boolean> {
   // Checks if the group name is already in use in the database:
   const sql = `SELECT * FROM groups WHERE group_name=$1;`;
   const values = [newGroup.groupName];

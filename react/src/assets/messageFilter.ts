@@ -14,6 +14,7 @@ export function messageFilter(
 ) {
   // A function that filters the messages from the server and updates the reducer:
   const message = toObj(event.data);
+  // TODO: Update the groupList every time the user create new group...
 
   if (message.type === 'login') {
     dispatch(updateUserLogged(message.username));

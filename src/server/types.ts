@@ -9,7 +9,7 @@ export type MessageTypes =
   | Initial
   | Register
   | Login
-  | NewGroup
+  | CreateNewGroup
   | Error
   | GetGroupList
   | GetGroupMessages
@@ -33,7 +33,7 @@ export interface Initial {
   token: string | undefined;
 }
 
-export interface NewGroup {
+export interface CreateNewGroup {
   type: 'createNewGroup';
   userName: string;
   userId: number;
@@ -89,4 +89,11 @@ export interface User {
 export interface UserGroups {
   user_id: number;
   group_id: number;
+}
+
+export interface Group {
+  group_id: number;
+  admin_id: number;
+  group_name: string;
+  image: string;
 }

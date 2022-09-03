@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MessageTypes } from '../assets/types';
+import { MessageTypes, User } from '../assets/types';
 
 export interface globalInterface {
-  userName: string | undefined;
+  user: User | undefined;
   message: MessageTypes;
 }
 
 const initialState: globalInterface = {
-  userName: undefined,
+  user: undefined,
   message: { type: 'initial' },
 };
 
@@ -16,7 +16,7 @@ export const globalSlice = createSlice({
   initialState,
   reducers: {
     updateUserLogged: (state, action) => {
-      state.userName = action.payload;
+      state.user = action.payload;
     },
     updateCurrentMessage: (state, action) => {
       state.message = action.payload;

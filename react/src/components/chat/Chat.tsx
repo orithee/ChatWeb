@@ -10,8 +10,10 @@ import { toStr } from '../../assets/auxiliaryFunc';
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
-  const userName = useSelector((state: globalState) => state.global.userName);
-  let groupIdParam = useParams().groupId;
+  const group = useSelector((state: chatState) => state.chat.currentGroup);
+  const user = useSelector((state: globalState) => state.global.user);
+
+  // let groupIdParam = useParams().groupId;
   const [inputMsg, setInputMsg] = useState<string>('');
   const mainContainer = useRef<null | HTMLDivElement>(null);
 
@@ -22,8 +24,8 @@ function Chat() {
     connection.send(
       toStr({
         type: 'chatMessage',
-        username: userName,
-        group: groupIdParam,
+        userId: user?.user_id,
+        groupId: group?.group_id,
         text: inputMsg,
       })
     );
@@ -42,7 +44,7 @@ function Chat() {
       <div className={style.up}>
         <div className={style.up_left}>
           {/* TODO: Add profile img option */}
-          <p>{groupIdParam}</p>
+          <p>{group?.group_name}</p>
         </div>
       </div>
       <div ref={mainContainer} className={style.main}>

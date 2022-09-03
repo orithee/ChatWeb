@@ -17,13 +17,13 @@ export type MessageTypes =
 
 export interface Login {
   type: 'login';
-  username: string;
+  userName: string;
   password: string;
 }
 
 export interface Register {
   type: 'register';
-  username: string;
+  userName: string;
   password: string;
   email: string;
 }
@@ -36,6 +36,7 @@ export interface Initial {
 export interface NewGroup {
   type: 'createNewGroup';
   userName: string;
+  userId: number;
   groupName: string;
   members: string[];
 }
@@ -47,8 +48,7 @@ export interface GetGroupList {
 
 export interface LoginToClient {
   type: 'login';
-  username: string;
-  token: string | undefined;
+  userData: User;
 }
 
 export interface GetGroupMessages {
@@ -62,8 +62,8 @@ interface Error {
 
 export interface MessageSent {
   type: 'chatMessage';
-  username: string;
-  group: string;
+  userId: number;
+  groupId: number;
   text: string;
 }
 
@@ -74,4 +74,19 @@ export interface GroupMessage {
   created_on: object;
   sent_by: string;
   group_name: string;
+}
+
+export interface User {
+  user_id: number;
+  user_name: string;
+  password: string;
+  email: string;
+  nickname: string;
+  image: string;
+  online: boolean;
+}
+
+export interface UserGroups {
+  user_id: number;
+  group_id: number;
 }

@@ -6,31 +6,36 @@ import {
   LoginToClient,
   NewGroup,
   Register,
+  UserGroups,
 } from '../server/types';
 import { postgres } from './buildDB';
 
-export async function checkLogin(user: Login): Promise<boolean> {
+export async function checkLogin(user: Login) {
   // Checking the trying to log in to the website:
   const sql = `SELECT * FROM users WHERE user_name=$1 AND password=$2;`;
-  const values = [user.username, sha1(user.password + user.username)];
-  return new Promise<boolean>((resolve, _reject) => {
+  const values = [user.userName, sha1(user.password + user.userName)];
+  return new Promise<boolean | LoginToClient>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
         resolve(false);
       } else {
         console.log(res.rows);
-        if (res.rows.length === 0) resolve(false);
+        if (res.rows.length === 1)
+          resolve({
+            type: 'login',
+            userData: res.rows[0],
+          });
         else resolve(true);
       }
     });
   });
 }
 
-export async function checkUsername(user: Register): Promise<boolean> {
+export async function checkUsername(user: Register) {
   // Checks if the username is already in use in the database:
   const sql = `SELECT * FROM users WHERE user_name=$1;`;
-  const values = [user.username];
+  const values = [user.userName];
   return new Promise<boolean>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
@@ -45,11 +50,9 @@ export async function checkUsername(user: Register): Promise<boolean> {
   });
 }
 
-export async function checkToken(
-  initialMsg: Initial
-): Promise<boolean | LoginToClient> {
+export async function checkToken(initialMsg: Initial) {
   // Checking if there is a username that matches the token from the client :
-  const sql = `SELECT user_name FROM users WHERE password=$1;`;
+  const sql = `SELECT * FROM users WHERE password=$1;`;
   const values = [initialMsg.token];
   return new Promise<boolean | LoginToClient>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
@@ -61,8 +64,7 @@ export async function checkToken(
         if (res.rows.length === 1)
           resolve({
             type: 'login',
-            username: res.rows[0].user_name,
-            token: initialMsg.token,
+            userData: res.rows[0],
           });
         else resolve(false);
       }
@@ -102,8 +104,8 @@ export async function checkMembers(members: string[]) {
         const membersNotExists = members.filter((member) => {
           if (!rows.includes(member)) return member;
         });
-        console.log('membersNotExists', membersNotExists);
 
+        console.log('membersNotExists', membersNotExists);
         if (membersNotExists.length != 0) resolve(membersNotExists);
         else resolve([]);
       }
@@ -111,11 +113,11 @@ export async function checkMembers(members: string[]) {
   });
 }
 
-export async function getGroupList(username: string) {
+export async function getGroupList(userId: number) {
   // Checks if the members exists in the database:
-  const sql = `SELECT group_name FROM user_groups WHERE user_name=$1;`;
-  const values = [username];
-  return new Promise<string[] | []>((resolve, _reject) => {
+  const sql = `SELECT * FROM user_groups WHERE user_id=$1;`;
+  const values = [userId];
+  return new Promise<UserGroups[] | []>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
@@ -123,16 +125,16 @@ export async function getGroupList(username: string) {
         // TODO: Explain that resolve....
         resolve([]);
       } else {
-        const rows = res.rows.map((row) => row.group_name);
-        console.log('rows', rows);
-        resolve(rows);
+        // const rows = res.rows.map((row) => row.group_name);
+        // console.log('rows', rows);
+        resolve(res.rows);
       }
     });
   });
 }
 
 export async function getMessages(groupName: string) {
-  // Checks if the members exists in the database:
+  // Get group messages by group name:
   const sql = `SELECT * FROM group_messages WHERE group_name=$1 ORDER BY created_at ASC, created_on ASC;`;
   const values = [groupName];
   return new Promise<GroupMessage[] | []>((resolve, _reject) => {

@@ -84,7 +84,7 @@ async function initialFunction(client: Client, message: Initial) {
     client.send(
       toStr({
         type: 'groupList',
-        list: await getGroupList(login.username),
+        list: await getGroupList(login.userData.user_id),
       })
     );
   } else client.send(sendError('error', 'initial', 'no match'));
@@ -92,18 +92,13 @@ async function initialFunction(client: Client, message: Initial) {
 
 async function registerFunction(client: Client, message: Register) {
   if (await checkUsername(message)) {
-    if (await createUser(message)) {
+    const newUser = await createUser(message);
+    if (typeof newUser != 'boolean') {
+      client.send(toStr(newUser));
       client.send(
         toStr({
           type: 'groupList',
           list: [],
-        })
-      );
-      client.send(
-        toStr({
-          type: 'login',
-          username: message.username,
-          token: sha1(message.password + message.username),
         })
       );
     } else client.send(sendError('error', 'register', 'failed'));
@@ -111,24 +106,20 @@ async function registerFunction(client: Client, message: Register) {
 }
 
 async function loginFunction(client: Client, message: Login) {
-  if (await checkLogin(message)) {
-    client.send(
-      toStr({
-        type: 'login',
-        username: message.username,
-        token: sha1(message.password + message.username),
-      })
-    );
+  const login = await checkLogin(message);
+  if (typeof login != 'boolean') {
+    client.send(toStr(login));
     client.send(
       toStr({
         type: 'groupList',
-        list: await getGroupList(message.username),
+        list: await getGroupList(login.userData.user_id),
       })
     );
   } else client.send(sendError('error', 'login', 'no match'));
 }
 
 async function newGroupFunction(client: Client, message: NewGroup) {
+  // TODO: Think about the group_name / group_id...
   const checking = await checkMembers(message.members);
   if (checking.length === 0) {
     if (await checkGroupName(message)) {

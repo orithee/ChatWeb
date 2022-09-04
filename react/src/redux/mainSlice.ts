@@ -20,16 +20,13 @@ export const chatSlice = createSlice({
   initialState,
   reducers: {
     updateGroupList: (state, action) => {
-      console.log(action.payload);
       state.groupList = action.payload;
     },
     newGroupToGroupList: (state, action) => {
-      console.log(action.payload);
       if (state.groupList === undefined) state.groupList = [action.payload];
       else state.groupList = [action.payload, ...state.groupList];
     },
     updateCurrentGroup: (state, action) => {
-      console.log(action.payload);
       state.currentGroup = action.payload;
     },
     getGroupMessages: (state, action) => {
@@ -50,7 +47,7 @@ export const chatSlice = createSlice({
         state.groupMessages = [...state.groupMessages, action.payload];
       }
     },
-    updateCurrentMessage: (state, action) => {
+    updateCurrentGroupMessage: (state, action) => {
       state.currentMessage = action.payload;
     },
   },
@@ -61,7 +58,7 @@ export const {
   updateCurrentGroup,
   getGroupMessages,
   updateNewMessage,
-  updateCurrentMessage,
+  updateCurrentGroupMessage,
   newGroupToGroupList,
 } = chatSlice.actions;
 

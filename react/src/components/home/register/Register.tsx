@@ -1,6 +1,6 @@
 import style from './Register.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { toStr } from '../../../assets/auxiliaryFunc';
+import { deleteToken, toStr } from '../../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../../App';
@@ -16,8 +16,9 @@ function Register() {
   const [password, setPassword] = useState<string>('');
   const [email, setEmail] = useState<string>('');
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitRegisterForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    deleteToken();
     connection.send(
       toStr({
         type: 'register',
@@ -28,11 +29,27 @@ function Register() {
     );
   };
 
+  const userNameError = () => {
+    return (
+      message.type === 'error' &&
+      message.problem === 'register' &&
+      message.title === 'username'
+    );
+  };
+
+  const registerFailedError = () => {
+    return (
+      message.type === 'error' &&
+      message.problem === 'register' &&
+      message.title === 'failed'
+    );
+  };
+
   return (
     <div>
       <h2>Register</h2>
 
-      <Form onSubmit={(e) => submitForm(e)}>
+      <Form onSubmit={(e) => submitRegisterForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control
@@ -43,13 +60,11 @@ function Register() {
             required
           />
 
-          {message.type === 'error' &&
-            message.problem === 'register' &&
-            message.title === 'username' && (
-              <Form.Text className="text-muted">
-                This username already exists in the system! try another name.
-              </Form.Text>
-            )}
+          {userNameError() && (
+            <Form.Text className="text-muted">
+              This username already exists in the system! try another name.
+            </Form.Text>
+          )}
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Password</Form.Label>
@@ -70,13 +85,11 @@ function Register() {
             placeholder="your email"
             required
           />
-          {message.type === 'error' &&
-            message.problem === 'register' &&
-            message.title === 'failed' && (
-              <Form.Text className="text-muted">
-                Registration failed, try again....
-              </Form.Text>
-            )}
+          {registerFailedError() && (
+            <Form.Text className="text-muted">
+              Registration failed, try again....
+            </Form.Text>
+          )}
         </Form.Group>
         <div className={style.bottom}>
           <button type="submit">Register</button>

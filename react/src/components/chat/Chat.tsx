@@ -5,7 +5,6 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../assets/auxiliaryFunc';
-import { useParams } from 'react-router-dom';
 
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -18,9 +17,7 @@ function Chat() {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!inputMsg) return;
-    if (user && group) {
-      console.log(group.group_id);
+    if (inputMsg && user && group) {
       connection.send(
         toStr({
           type: 'chatMessage',
@@ -40,11 +37,6 @@ function Chat() {
       scrolling.scrollTop = scrolling.scrollHeight;
     }
   }, [messages]);
-
-  // useEffect(() => {
-  //   if (useParams().groupId !== group?.group_id) {
-  //   }
-  // }, [group]);
 
   return (
     <div className={style.container}>
@@ -81,15 +73,6 @@ function Chat() {
           />
         </form>
       </div>
-
-      {/* TODO:
-          1. Option to send message - insert to group_messages table.
-          2. Implement it by send the message to all clients that connected.
-          3. UseEffect  - every message: insert into database, sent from server to all, 
-             update the group_messages if this group is open.
-          4. If this group does not opening now - add green indication about the message on the group list.
-          5.
-      */}
     </div>
   );
 }

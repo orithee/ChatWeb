@@ -1,5 +1,5 @@
 import style from './Login.module.scss';
-import { toStr } from '../../../assets/auxiliaryFunc';
+import { deleteToken, toStr } from '../../../assets/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
 import { WsConnection } from '../../../App';
@@ -15,8 +15,9 @@ function Login() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    deleteToken();
     connection.send(
       toStr({
         type: 'login',
@@ -29,7 +30,7 @@ function Login() {
   return (
     <div>
       <h2>Login</h2>
-      <Form onSubmit={(e) => submitForm(e)}>
+      <Form onSubmit={(e) => submitLoginForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>
           <Form.Control

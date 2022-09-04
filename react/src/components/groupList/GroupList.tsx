@@ -19,10 +19,7 @@ function GroupList() {
   const openChat = (group: Group) => {
     dispatch(updateCurrentGroup(group));
     connection.send(
-      toStr({
-        type: 'getGroupMessages',
-        groupId: group.group_id,
-      })
+      toStr({ type: 'getGroupMessages', groupId: group.group_id })
     );
     navigate('/main/' + group.group_id);
   };
@@ -34,6 +31,10 @@ function GroupList() {
   return (
     <div className={style.container}>
       <ListGroup className={style.list}>
+        {/* TODO:
+          1. If this group does not opening now - add green indication about the message on the group list.
+          2.
+      */}
         {groupList &&
           groupList.map((group, index) => {
             return (

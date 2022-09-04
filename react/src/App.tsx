@@ -8,16 +8,14 @@ import { WsConnect } from './assets/WsConnect';
 import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
-import { messageFilter } from './assets/messageFilter';
+import messageFilter from './assets/messageFilter';
 import { globalState } from './redux/store';
 import Opening from './components/home/opening/Opening';
 import Chat from './components/chat/Chat';
 
-// TODO: Merge the default with the value in the provider.
 // TODO: Improve the message - reduce the times the components renders -
 //       Need to separate the CreateContext to useStates in App component -
 //       That all children under app will change only when the message is relevant to them..
-// TODO: Understand all code in wsConnect. especially the RegExp...
 
 const WebSocketConnection = WsConnect();
 export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
@@ -25,19 +23,19 @@ export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
 function App() {
   const dispatch = useDispatch();
 
-  const userName = useSelector((state: globalState) => state.global.user);
+  const user = useSelector((state: globalState) => state.global.user);
   const message = useSelector((state: globalState) => state.global.message);
 
   useEffect(() => {
-    console.log('user connected: ', userName);
-  }, [userName]);
+    console.log('user connected: ', user?.user_name || undefined);
+  }, [user]);
 
   useEffect(() => {
     console.log('current message: ', message);
   }, [message]);
 
   WebSocketConnection.onmessage = (event) => {
-    messageFilter(event, dispatch);
+    messageFilter(event, dispatch, user);
   };
 
   return (

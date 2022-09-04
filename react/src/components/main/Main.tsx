@@ -9,6 +9,8 @@ import GroupList from '../groupList/GroupList';
 
 function Main() {
   const user = useSelector((state: globalState) => state.global.user);
+  const message = useSelector((state: globalState) => state.global.message);
+
   const [addGroupBtn, setAddGroupBtn] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -16,13 +18,19 @@ function Main() {
     if (user === undefined) navigate('/', { replace: true });
   });
 
+  useEffect(() => {
+    if (message.type === 'createNewGroup' && user) {
+      if (message.userName === user.user_name) setAddGroupBtn(false);
+    }
+  }, [message]);
+
   return (
     <div className={style.main_container}>
       {addGroupBtn && user && (
         <CreateNewGroup openNew={setAddGroupBtn} user={user} />
       )}
       <div className={style.bar_container}>
-        <div>{user?.user_name}</div>
+        {user && <div>{user.user_name}</div>}
         <Options addGroupBtn={setAddGroupBtn} />
         <GroupList />
       </div>

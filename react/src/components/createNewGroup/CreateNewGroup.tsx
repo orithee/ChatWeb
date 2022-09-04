@@ -29,14 +29,22 @@ function CreateNewGroup({ openNew, user }: Props) {
   const removeMember = (name: string) => {
     setMembers((members) =>
       members.filter((value) => {
-        if (value != name) return value;
+        if (value !== name) return value;
       })
     );
   };
 
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const groupNameError = () => {
+    return (
+      message.type === 'error' &&
+      message.problem === 'createNewGroup' &&
+      message.title === 'groupName'
+    );
+  };
+
+  const submitNewGroupForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (members.length != 0) {
+    if (members.length !== 0) {
       connection.send(
         toStr({
           type: 'createNewGroup',
@@ -51,7 +59,7 @@ function CreateNewGroup({ openNew, user }: Props) {
 
   return (
     <div className={style.main_container}>
-      <Form onSubmit={(e) => submitForm(e)}>
+      <Form onSubmit={(e) => submitNewGroupForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>group</Form.Label>
           <Form.Control
@@ -61,13 +69,11 @@ function CreateNewGroup({ openNew, user }: Props) {
             placeholder="group name"
             required
           />
-          {message.type === 'error' &&
-            message.problem === 'createNewGroup' &&
-            message.title === 'groupName' && (
-              <Form.Text className="text-muted">
-                This group name already exists in the system! try another name.
-              </Form.Text>
-            )}
+          {groupNameError() && (
+            <Form.Text className="text-muted">
+              This group name already exists in the system! try another name.
+            </Form.Text>
+          )}
         </Form.Group>
 
         <Form.Group className="mb-3">
@@ -103,6 +109,13 @@ function CreateNewGroup({ openNew, user }: Props) {
                   <div>These users do not exist in the system!</div>
                   <div>Click on these users to remove them.</div>
                 </div>
+              </Form.Text>
+            )}
+          {message.type === 'error' &&
+            message.problem === 'createNewGroup' &&
+            message.title === 'check members failed' && (
+              <Form.Text className="text-muted">
+                <div>{message.title}</div>
               </Form.Text>
             )}
           <br></br>

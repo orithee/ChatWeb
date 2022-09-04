@@ -1,6 +1,6 @@
-import { MessageTypes } from './types';
+import { MessagesTypes } from './types';
 
-export function toObj(msg: any): MessageTypes {
+export function toObj(msg: any): MessagesTypes {
   // A function that checks the value from the client and converts it to JSON:
   try {
     const msgToObj = JSON.parse(msg);

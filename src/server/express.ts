@@ -8,9 +8,11 @@ dotenv.config({ path: join(__dirname, '../../.env') });
 const PORT = process.env.PORT;
 export const expressServer = express()
   .use((req: Request, res: Response) => {
-    console.log('Request: ' + req.path);
-    res.sendFile(req.path || 'index.html', {
-      root: './dist',
-    });
+    console.log('Request in expressServer:', req.path);
+    if (process.env.NODE_ENV === 'production') {
+      res.sendFile(req.path || 'index.html', {
+        root: './dist',
+      });
+    }
   })
   .listen(PORT, () => console.log(`Hosted: http://localhost:${PORT}`));

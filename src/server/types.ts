@@ -1,19 +1,13 @@
-// Client type:
-export type Client = {
-  send: (arg0: string) => void;
-  on: (arg0: string, arg1: { (msg: any): void }) => void;
-};
-
 // Messages Types:
-export type MessageTypes =
+export type MessagesTypes =
   | Initial
   | Register
   | Login
   | CreateNewGroup
-  | Error
   | GetGroupList
   | GetGroupMessages
-  | MessageSent;
+  | MessageSent
+  | Error;
 
 export interface Login {
   type: 'login';
@@ -47,18 +41,9 @@ export interface GetGroupList {
   username: string;
 }
 
-export interface LoginToClient {
-  type: 'login';
-  userData: User;
-}
-
 export interface GetGroupMessages {
   type: 'getGroupMessages';
   groupId: number;
-}
-
-interface Error {
-  type: 'error';
 }
 
 export interface MessageSent {
@@ -67,6 +52,29 @@ export interface MessageSent {
   userName: string;
   groupId: number;
   text: string;
+}
+
+export interface User {
+  user_id: number;
+  user_name: string;
+  password: string;
+  email: string;
+  nickname: string;
+  image: string;
+  online: boolean;
+}
+
+export interface Group {
+  group_id: number;
+  admin_id: number;
+  group_name: string;
+  image: string;
+}
+
+export interface UserGroups {
+  user_name: string;
+  group_id: number;
+  group_name: string;
 }
 
 export interface GroupMessage {
@@ -80,25 +88,16 @@ export interface GroupMessage {
   was_read: boolean;
 }
 
-export interface User {
-  user_id: number;
-  user_name: string;
-  password: string;
-  email: string;
-  nickname: string;
-  image: string;
-  online: boolean;
+interface Error {
+  type: 'error';
 }
 
-export interface UserGroups {
-  user_name: string;
-  group_id: number;
-  group_name: string;
+export interface LoginToClient {
+  type: 'login';
+  userData: User;
 }
-
-export interface Group {
-  group_id: number;
-  admin_id: number;
-  group_name: string;
-  image: string;
-}
+// Client type:
+export type Client = {
+  send: (arg0: string) => void;
+  on: (arg0: string, arg1: { (msg: any): void }) => void;
+};

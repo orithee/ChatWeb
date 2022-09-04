@@ -1,6 +1,6 @@
 import { Server } from 'ws';
 import {
-  MessageTypes,
+  MessagesTypes,
   Client,
   Login,
   Register,
@@ -11,20 +11,20 @@ import {
 } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
-import { createGroup, createUser, insertMessage } from '../db/create';
+import { createGroup, createUser, insertGroupMessage } from '../db/create';
 import { toObj, toStr, sendError } from './auxiliaryFunc';
 import {
   checkLogin,
-  checkUsername,
+  checkUsername as usernameIsAvailable,
   checkToken,
   checkGroupName,
   checkMembers,
-  getGroupList,
+  getListOfGroups,
   getMessages,
 } from '../db/read';
-import sha1 from 'sha1';
 
 init();
+
 async function init() {
   // A function that initializes the server and the database:
   try {
@@ -32,44 +32,46 @@ async function init() {
     await createTables();
     await webSocketConnect();
   } catch (error) {
-    console.log('"init" function failed:');
     console.log(error);
   }
 }
 
 async function webSocketConnect() {
-  // Turning the express server to 'WebSocket':
+  /* 1. Turning the express server to 'WebSocket'.
+     2. Connection to websocket.
+     3. Filtering of message types.
+     4. Answer to the client.  */
   const ws = new Server({ server: expressServer });
 
   ws.on('connection', (client: Client) => {
-    console.log('Client connected');
+    console.log('New client connected!');
 
     client.on('message', async (msg) => {
-      const message: MessageTypes = toObj(msg);
-      console.log('request: ', message.type);
+      const message: MessagesTypes = toObj(msg);
+      const type = message.type;
+      console.log('request: ', type);
 
       // Check if the token is worth some token on the database:
-      if (message.type === 'initial') initialFunction(client, message);
+      if (type === 'initial') initialFunction(client, message);
 
       // Adding a new user to the database:
-      if (message.type === 'register') registerFunction(client, message);
+      if (type === 'register') registerFunction(client, message);
 
       // Checks the username and password:
-      if (message.type === 'login') loginFunction(client, message);
+      if (type === 'login') loginFunction(client, message);
 
       // Adding a new group to the database:
-      if (message.type === 'createNewGroup') newGroupFunction(client, message);
+      if (type === 'createNewGroup') newGroupFunction(ws, client, message);
 
       // Get messages of specific group:
-      if (message.type === 'getGroupMessages')
-        groupMessagesFunction(client, message);
+      if (type === 'getGroupMessages') groupMessagesFunction(client, message);
 
-      // New message:
-      if (message.type === 'chatMessage') messageSentFunction(ws, message);
+      // New group message:
+      if (type === 'chatMessage') messageSentFunction(ws, client, message);
 
       // Sending an error message to the client:
-      if (message.type === 'error') {
-        client.send(sendError('error', 'error', 'error from server'));
+      if (type === 'error') {
+        client.send(sendError('error', 'string', 'This message is a string!'));
       }
     });
 
@@ -78,62 +80,64 @@ async function webSocketConnect() {
 }
 
 async function initialFunction(client: Client, message: Initial) {
-  const login = await checkToken(message);
-  if (typeof login != 'boolean') {
-    client.send(toStr(login));
-    client.send(
-      toStr({
-        type: 'groupList',
-        list: await getGroupList(login.userData.user_name),
-      })
-    );
-  } else client.send(sendError('error', 'initial', 'no match'));
-}
-
-async function registerFunction(client: Client, message: Register) {
-  if (await checkUsername(message)) {
-    const newUser = await createUser(message);
-    if (typeof newUser != 'boolean') {
-      client.send(toStr(newUser));
+  if (!message.token) client.send(sendError('error', 'initial', 'no token'));
+  else {
+    const login = await checkToken(message);
+    if (login) {
+      client.send(toStr(login));
       client.send(
         toStr({
           type: 'groupList',
-          list: [],
+          list: await getListOfGroups(login.userData.user_name),
         })
       );
+    } else client.send(sendError('error', 'initial', 'no match'));
+  }
+}
+
+async function registerFunction(client: Client, message: Register) {
+  if (await usernameIsAvailable(message)) {
+    const newUser = await createUser(message);
+    if (newUser) {
+      client.send(toStr(newUser));
+      client.send(toStr({ type: 'groupList', list: [] }));
     } else client.send(sendError('error', 'register', 'failed'));
   } else client.send(sendError('error', 'register', 'username'));
 }
 
 async function loginFunction(client: Client, message: Login) {
   const login = await checkLogin(message);
-  if (typeof login != 'boolean') {
+  if (login) {
     client.send(toStr(login));
     client.send(
       toStr({
         type: 'groupList',
-        list: await getGroupList(login.userData.user_name),
+        list: await getListOfGroups(login.userData.user_name),
       })
     );
   } else client.send(sendError('error', 'login', 'no match'));
 }
 
-async function newGroupFunction(client: Client, message: CreateNewGroup) {
-  // TODO: Think about the group_name / group_id...
-  // TODO: Send to all clients the new group...
+async function newGroupFunction(
+  ws: Server,
+  client: Client,
+  message: CreateNewGroup
+) {
   const checking = await checkMembers(message.members);
-  if (checking.length === 0) {
+  if (Array.isArray(checking) && checking.length === 0) {
     if (await checkGroupName(message)) {
       const newGroup = await createGroup(message);
       if (newGroup) {
-        client.send(
-          toStr({
-            type: 'createNewGroup',
-            userName: message.userName,
-            group: newGroup,
-            members: message.members,
-          })
-        );
+        ws.clients.forEach((client) => {
+          client.send(
+            toStr({
+              type: 'createNewGroup',
+              userName: message.userName,
+              group: newGroup,
+              members: message.members,
+            })
+          );
+        });
       } else client.send(sendError('error', 'createNewGroup', 'failed'));
     } else client.send(sendError('error', 'createNewGroup', 'groupName'));
   } else client.send(sendError('error', 'createNewGroup', checking));
@@ -144,28 +148,19 @@ async function groupMessagesFunction(
   message: GetGroupMessages
 ) {
   const messages = await getMessages(message.groupId);
-  client.send(
-    toStr({
-      type: 'groupMessagesFromServer',
-      messages: messages,
-    })
-  );
+  client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
 }
 
-async function messageSentFunction(ws: Server, message: MessageSent) {
-  const insertMsg = await insertMessage(message);
+async function messageSentFunction(
+  ws: Server,
+  client: Client,
+  message: MessageSent
+) {
+  const insertMsg = await insertGroupMessage(message);
   if (insertMsg) {
     console.log('insertMsg', insertMsg);
     ws.clients.forEach((client) => {
-      client.send(
-        toStr({
-          type: 'newMessage',
-          data: insertMsg,
-        })
-      );
+      client.send(toStr({ type: 'newMessage', data: insertMsg }));
     });
-  } else {
-    // TODO: Send error to the specific client that send this message...
-    console.log('error in message:', message);
-  }
+  } else client.send(sendError('error', 'chatMessage', 'failed'));
 }

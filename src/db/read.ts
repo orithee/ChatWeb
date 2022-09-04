@@ -7,6 +7,7 @@ import {
   CreateNewGroup,
   Register,
   UserGroups,
+  Group,
 } from '../server/types';
 import { postgres } from './buildDB';
 
@@ -115,11 +116,14 @@ export async function checkMembers(members: string[]) {
   });
 }
 
-export async function getGroupList(userId: number) {
+export async function getGroupList(userName: string) {
   // Checks if the members exists in the database:
-  const sql = `SELECT * FROM user_groups WHERE user_id=$1;`;
-  const values = [userId];
-  return new Promise<UserGroups[] | []>((resolve, _reject) => {
+  // SELECT * FROM groups LEFT OUTER JOIN user_groups ON groups.group_id=user_groups.group_id
+  // WHERE user_groups.user_name='ori1';
+  const sql = `SELECT * FROM groups LEFT OUTER JOIN user_groups ON groups.group_id=user_groups.group_id 
+  WHERE user_groups.user_name=$1;`;
+  const values = [userName];
+  return new Promise<Group[] | []>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {
         console.log(err.stack);
@@ -135,10 +139,10 @@ export async function getGroupList(userId: number) {
   });
 }
 
-export async function getMessages(groupName: string) {
+export async function getMessages(groupId: number) {
   // Get group messages by group name:
-  const sql = `SELECT * FROM group_messages WHERE group_name=$1 ORDER BY created_at ASC, created_on ASC;`;
-  const values = [groupName];
+  const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_at ASC, created_on ASC;`;
+  const values = [groupId];
   return new Promise<GroupMessage[] | []>((resolve, _reject) => {
     postgres.query(sql, values, (err, res) => {
       if (err) {

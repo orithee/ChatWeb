@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import { Group, GroupMessage } from '../assets/types';
 
 export interface chatInterface {
-  groupList: string[] | undefined;
+  groupList: Group[] | undefined;
   currentGroup: Group | undefined;
   groupMessages: GroupMessage[] | undefined;
-  currentMessage: string | undefined;
+  currentMessage: GroupMessage | undefined;
 }
 
 const initialState: chatInterface = {
@@ -23,7 +23,13 @@ export const chatSlice = createSlice({
       console.log(action.payload);
       state.groupList = action.payload;
     },
+    newGroupToGroupList: (state, action) => {
+      console.log(action.payload);
+      if (state.groupList === undefined) state.groupList = [action.payload];
+      else state.groupList = [action.payload, ...state.groupList];
+    },
     updateCurrentGroup: (state, action) => {
+      console.log(action.payload);
       state.currentGroup = action.payload;
     },
     getGroupMessages: (state, action) => {
@@ -36,10 +42,11 @@ export const chatSlice = createSlice({
         type: string;
       }
     ) => {
-      if (
-        state.groupMessages != undefined &&
-        action.payload.group_name === state.currentGroup?.group_name
-      ) {
+      if (state.groupMessages === undefined) {
+        if (action.payload !== undefined) {
+          state.groupMessages = [action.payload];
+        }
+      } else if (action.payload.group_id === state.currentGroup?.group_id) {
         state.groupMessages = [...state.groupMessages, action.payload];
       }
     },
@@ -55,6 +62,7 @@ export const {
   getGroupMessages,
   updateNewMessage,
   updateCurrentMessage,
+  newGroupToGroupList,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -6,6 +6,8 @@ import {
   updateGroupList,
   getGroupMessages,
   updateNewMessage,
+  updateCurrentGroup,
+  newGroupToGroupList,
 } from '../redux/mainSlice';
 
 export function messageFilter(
@@ -14,11 +16,10 @@ export function messageFilter(
 ) {
   // A function that filters the messages from the server and updates the reducer:
   const message = toObj(event.data);
-  // TODO: Update the groupList every time the user create new group...
-
+  // TODO: Change this structure to switch !
   if (message.type === 'login') {
-    dispatch(updateUserLogged(message.username));
-    setToken(message.token);
+    dispatch(updateUserLogged(message.userData));
+    setToken(message.userData.password);
   } else if (message.type === 'groupList') {
     dispatch(updateGroupList(message.list));
   } else if (message.type === 'groupMessagesFromServer') {
@@ -26,6 +27,11 @@ export function messageFilter(
     dispatch(getGroupMessages(message.messages));
   } else if (message.type === 'newMessage') {
     dispatch(updateNewMessage(message.data));
+    console.log(message.data);
+  } else if (message.type === 'createNewGroup') {
+    dispatch(updateCurrentGroup(message.group));
+    dispatch(newGroupToGroupList(message.group));
+    dispatch(getGroupMessages(undefined));
   } else {
     dispatch(updateCurrentMessage(message));
   }

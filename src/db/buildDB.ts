@@ -30,8 +30,8 @@ export async function createTables() {
               password TEXT NOT NULL,
               email TEXT NOT NULL,
               nickname TEXT NOT NULL,
-              image TEXT NOT NULL,
-              online BOOLEAN NOT NULL
+              image TEXT DEFAULT 'empty',
+              online BOOLEAN DEFAULT TRUE
               );`
     );
 
@@ -50,10 +50,9 @@ export async function createTables() {
     // Groups that the user is in:
     await postgres.query(
       `CREATE TABLE IF NOT EXISTS user_groups(
-              user_id INTEGER,
+              user_name TEXT,
               group_id INTEGER,
-              CONSTRAINT fk_user_id FOREIGN KEY(user_id)
-              REFERENCES users(user_id),
+              group_name TEXT,
               CONSTRAINT fk_group_id FOREIGN KEY(group_id)
               REFERENCES groups(group_id)
               );`
@@ -66,10 +65,11 @@ export async function createTables() {
               message_text TEXT NOT NULL,
               created_at TIME DEFAULT CURRENT_TIME,
               created_on DATE DEFAULT CURRENT_DATE,
-              sent_by INTEGER,
+              sent_by_id INTEGER,
+              sent_by_name TEXT,
               group_id INTEGER,
               was_read BOOLEAN DEFAULT FALSE,
-              CONSTRAINT fk_sent_by  FOREIGN KEY(sent_by )
+              CONSTRAINT fk_sent_by_id FOREIGN KEY(sent_by_id)
               REFERENCES users(user_id),
               CONSTRAINT fk_group_id FOREIGN KEY(group_id)
               REFERENCES groups(group_id)

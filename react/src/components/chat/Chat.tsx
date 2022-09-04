@@ -1,11 +1,11 @@
 import style from './Chat.module.scss';
-import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../assets/auxiliaryFunc';
+import { useParams } from 'react-router-dom';
 
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -13,23 +13,25 @@ function Chat() {
   const group = useSelector((state: chatState) => state.chat.currentGroup);
   const user = useSelector((state: globalState) => state.global.user);
 
-  // let groupIdParam = useParams().groupId;
   const [inputMsg, setInputMsg] = useState<string>('');
   const mainContainer = useRef<null | HTMLDivElement>(null);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!inputMsg) return;
-    console.log(inputMsg);
-    connection.send(
-      toStr({
-        type: 'chatMessage',
-        userId: user?.user_id,
-        groupId: group?.group_id,
-        text: inputMsg,
-      })
-    );
-    setInputMsg('');
+    if (user && group) {
+      console.log(group.group_id);
+      connection.send(
+        toStr({
+          type: 'chatMessage',
+          userId: user.user_id,
+          userName: user.user_name,
+          groupId: group.group_id,
+          text: inputMsg,
+        })
+      );
+      setInputMsg('');
+    }
   };
 
   useEffect(() => {
@@ -37,7 +39,12 @@ function Chat() {
       const scrolling = mainContainer.current;
       scrolling.scrollTop = scrolling.scrollHeight;
     }
-  });
+  }, [messages]);
+
+  // useEffect(() => {
+  //   if (useParams().groupId !== group?.group_id) {
+  //   }
+  // }, [group]);
 
   return (
     <div className={style.container}>
@@ -49,12 +56,12 @@ function Chat() {
       </div>
       <div ref={mainContainer} className={style.main}>
         {messages &&
-          messages.length != 0 &&
+          messages.length !== 0 &&
           messages.map((message, index) => {
             return (
               <ListGroup.Item className={style.item} key={index}>
                 <div className={style.message}>
-                  <div className={style.sent_by}>{message.sent_by}</div>
+                  <div className={style.sent_by}>{message.sent_by_name}</div>
                   <div className={style.text}>{message.message_text}</div>
                   <div className={style.hour}>
                     {message.created_at.slice(0, 5)}

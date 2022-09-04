@@ -12,29 +12,25 @@ function Main() {
   const [addGroupBtn, setAddGroupBtn] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (!user) navigate('/', { replace: true });
-  // });
-  if (user === undefined) navigate('/', { replace: true });
-  else {
-    return (
-      <div className={style.main_container}>
-        {addGroupBtn && <CreateNewGroup openNew={setAddGroupBtn} user={user} />}
+  useEffect(() => {
+    if (user === undefined) navigate('/', { replace: true });
+  });
 
-        <div className={style.bar_container}>
-          <div>{user.user_name}</div>
-          <Options addGroupBtn={setAddGroupBtn} />
-          <GroupList />
-        </div>
-
-        <div className={style.chat_container}>
-          <Outlet />
-          {/* 1. Reload the messages by the user and by a selected group. */}
-          {/* 2. Option to send a message - send it to the database and return it to all members. */}
-        </div>
+  return (
+    <div className={style.main_container}>
+      {addGroupBtn && user && (
+        <CreateNewGroup openNew={setAddGroupBtn} user={user} />
+      )}
+      <div className={style.bar_container}>
+        <div>{user?.user_name}</div>
+        <Options addGroupBtn={setAddGroupBtn} />
+        <GroupList />
       </div>
-    );
-  }
+      <div className={style.chat_container}>
+        <Outlet />
+      </div>
+    </div>
+  );
 }
 
 export default Main;

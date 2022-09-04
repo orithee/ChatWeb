@@ -21,7 +21,7 @@ function Register() {
     connection.send(
       toStr({
         type: 'register',
-        username: username,
+        userName: username,
         password: password,
         email: email,
       })

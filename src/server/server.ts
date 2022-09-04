@@ -84,7 +84,7 @@ async function initialFunction(client: Client, message: Initial) {
     client.send(
       toStr({
         type: 'groupList',
-        list: await getGroupList(login.userData.user_id),
+        list: await getGroupList(login.userData.user_name),
       })
     );
   } else client.send(sendError('error', 'initial', 'no match'));
@@ -112,7 +112,7 @@ async function loginFunction(client: Client, message: Login) {
     client.send(
       toStr({
         type: 'groupList',
-        list: await getGroupList(login.userData.user_id),
+        list: await getGroupList(login.userData.user_name),
       })
     );
   } else client.send(sendError('error', 'login', 'no match'));
@@ -143,7 +143,7 @@ async function groupMessagesFunction(
   client: Client,
   message: GetGroupMessages
 ) {
-  const messages = await getMessages(message.groupName);
+  const messages = await getMessages(message.groupId);
   client.send(
     toStr({
       type: 'groupMessagesFromServer',
@@ -155,7 +155,7 @@ async function groupMessagesFunction(
 async function messageSentFunction(ws: Server, message: MessageSent) {
   const insertMsg = await insertMessage(message);
   if (insertMsg) {
-    console.log(insertMsg);
+    console.log('insertMsg', insertMsg);
     ws.clients.forEach((client) => {
       client.send(
         toStr({

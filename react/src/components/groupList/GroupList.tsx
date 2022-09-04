@@ -4,44 +4,48 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { chatState } from '../../redux/store';
 import { updateCurrentGroup } from '../../redux/mainSlice';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../assets/auxiliaryFunc';
+import { Group } from '../../assets/types';
 
 function GroupList() {
-  const groupList = useSelector((state: chatState) => state.chat.groupList);
   const connection = useContext<WebSocket>(WsConnection);
+  const groupList = useSelector((state: chatState) => state.chat.groupList);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const openChat = (groupName: string) => {
-    dispatch(updateCurrentGroup(groupName));
+  const openChat = (group: Group) => {
+    dispatch(updateCurrentGroup(group));
     connection.send(
       toStr({
         type: 'getGroupMessages',
-        groupName: groupName,
+        groupId: group.group_id,
       })
     );
-    navigate('/main/' + groupName);
+    navigate('/main/' + group.group_id);
   };
+
+  useEffect(() => {
+    if (groupList !== undefined && groupList.length > 0) openChat(groupList[0]);
+  }, [groupList]);
 
   return (
     <div className={style.container}>
       <ListGroup className={style.list}>
         {groupList &&
-          groupList.map((groupName, index) => {
+          groupList.map((group, index) => {
             return (
               <ListGroup.Item
-                onClick={() => openChat(groupName)}
+                onClick={() => openChat(group)}
                 className={style.item}
                 key={index}
               >
-                {groupName}
+                {group.group_name}
               </ListGroup.Item>
             );
           })}
-        {/* 3. Option to see specific group messages by click the group. */}
       </ListGroup>
     </div>
   );

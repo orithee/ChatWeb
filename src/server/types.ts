@@ -38,6 +38,7 @@ export interface CreateNewGroup {
   userName: string;
   userId: number;
   groupName: string;
+  groupId: number;
   members: string[];
 }
 
@@ -53,7 +54,7 @@ export interface LoginToClient {
 
 export interface GetGroupMessages {
   type: 'getGroupMessages';
-  groupName: string;
+  groupId: number;
 }
 
 interface Error {
@@ -63,6 +64,7 @@ interface Error {
 export interface MessageSent {
   type: 'chatMessage';
   userId: number;
+  userName: string;
   groupId: number;
   text: string;
 }
@@ -72,8 +74,10 @@ export interface GroupMessage {
   message_text: string;
   created_at: string;
   created_on: object;
-  sent_by: string;
-  group_name: string;
+  sent_by_id: number;
+  sent_by_name: string;
+  group_id: number;
+  was_read: boolean;
 }
 
 export interface User {
@@ -87,8 +91,9 @@ export interface User {
 }
 
 export interface UserGroups {
-  user_id: number;
+  user_name: string;
   group_id: number;
+  group_name: string;
 }
 
 export interface Group {

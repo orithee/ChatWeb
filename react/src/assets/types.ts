@@ -10,8 +10,7 @@ export type MessageTypes =
 
 export interface LoginFromServer {
   type: 'login';
-  username: string;
-  token: string;
+  userData: User;
 }
 
 interface ErrorFromServer {
@@ -23,6 +22,7 @@ interface ErrorFromServer {
 interface NewGroupFromServer {
   type: 'createNewGroup';
   userName: string;
+  group: Group;
   members: string[];
 }
 
@@ -32,7 +32,7 @@ interface Initial {
 
 interface GroupListFromServer {
   type: 'groupList';
-  list: string[];
+  list: Group[];
 }
 export interface GroupMessagesFromServer {
   type: 'groupMessagesFromServer';
@@ -49,8 +49,10 @@ export interface GroupMessage {
   message_text: string;
   created_at: string;
   created_on: object;
-  sent_by: string;
-  group_name: string;
+  sent_by_id: number;
+  sent_by_name: string;
+  group_id: number;
+  was_read: boolean;
 }
 
 export interface User {
@@ -69,3 +71,20 @@ export interface Group {
   group_name: string;
   image: string;
 }
+
+export interface UserGroup {
+  user_id: number;
+  group_id: number;
+  group_name: string;
+}
+
+// export interface NewGroup {
+//   user_id: number;
+//   group_id: number;
+//   group_name: string;
+// }
+
+// type: 'createNewGroup',
+// userName: message.userName,
+// group: newGroup,
+// members: message.members,

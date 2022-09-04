@@ -67,7 +67,7 @@ async function webSocketConnect() {
       if (type === 'getGroupMessages') groupMessagesFunction(client, message);
 
       // New group message:
-      if (type === 'chatMessage') messageSentFunction(ws, client, message);
+      if (type === 'groupMessage') messageSentFunction(ws, client, message);
 
       // Sending an error message to the client:
       if (type === 'error') {
@@ -87,7 +87,7 @@ async function initialFunction(client: Client, message: Initial) {
       client.send(toStr(login));
       client.send(
         toStr({
-          type: 'groupList',
+          type: 'groupListFromServer',
           list: await getListOfGroups(login.userData.user_name),
         })
       );
@@ -100,7 +100,7 @@ async function registerFunction(client: Client, message: Register) {
     const newUser = await createUser(message);
     if (newUser) {
       client.send(toStr(newUser));
-      client.send(toStr({ type: 'groupList', list: [] }));
+      client.send(toStr({ type: 'groupListFromServer', list: [] }));
     } else client.send(sendError('error', 'register', 'failed'));
   } else client.send(sendError('error', 'register', 'username'));
 }
@@ -111,7 +111,7 @@ async function loginFunction(client: Client, message: Login) {
     client.send(toStr(login));
     client.send(
       toStr({
-        type: 'groupList',
+        type: 'groupListFromServer',
         list: await getListOfGroups(login.userData.user_name),
       })
     );
@@ -131,7 +131,7 @@ async function newGroupFunction(
         ws.clients.forEach((client) => {
           client.send(
             toStr({
-              type: 'createNewGroup',
+              type: 'newGroupFromServer',
               userName: message.userName,
               group: newGroup,
               members: message.members,
@@ -158,9 +158,10 @@ async function messageSentFunction(
 ) {
   const insertMsg = await insertGroupMessage(message);
   if (insertMsg) {
-    console.log('insertMsg', insertMsg);
     ws.clients.forEach((client) => {
-      client.send(toStr({ type: 'newMessage', data: insertMsg }));
+      client.send(
+        toStr({ type: 'newGroupMessageFromServer', data: insertMsg })
+      );
     });
   } else client.send(sendError('error', 'chatMessage', 'failed'));
 }

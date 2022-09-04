@@ -47,7 +47,7 @@ export interface GetGroupMessages {
 }
 
 export interface MessageSent {
-  type: 'chatMessage';
+  type: 'groupMessage';
   userId: number;
   userName: string;
   groupId: number;
@@ -93,7 +93,7 @@ interface Error {
 }
 
 export interface LoginToClient {
-  type: 'login';
+  type: 'loginFromServer';
   userData: User;
 }
 // Client type:

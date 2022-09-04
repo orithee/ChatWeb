@@ -25,7 +25,7 @@ export async function createUser(user: Register) {
       } else {
         if (res.rows.length === 1) {
           resolve({
-            type: 'login',
+            type: 'loginFromServer',
             userData: res.rows[0],
           });
           console.log('Finish createUser: ', res.rows[0]);

@@ -9,7 +9,7 @@ import {
   updateCurrentGroup,
   newGroupToGroupList,
 } from '../redux/mainSlice';
-import { User } from './types';
+import { NewGroupFromServer, User } from './types';
 
 export default function messageFilter(
   event: MessageEvent<any>,
@@ -18,29 +18,37 @@ export default function messageFilter(
 ) {
   // A function that filters the messages from the server and updates the reducer:
   const message = toObj(event.data);
-
-  // TODO: Change this structure to switch !
-  if (message.type === 'login') {
+  if (message.type === 'loginFromServer') {
     dispatch(updateUserLogged(message.userData));
     setToken(message.userData.password);
-  } else if (message.type === 'groupList') {
+  } else if (message.type === 'groupListFromServer') {
     dispatch(updateGroupList(message.list));
+    console.log(message.list);
   } else if (message.type === 'groupMessagesFromServer') {
     dispatch(getGroupMessages(message.messages));
-  } else if (message.type === 'newMessage') {
+  } else if (message.type === 'newGroupMessageFromServer') {
     dispatch(updateNewMessage(message.data));
-  } else if (message.type === 'createNewGroup') {
+  } else if (message.type === 'newGroupFromServer') {
     dispatch(updateCurrentMessage(message));
-    if (
-      user &&
-      (message.members.includes(user.user_name) ||
-        user.user_name === message.userName)
-    ) {
-      dispatch(updateCurrentGroup(message.group));
-      dispatch(newGroupToGroupList(message.group));
-      dispatch(getGroupMessages(undefined));
-    }
+    showTheNewGroup(dispatch, message, user);
   } else {
+    // initial, error:
     dispatch(updateCurrentMessage(message));
+  }
+}
+
+function showTheNewGroup(
+  dispatch: Dispatch<AnyAction>,
+  message: NewGroupFromServer,
+  user: User | undefined
+) {
+  if (
+    user &&
+    (message.members.includes(user.user_name) ||
+      user.user_name === message.userName)
+  ) {
+    dispatch(updateCurrentGroup(message.group));
+    dispatch(newGroupToGroupList(message.group));
+    dispatch(getGroupMessages(undefined));
   }
 }

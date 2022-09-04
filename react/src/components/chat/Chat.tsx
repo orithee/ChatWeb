@@ -20,7 +20,7 @@ function Chat() {
     if (inputMsg && user && group) {
       connection.send(
         toStr({
-          type: 'chatMessage',
+          type: 'groupMessage',
           userId: user.user_id,
           userName: user.user_name,
           groupId: group.group_id,

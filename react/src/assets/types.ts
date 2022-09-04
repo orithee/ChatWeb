@@ -6,10 +6,10 @@ export type MessageTypes =
   | Initial
   | GroupMessagesFromServer
   | GroupListFromServer
-  | NewMessage;
+  | NewGroupMessageFromServer;
 
 export interface LoginFromServer {
-  type: 'login';
+  type: 'loginFromServer';
   userData: User;
 }
 
@@ -19,8 +19,8 @@ interface ErrorFromServer {
   title: string | string[];
 }
 
-interface NewGroupFromServer {
-  type: 'createNewGroup';
+export interface NewGroupFromServer {
+  type: 'newGroupFromServer';
   userName: string;
   group: Group;
   members: string[];
@@ -31,7 +31,7 @@ interface Initial {
 }
 
 interface GroupListFromServer {
-  type: 'groupList';
+  type: 'groupListFromServer';
   list: Group[];
 }
 export interface GroupMessagesFromServer {
@@ -39,8 +39,8 @@ export interface GroupMessagesFromServer {
   messages: GroupMessage[] | [];
 }
 
-export interface NewMessage {
-  type: 'newMessage';
+export interface NewGroupMessageFromServer {
+  type: 'newGroupMessageFromServer';
   data: GroupMessage;
 }
 
@@ -77,14 +77,3 @@ export interface UserGroup {
   group_id: number;
   group_name: string;
 }
-
-// export interface NewGroup {
-//   user_id: number;
-//   group_id: number;
-//   group_name: string;
-// }
-
-// type: 'createNewGroup',
-// userName: message.userName,
-// group: newGroup,
-// members: message.members,

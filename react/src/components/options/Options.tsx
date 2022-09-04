@@ -21,7 +21,6 @@ function Options({ addGroupBtn }: Props) {
         className={style.button}
         onClick={() => {
           addGroupBtn(true);
-          console.log('click');
         }}
       >
         create new group

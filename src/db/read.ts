@@ -22,7 +22,7 @@ export async function checkLogin(user: Login) {
         resolve(undefined);
       } else {
         if (res.rows.length === 1) {
-          resolve({ type: 'login', userData: res.rows[0] });
+          resolve({ type: 'loginFromServer', userData: res.rows[0] });
         } else resolve(undefined);
       }
     });
@@ -59,7 +59,7 @@ export async function checkToken(initialMsg: Initial) {
       } else {
         console.log(res.rows[0].user_name || { user_name: undefined });
         if (res.rows.length === 1) {
-          resolve({ type: 'login', userData: res.rows[0] });
+          resolve({ type: 'loginFromServer', userData: res.rows[0] });
         } else resolve(undefined);
       }
     });

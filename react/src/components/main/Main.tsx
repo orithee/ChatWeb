@@ -19,7 +19,7 @@ function Main() {
   });
 
   useEffect(() => {
-    if (message.type === 'createNewGroup' && user) {
+    if (message.type === 'newGroupFromServer' && user) {
       if (message.userName === user.user_name) setAddGroupBtn(false);
     }
   }, [message]);

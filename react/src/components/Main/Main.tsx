@@ -30,7 +30,7 @@ function Main() {
         <CreateNewGroup openNew={setAddGroupBtn} user={user} />
       )}
       <div className={style.bar_container}>
-        {user && <div>{user.user_name}</div>}
+        {user && <div style={{ color: 'white' }}>{user.user_name}</div>}
         <Options addGroupBtn={setAddGroupBtn} />
         <GroupList />
       </div>

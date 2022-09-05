@@ -18,11 +18,6 @@ function Chat() {
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const mainContainer = useRef<null | HTMLDivElement>(null);
 
-  // const emojiOpen = (): React.CSSProperties => {
-  //   const condition = message.sent_by_name === user?.user_name;
-  //   return { textAlign: condition ? 'start' : 'end' };
-  // };
-
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputMsg && user && group) {
@@ -38,7 +33,6 @@ function Chat() {
       setInputMsg('');
     }
   };
-
   useEffect(() => {
     if (mainContainer.current) {
       const scrolling = mainContainer.current;
@@ -110,10 +104,21 @@ function Chat() {
         <span
           className={style.emoji_button}
           onClick={() => setEmojiOpen(!emojiOpen)}
+          style={{
+            border: emojiOpen ? 'dotted 1px greenyellow' : 'none',
+            borderRadius: emojiOpen ? '25%' : 'none',
+          }}
         >
           😀
         </span>
-        <div className={style.emoji_container}>{emojiOpen && <Emoji />}</div>
+        <div
+          className={style.emoji_container}
+          style={{
+            display: emojiOpen ? 'block' : 'none',
+          }}
+        >
+          <Emoji updateInput={setInputMsg} currentInput={inputMsg} />
+        </div>
         <form onSubmit={(e) => submitForm(e)}>
           <input
             type="text"

@@ -58,6 +58,8 @@
         color: white;
         inline-size: 100%;
         overflow-wrap: break-word;
+        font-weight: 600;
+        font-size: x-large;
       }
       .hour {
         color: aquamarine;
@@ -93,6 +95,10 @@
     position: absolute;
     left: 7%;
     cursor: pointer;
+    transition: transform 0.1s;
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 
   .emoji_container {

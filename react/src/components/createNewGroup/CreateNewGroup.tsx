@@ -58,10 +58,13 @@ function CreateNewGroup({ openNew, user }: Props) {
   };
 
   return (
+    // <div>
+
     <div className={style.main_container}>
+      <h3>Create Group</h3>
       <Form onSubmit={(e) => submitNewGroupForm(e)}>
         <Form.Group className="mb-3">
-          <Form.Label>group</Form.Label>
+          <Form.Label className={style.label}>Group</Form.Label>
           <Form.Control
             onChange={(e) => setGroupName(e.target.value)}
             value={groupName}
@@ -77,15 +80,20 @@ function CreateNewGroup({ openNew, user }: Props) {
         </Form.Group>
 
         <Form.Group className="mb-3">
-          <Form.Label>member</Form.Label>
-          <Form.Control
-            onChange={(e) => setMember(e.target.value)}
-            value={member}
-            type="text"
-            placeholder="member name"
-          />
-          Members:
-          <div>
+          <Form.Label className={style.label}>Member</Form.Label>
+          <div className={style.member_input}>
+            <Form.Control
+              onChange={(e) => setMember(e.target.value)}
+              value={member}
+              type="text"
+              placeholder="member username"
+            />
+            <button type="button" onClick={() => AddMember()}>
+              Add
+            </button>
+          </div>
+          <div className={style.label}>Members:</div>
+          <div className={style.members_container}>
             {members.map((name, index) => {
               return (
                 <button
@@ -118,10 +126,6 @@ function CreateNewGroup({ openNew, user }: Props) {
                 <div>{message.title}</div>
               </Form.Text>
             )}
-          <br></br>
-          <button type="button" onClick={() => AddMember()}>
-            Add
-          </button>
           {message.type === 'error' &&
             message.problem === 'createNewGroup' &&
             message.title === 'failed' && (
@@ -130,8 +134,10 @@ function CreateNewGroup({ openNew, user }: Props) {
               </Form.Text>
             )}
         </Form.Group>
-        <button type="submit">Submit</button>
-        <button onClick={() => openNew(false)}>close</button>
+        <div>
+          <button type="submit">create</button>
+          <button onClick={() => openNew(false)}>close</button>
+        </div>
       </Form>
     </div>
   );

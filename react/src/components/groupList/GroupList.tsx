@@ -33,7 +33,7 @@ function GroupList() {
       <ListGroup className={style.list}>
         {/* TODO:
           1. If this group does not opening now - add green indication about the message on the group list.
-          2.
+          2. Marking the current group.
       */}
         {groupList &&
           groupList.map((group, index) => {

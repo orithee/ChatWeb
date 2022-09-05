@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Group, GroupMessage } from '../assets/types';
+import { Group, GroupMessage } from '../helpers/types';
 
-export interface chatInterface {
+export interface ChatInterface {
   groupList: Group[] | undefined;
   currentGroup: Group | undefined;
   groupMessages: GroupMessage[] | undefined;
   currentMessage: GroupMessage | undefined;
 }
 
-const initialState: chatInterface = {
+const initialState: ChatInterface = {
   groupList: undefined,
   currentGroup: undefined,
   groupMessages: undefined,
@@ -16,7 +16,7 @@ const initialState: chatInterface = {
 };
 
 export const chatSlice = createSlice({
-  name: 'main',
+  name: 'chat',
   initialState,
   reducers: {
     updateGroupList: (state, action) => {

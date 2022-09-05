@@ -2,10 +2,10 @@ import style from './CreateNewGroup.module.scss';
 import { useContext, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import { WsConnection } from '../../App';
-import { toStr } from '../../assets/auxiliaryFunc';
+import { toStr } from '../../helpers/auxiliaryFunc';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
-import { User } from '../../assets/types';
+import { User } from '../../helpers/types';
 
 interface Props {
   openNew: Function;

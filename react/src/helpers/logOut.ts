@@ -1,13 +1,13 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { updateCurrentMessage, updateUserLogged } from '../redux/appSlice';
+import { updateCurrentMessage, updateUserLogged } from '../redux/globalSlice';
 import {
   getGroupMessages,
   updateCurrentGroup,
   updateCurrentGroupMessage,
   updateGroupList,
-} from '../redux/mainSlice';
+} from '../redux/chatSlice';
 
 export default function logOut(
   dispatch: Dispatch<AnyAction>,

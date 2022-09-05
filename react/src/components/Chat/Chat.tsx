@@ -4,8 +4,8 @@ import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
-import { toStr } from '../../assets/auxiliaryFunc';
-import { GroupMessage } from '../../assets/types';
+import { toStr } from '../../helpers/auxiliaryFunc';
+import { GroupMessage } from '../../helpers/types';
 
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);

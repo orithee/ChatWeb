@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { chatState } from '../../redux/store';
-import { updateCurrentGroup } from '../../redux/mainSlice';
+import { updateCurrentGroup } from '../../redux/chatSlice';
 import { useContext, useEffect } from 'react';
 import { WsConnection } from '../../App';
-import { toStr } from '../../assets/auxiliaryFunc';
-import { Group } from '../../assets/types';
+import { toStr } from '../../helpers/auxiliaryFunc';
+import { Group } from '../../helpers/types';
 
 function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);

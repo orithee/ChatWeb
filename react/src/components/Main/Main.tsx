@@ -2,10 +2,10 @@ import style from './Main.module.scss';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
 import { useEffect, useState } from 'react';
-import CreateNewGroup from '../createNewGroup/CreateNewGroup';
+import CreateNewGroup from '../CreateNewGroup/CreateNewGroup';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Options from '../options/Options';
-import GroupList from '../groupList/GroupList';
+import Options from '../Options/Options';
+import GroupList from '../GroupList/GroupList';
 
 function Main() {
   const user = useSelector((state: globalState) => state.global.user);

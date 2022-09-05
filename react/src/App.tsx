@@ -1,17 +1,17 @@
 import style from './App.module.scss';
-import Home from './components/home/Home';
-import Main from './components/main/Main';
-import Login from './components/home/login/Login';
-import Register from './components/home/register/Register';
+import Home from './components/Home/Home';
+import Main from './components/Main/Main';
+import Login from './components/Home/Login/Login';
+import Register from './components/Home/Register/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { WsConnect } from './assets/WsConnect';
+import { WsConnect } from './helpers/WsConnect';
 import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
-import messageFilter from './assets/messageFilter';
+import messageFilter from './helpers/messageFilter';
 import { globalState } from './redux/store';
-import Opening from './components/home/opening/Opening';
-import Chat from './components/chat/Chat';
+import Opening from './components/Home/Opening/Opening';
+import Chat from './components/Chat/Chat';
 
 // TODO: Improve the message - reduce the times the components renders -
 //       Need to separate the CreateContext to useStates in App component -

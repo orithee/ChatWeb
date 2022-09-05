@@ -1,7 +1,7 @@
 import style from './Options.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import logOut from '../../assets/logOut';
+import logOut from '../../helpers/logOut';
 interface Props {
   addGroupBtn: Function;
 }

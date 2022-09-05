@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import chatSlice from './mainSlice';
-import { chatInterface } from './mainSlice';
-import globalSlice from './appSlice';
-import { globalInterface } from './appSlice';
+import chatSlice from './chatSlice';
+import { ChatInterface } from './chatSlice';
+import globalSlice from './globalSlice';
+import { GlobalInterface } from './globalSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,5 +11,5 @@ export const store = configureStore({
   },
 });
 
-export type globalState = { global: globalInterface };
-export type chatState = { chat: chatInterface };
+export type globalState = { global: GlobalInterface };
+export type chatState = { chat: ChatInterface };

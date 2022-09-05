@@ -26,12 +26,6 @@ import {
 init();
 // TODO: Remove the functions to another file.
 // TODO: Write more comments - for the frontend.
-// TODO: Change the folders name of components to uppercase..
-// TODO: Change the redux to chatSlice and globalSlice.
-// TODO: Change the assets name to utilities / helpers.
-// TODO: Change the reset name to log-out / something else.
-// TODO: Check if exists something like redux clean... in reset.
-//
 
 async function init() {
   // A function that initializes the server and the database:

@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
-import { updateUserLogged, updateCurrentMessage } from '../redux/appSlice';
+import { updateUserLogged, updateCurrentMessage } from '../redux/globalSlice';
 import { toObj, setToken } from './auxiliaryFunc';
 import {
   updateGroupList,
@@ -8,7 +8,7 @@ import {
   updateNewMessage,
   updateCurrentGroup,
   newGroupToGroupList,
-} from '../redux/mainSlice';
+} from '../redux/chatSlice';
 import { NewGroupFromServer, User } from './types';
 
 export default function messageFilter(

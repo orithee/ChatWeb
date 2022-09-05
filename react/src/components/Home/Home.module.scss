@@ -17,6 +17,10 @@
   @include posAbs(6%, 10%);
 }
 
+.copyright {
+  @include posAbs(94%, 2%);
+}
+
 .container {
   @include centerAbs();
   background-color: $background-bright;

@@ -37,6 +37,7 @@ function Home() {
       <div className={style.container}>
         <Outlet context={signAsGuest} />
       </div>
+      <div className={style.copyright}>© 2022 - Ori Thee</div>
     </>
   );
 }

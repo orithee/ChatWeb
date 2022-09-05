@@ -5,6 +5,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../assets/auxiliaryFunc';
+import { GroupMessage } from '../../assets/types';
 
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -38,6 +39,15 @@ function Chat() {
     }
   }, [messages]);
 
+  const textDirection = (message: GroupMessage): React.CSSProperties => {
+    const condition = message.sent_by_name === user?.user_name;
+    return { textAlign: condition ? 'start' : 'end' };
+  };
+
+  const msgDirection = (message: GroupMessage): React.CSSProperties => {
+    const condition = message.sent_by_name === user?.user_name;
+    return { justifyContent: condition ? 'flex-start' : 'flex-end' };
+  };
   return (
     <div className={style.container}>
       <div className={style.up}>
@@ -51,11 +61,27 @@ function Chat() {
           messages.length !== 0 &&
           messages.map((message, index) => {
             return (
-              <ListGroup.Item className={style.item} key={index}>
+              <ListGroup.Item
+                className={style.item}
+                style={msgDirection(message)}
+                key={index}
+              >
                 <div className={style.message}>
-                  <div className={style.sent_by}>{message.sent_by_name}</div>
-                  <div className={style.text}>{message.message_text}</div>
-                  <div className={style.hour}>
+                  <div className={style.sent_by} style={textDirection(message)}>
+                    {message.sent_by_name}
+                  </div>
+                  <div className={style.text} style={textDirection(message)}>
+                    {message.message_text}
+                  </div>
+                  <div
+                    className={style.hour}
+                    style={{
+                      textAlign:
+                        message.sent_by_name === user?.user_name
+                          ? 'end'
+                          : 'start',
+                    }}
+                  >
                     {message.created_at.slice(0, 5)}
                   </div>
                 </div>

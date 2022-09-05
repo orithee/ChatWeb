@@ -73,10 +73,31 @@
   background-color: $chat-background1;
   border-radius: 8px;
   @include center();
+  display: flex;
+  justify-content: center;
+
   form {
+    justify-content: center;
+    position: absolute;
     input {
-      width: fit-content;
+      width: 100%;
       border-radius: 8px;
     }
+    min-width: 20%;
+    max-width: 40%;
+  }
+
+  .emoji_button {
+    background-color: 'none';
+    font-size: x-large;
+    position: absolute;
+    left: 7%;
+    cursor: pointer;
+  }
+
+  .emoji_container {
+    position: absolute;
+    left: 43px;
+    bottom: 48px;
   }
 }

@@ -6,6 +6,7 @@ import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
+import Emoji from '../Emoji/Emoji';
 
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -14,7 +15,13 @@ function Chat() {
   const user = useSelector((state: globalState) => state.global.user);
 
   const [inputMsg, setInputMsg] = useState<string>('');
+  const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const mainContainer = useRef<null | HTMLDivElement>(null);
+
+  // const emojiOpen = (): React.CSSProperties => {
+  //   const condition = message.sent_by_name === user?.user_name;
+  //   return { textAlign: condition ? 'start' : 'end' };
+  // };
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -100,6 +107,13 @@ function Chat() {
           })}
       </div>
       <div className={style.bottom}>
+        <span
+          className={style.emoji_button}
+          onClick={() => setEmojiOpen(!emojiOpen)}
+        >
+          😀
+        </span>
+        <div className={style.emoji_container}>{emojiOpen && <Emoji />}</div>
         <form onSubmit={(e) => submitForm(e)}>
           <input
             type="text"

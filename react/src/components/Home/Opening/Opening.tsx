@@ -1,8 +1,9 @@
 import style from './Opening.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 function Opening() {
   const navigate = useNavigate();
+  const signAsGuest = useOutletContext<Function>();
 
   return (
     <div>
@@ -11,7 +12,7 @@ function Opening() {
         <button onClick={() => navigate('/login')}>login</button>
         <button onClick={() => navigate('/register')}>register</button>
         <div>
-          <p>Continue as guest</p>
+          <p onClick={() => signAsGuest()}>Continue as guest</p>
         </div>
       </div>
     </div>

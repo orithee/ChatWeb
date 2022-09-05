@@ -1,5 +1,5 @@
 import style from './Register.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { deleteToken, toStr } from '../../../helpers/auxiliaryFunc';
 import Form from 'react-bootstrap/Form';
 import { useContext, useState } from 'react';
@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 function Register() {
   const connection = useContext<WebSocket>(WsConnection);
+  const signAsGuest = useOutletContext<Function>();
   const message = useSelector((state: globalState) => state.global.message);
   const navigate = useNavigate();
 
@@ -97,7 +98,7 @@ function Register() {
             Back
           </button>
           <div>
-            <p>Continue as guest</p>
+            <p onClick={() => signAsGuest()}>Continue as guest</p>
           </div>
         </div>
       </Form>

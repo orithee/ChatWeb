@@ -5,10 +5,11 @@ import { useContext, useState } from 'react';
 import { WsConnection } from '../../../App';
 import { globalState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 function Login() {
   const connection = useContext<WebSocket>(WsConnection);
+  const signAsGuest = useOutletContext<Function>();
   const message = useSelector((state: globalState) => state.global.message);
   const navigate = useNavigate();
 
@@ -63,7 +64,7 @@ function Login() {
             Back
           </button>
           <div>
-            <p>Continue as guest</p>
+            <p onClick={() => signAsGuest()}>Continue as guest</p>
           </div>
         </div>
       </Form>

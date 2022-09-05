@@ -18,21 +18,31 @@ export default function messageFilter(
 ) {
   // A function that filters the messages from the server and updates the reducer:
   const message = toObj(event.data);
+
+  // The server returned that the connection was successful:
   if (message.type === 'loginFromServer') {
     dispatch(updateUserLogged(message.userData));
     setToken(message.userData.password);
+
+    // List of groups (from the server):
   } else if (message.type === 'groupListFromServer') {
     dispatch(updateGroupList(message.list));
-    console.log(message.list);
+
+    // Group messages (from the server):
   } else if (message.type === 'groupMessagesFromServer') {
     dispatch(getGroupMessages(message.messages));
+
+    // A new message has been created (from the server):
   } else if (message.type === 'newGroupMessageFromServer') {
     dispatch(updateNewMessage(message.data));
+
+    // A new group has been created (from the server):
   } else if (message.type === 'newGroupFromServer') {
     dispatch(updateCurrentMessage(message));
     showTheNewGroup(dispatch, message, user);
-  } else {
+
     // initial, error:
+  } else {
     dispatch(updateCurrentMessage(message));
   }
 }
@@ -42,13 +52,14 @@ function showTheNewGroup(
   message: NewGroupFromServer,
   user: User | undefined
 ) {
-  if (
-    user &&
-    (message.members.includes(user.user_name) ||
-      user.user_name === message.userName)
-  ) {
-    dispatch(updateCurrentGroup(message.group));
-    dispatch(newGroupToGroupList(message.group));
-    dispatch(getGroupMessages(undefined));
+  // A function that updates the current group and the group list if
+  // the member list includes the current user
+  if (user) {
+    const userInMembers = message.members.includes(user.user_name);
+    if (userInMembers || user.user_name === message.userName) {
+      dispatch(updateCurrentGroup(message.group));
+      dispatch(newGroupToGroupList(message.group));
+      dispatch(getGroupMessages(undefined));
+    }
   }
 }

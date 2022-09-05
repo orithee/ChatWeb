@@ -9,10 +9,11 @@ import {
   updateGroupList,
 } from '../redux/mainSlice';
 
-export default function reset(
+export default function logOut(
   dispatch: Dispatch<AnyAction>,
   navigate: NavigateFunction
 ) {
+  // A function that reset all - delete the token and return to the initial state:
   // Reset appSlice:
   dispatch(updateUserLogged(undefined));
   dispatch(updateCurrentMessage({ type: 'initial' }));

@@ -1,7 +1,7 @@
 import style from './Options.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import reset from '../../assets/reset';
+import logOut from '../../assets/logOut';
 interface Props {
   addGroupBtn: Function;
 }
@@ -10,8 +10,8 @@ function Options({ addGroupBtn }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const logOut = () => {
-    reset(dispatch, navigate);
+  const logOutFunc = () => {
+    logOut(dispatch, navigate);
   };
 
   return (
@@ -25,7 +25,7 @@ function Options({ addGroupBtn }: Props) {
       >
         create new group
       </button>
-      <button className={style.button} onClick={() => logOut()}>
+      <button className={style.button} onClick={() => logOutFunc()}>
         log out
       </button>
     </div>

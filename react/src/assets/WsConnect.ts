@@ -1,16 +1,10 @@
 import { toStr } from './auxiliaryFunc';
 
 export function WsConnect() {
-  let url: string = '';
-  if (process.env.NODE_ENV === 'development') {
-    url = 'ws://localhost:4000';
-    console.log('development:', url);
-  } else {
-    url = window.location.origin.replace(/^http/, 'ws');
-    console.log('production:', url);
-  }
+  // A function that starts the connection with the WebSocket:
+  const URL = getUrlString();
+  let ws = new WebSocket(URL);
 
-  let ws = new WebSocket(url);
   ws.onopen = () => {
     console.log('WebSocket connected successfully');
     ws.send(toStr({ type: 'initial', token: getToken() }));
@@ -33,4 +27,11 @@ function getToken(): string | undefined {
   const re = new RegExp('token=([^;]+)');
   const value = re.exec(document.cookie);
   return value != null ? unescape(value[1]) : undefined;
+}
+
+function getUrlString() {
+  let URL: string = '';
+  if (process.env.NODE_ENV === 'development') URL = 'ws://localhost:4000';
+  else URL = window.location.origin.replace(/^http/, 'ws');
+  return URL;
 }

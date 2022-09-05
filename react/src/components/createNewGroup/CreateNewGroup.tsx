@@ -58,8 +58,6 @@ function CreateNewGroup({ openNew, user }: Props) {
   };
 
   return (
-    // <div>
-
     <div className={style.main_container}>
       <h3>Create Group</h3>
       <Form onSubmit={(e) => submitNewGroupForm(e)}>

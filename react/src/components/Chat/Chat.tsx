@@ -46,8 +46,18 @@ function Chat() {
 
   const msgDirection = (message: GroupMessage): React.CSSProperties => {
     const condition = message.sent_by_name === user?.user_name;
-    return { justifyContent: condition ? 'flex-start' : 'flex-end' };
+    return {
+      justifyContent: condition ? 'flex-start' : 'flex-end',
+    };
   };
+
+  const msgColor = (message: GroupMessage): React.CSSProperties => {
+    const condition = message.sent_by_name === user?.user_name;
+    return {
+      backgroundColor: condition ? '#202c33' : '#005c4b',
+    };
+  };
+
   return (
     <div className={style.container}>
       <div className={style.up}>
@@ -66,7 +76,7 @@ function Chat() {
                 style={msgDirection(message)}
                 key={index}
               >
-                <div className={style.message}>
+                <div className={style.message} style={msgColor(message)}>
                   <div className={style.sent_by} style={textDirection(message)}>
                     {message.sent_by_name}
                   </div>

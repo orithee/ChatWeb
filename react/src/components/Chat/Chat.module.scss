@@ -1,4 +1,5 @@
 @use '../../style/mixins' as *;
+@use '../../style/variables' as *;
 
 .container {
   position: absolute;
@@ -12,7 +13,7 @@
 .up {
   position: relative;
   height: 10%;
-  background-color: #202c33;
+  background-color: $chat-background1;
   border-radius: 8px;
   @include center();
   .up_left {
@@ -28,10 +29,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  // align-items: flex-start;
-
   height: 76%;
-  background-color: #202c3323;
   border-radius: 10px;
   padding: 2%;
   margin-top: 2%;
@@ -47,7 +45,6 @@
       flex-wrap: wrap;
       flex-direction: column;
       padding: 2%;
-      background-color: #202c33;
       border-radius: 8px;
       width: fit-content;
       min-width: 25%;
@@ -73,7 +70,7 @@
 .bottom {
   position: relative;
   height: 9%;
-  background-color: #202c33;
+  background-color: $chat-background1;
   border-radius: 8px;
   @include center();
   form {

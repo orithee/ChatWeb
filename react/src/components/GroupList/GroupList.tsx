@@ -12,6 +12,9 @@ import { Group } from '../../helpers/types';
 function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);
   const groupList = useSelector((state: chatState) => state.chat.groupList);
+  const currentGroup = useSelector(
+    (state: chatState) => state.chat.currentGroup
+  );
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,6 +31,11 @@ function GroupList() {
     if (groupList !== undefined && groupList.length > 0) openChat(groupList[0]);
   }, [groupList]);
 
+  const backgroundColor = (group: Group): React.CSSProperties => {
+    const condition = group.group_id === currentGroup?.group_id;
+    return { backgroundColor: condition ? '#2a3942' : '#202c33' };
+  };
+
   return (
     <div className={style.container}>
       <ListGroup className={style.list}>
@@ -41,6 +49,7 @@ function GroupList() {
               <ListGroup.Item
                 onClick={() => openChat(group)}
                 className={style.item}
+                style={backgroundColor(group)}
                 key={index}
               >
                 {group.group_name}

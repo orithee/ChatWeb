@@ -57,7 +57,6 @@ export async function checkToken(initialMsg: Initial) {
         console.log(err.stack);
         resolve(undefined);
       } else {
-        console.log(res.rows[0].user_name || { user_name: undefined });
         if (res.rows.length === 1) {
           resolve({ type: 'loginFromServer', userData: res.rows[0] });
         } else resolve(undefined);

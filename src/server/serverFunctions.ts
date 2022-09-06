@@ -20,7 +20,7 @@ import {
 } from '../db/read';
 import { Server } from 'ws';
 
-// Check if the token is worth some token on the database:
+// Checks if the token is worth some token on the database:
 export async function initialFunction(client: Client, message: Initial) {
   if (!message.token) client.send(sendError('error', 'initial', 'no token'));
   else {
@@ -37,7 +37,7 @@ export async function initialFunction(client: Client, message: Initial) {
   }
 }
 
-// Adding a new user to the database:
+// Add a new user to the database:
 export async function registerFunction(client: Client, message: Register) {
   if (await usernameIsAvailable(message)) {
     const newUser = await createUser(message);
@@ -62,7 +62,7 @@ export async function loginFunction(client: Client, message: Login) {
   } else client.send(sendError('error', 'login', 'no match'));
 }
 
-// Adding a new group to the database:
+// Add a new group to the database:
 export async function newGroupFunction(
   ws: Server,
   client: Client,
@@ -97,7 +97,7 @@ export async function groupMessagesFunction(
   client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
 }
 
-// New group message:
+// A New group message:
 export async function messageSentFunction(
   ws: Server,
   client: Client,

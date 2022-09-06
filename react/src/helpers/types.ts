@@ -15,7 +15,7 @@ export interface LoginFromServer {
   userData: User;
 }
 
-interface ErrorFromServer {
+export interface ErrorFromServer {
   type: 'error';
   problem: string;
   title: string | string[];
@@ -28,7 +28,7 @@ export interface NewGroupFromServer {
   members: string[];
 }
 
-interface Initial {
+export interface Initial {
   type: 'initial';
 }
 
@@ -102,5 +102,15 @@ export interface newGroupToGroupListAction {
 
 export interface getGroupListAction {
   payload: Group[] | undefined;
+  type: string;
+}
+
+export interface updateGlobalMessageAction {
+  payload: Initial | ErrorFromServer | NewGroupFromServer;
+  type: string;
+}
+
+export interface updateUserLoggedAction {
+  payload: User | undefined;
   type: string;
 }

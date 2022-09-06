@@ -9,7 +9,9 @@ import GroupList from '../GroupList/GroupList';
 
 function Main() {
   const user = useSelector((state: globalState) => state.global.user);
-  const message = useSelector((state: globalState) => state.global.message);
+  const message = useSelector(
+    (state: globalState) => state.global.globalMessage
+  );
 
   const [addGroupBtn, setAddGroupBtn] = useState<boolean>(false);
   const navigate = useNavigate();

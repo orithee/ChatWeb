@@ -14,7 +14,9 @@ interface Props {
 
 function CreateNewGroup({ openNew, user }: Props) {
   const connection = useContext<WebSocket>(WsConnection);
-  const message = useSelector((state: globalState) => state.global.message);
+  const message = useSelector(
+    (state: globalState) => state.global.globalMessage
+  );
 
   const [groupName, setGroupName] = useState<string>('');
   const [member, setMember] = useState<string>('');

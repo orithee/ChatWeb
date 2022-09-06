@@ -1,7 +1,7 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
 import { NavigateFunction } from 'react-router-dom';
-import { updateCurrentMessage, updateUserLogged } from '../redux/globalSlice';
+import { updateGlobalMessage, updateUserLogged } from '../redux/globalSlice';
 import {
   getGroupMessages,
   updateCurrentGroup,
@@ -16,7 +16,7 @@ export default function logOut(
   // A function that reset all - delete the token and return to the initial state:
   // Reset appSlice:
   dispatch(updateUserLogged(undefined));
-  dispatch(updateCurrentMessage({ type: 'initial' }));
+  dispatch(updateGlobalMessage({ type: 'initial' }));
 
   // Reset mainSlice:
   dispatch(getGroupList(undefined));

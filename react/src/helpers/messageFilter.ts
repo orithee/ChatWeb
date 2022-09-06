@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'react';
-import { updateUserLogged, updateCurrentMessage } from '../redux/globalSlice';
+import { updateUserLogged, updateGlobalMessage } from '../redux/globalSlice';
 import { toObj, setToken } from './auxiliaryFunc';
 import {
   getGroupList,
@@ -38,12 +38,12 @@ export default function messageFilter(
 
     // A new group has been created (from the server):
   } else if (message.type === 'newGroupFromServer') {
-    dispatch(updateCurrentMessage(message));
+    dispatch(updateGlobalMessage(message));
     showTheNewGroup(dispatch, message, user);
 
     // initial, error:
   } else {
-    dispatch(updateCurrentMessage(message));
+    dispatch(updateGlobalMessage(message));
   }
 }
 
@@ -52,8 +52,8 @@ function showTheNewGroup(
   message: NewGroupFromServer,
   user: User | undefined
 ) {
-  // A function that updates the current group and the group list if
-  // the member list includes the current user
+  /* A function that updates the current group and the group list if
+     the member list includes the current user */
   if (user) {
     const userInMembers = message.members.includes(user.user_name);
     if (userInMembers || user.user_name === message.userName) {

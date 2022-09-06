@@ -10,7 +10,9 @@ import { useSelector } from 'react-redux';
 function Register() {
   const connection = useContext<WebSocket>(WsConnection);
   const signAsGuest = useOutletContext<Function>();
-  const message = useSelector((state: globalState) => state.global.message);
+  const message = useSelector(
+    (state: globalState) => state.global.globalMessage
+  );
   const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>('');

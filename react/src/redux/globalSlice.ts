@@ -1,29 +1,37 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MessageTypes, User } from '../helpers/types';
+import {
+  NewGroupFromServer,
+  updateGlobalMessageAction,
+  ErrorFromServer,
+  Initial,
+  User,
+  updateUserLoggedAction,
+} from '../helpers/types';
 
 export interface GlobalInterface {
   user: User | undefined;
-  message: MessageTypes;
+  globalMessage: Initial | ErrorFromServer | NewGroupFromServer;
 }
 
 const initialState: GlobalInterface = {
   user: undefined,
-  message: { type: 'initial' },
+  globalMessage: { type: 'initial' },
 };
 
 export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    updateUserLogged: (state, action) => {
+    updateUserLogged: (state, action: updateUserLoggedAction) => {
       state.user = action.payload;
     },
-    updateCurrentMessage: (state, action) => {
-      state.message = action.payload;
+
+    updateGlobalMessage: (state, action: updateGlobalMessageAction) => {
+      state.globalMessage = action.payload;
     },
   },
 });
 
-export const { updateUserLogged, updateCurrentMessage } = globalSlice.actions;
+export const { updateUserLogged, updateGlobalMessage } = globalSlice.actions;
 
 export default globalSlice.reducer;

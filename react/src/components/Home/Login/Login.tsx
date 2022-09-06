@@ -10,7 +10,9 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 function Login() {
   const connection = useContext<WebSocket>(WsConnection);
   const signAsGuest = useOutletContext<Function>();
-  const message = useSelector((state: globalState) => state.global.message);
+  const message = useSelector(
+    (state: globalState) => state.global.globalMessage
+  );
   const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>('');

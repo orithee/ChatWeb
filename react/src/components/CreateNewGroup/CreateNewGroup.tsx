@@ -130,7 +130,7 @@ function CreateNewGroup({ openNew, user }: Props) {
             message.problem === 'createNewGroup' &&
             message.title === 'failed' && (
               <Form.Text className="text-muted">
-                'Create new group' failed, try again....
+                Failed to create new group, please try again...
               </Form.Text>
             )}
         </Form.Group>

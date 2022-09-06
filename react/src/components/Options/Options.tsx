@@ -16,7 +16,7 @@ function Options({ addGroupBtn }: Props) {
 
   return (
     <div className={style.options}>
-      {/* 4. Option to search group by name. */}
+      {/* // TODO: Option to search group by name. */}
       <button
         className={style.button}
         onClick={() => {

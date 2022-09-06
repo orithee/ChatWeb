@@ -8,23 +8,26 @@ import {
   updateNewGroupMessage,
   getGroupList,
 } from '../redux/chatSlice';
+import { deleteToken } from './auxiliaryFunc';
 
 export default function logOut(
   dispatch: Dispatch<AnyAction>,
   navigate: NavigateFunction
 ) {
   // A function that reset all - delete the token and return to the initial state:
-  // Reset appSlice:
+  // 1. Reset appSlice:
   dispatch(updateUserLogged(undefined));
   dispatch(updateGlobalMessage({ type: 'initial' }));
 
-  // Reset mainSlice:
+  // 2. Reset mainSlice:
   dispatch(getGroupList(undefined));
   dispatch(updateCurrentGroup(undefined));
   dispatch(updateNewGroupMessage(undefined));
   dispatch(getGroupMessages(undefined));
 
-  // Reset token:
-  document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 2000 00:00:01 GMT;';
+  // 3. Reset token:
+  deleteToken();
+
+  // 4. Return home
   navigate('/', { replace: true });
 }

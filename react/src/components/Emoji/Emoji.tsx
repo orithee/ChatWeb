@@ -1,6 +1,4 @@
-import style from './Emoji.module.scss';
 import Picker from 'emoji-picker-react';
-import { useState } from 'react';
 
 interface Props {
   updateInput: Function;

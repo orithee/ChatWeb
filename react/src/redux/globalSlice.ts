@@ -22,10 +22,12 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
+    // Update the user connected:
     updateUserLogged: (state, action: updateUserLoggedAction) => {
       state.user = action.payload;
     },
 
+    // Update the current 'globalMessage':
     updateGlobalMessage: (state, action: updateGlobalMessageAction) => {
       state.globalMessage = action.payload;
     },

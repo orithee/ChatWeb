@@ -39,9 +39,8 @@ function GroupList() {
   return (
     <div className={style.container}>
       <ListGroup className={style.list}>
-        {/* TODO:
-          1. If this group does not opening now - add green indication about the message on the group list.
-          2. Marking the current group.
+        {/* 
+        // TODO: 1. If this group does not opening now - add green indication about the message on the group list.
       */}
         {groupList &&
           groupList.map((group, index) => {

@@ -2,7 +2,8 @@
   "name": "chat-web",
   "scripts": {
     "start": "nodemon --watch ./src ./src/server/server.ts",
-    "deploy": "npx tsc && gulp deploy",
+    "deploy": "gulp deploy",
+    "heroku": "git add -A && git commit -m 'update' && git push heroku master",
     "jest": "jest"
   },
   "dependencies": {

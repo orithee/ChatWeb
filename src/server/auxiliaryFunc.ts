@@ -1,7 +1,7 @@
 import { MessagesTypes } from './types';
 
+// A function that checks the value from the client and converts it to JSON:
 export function toObj(msg: any): MessagesTypes {
-  // A function that checks the value from the client and converts it to JSON:
   try {
     const msgToObj = JSON.parse(msg);
     return msgToObj;
@@ -11,12 +11,13 @@ export function toObj(msg: any): MessagesTypes {
   }
 }
 
+// A function that Convert object to string:
 export function toStr(msg: Object): string {
-  // A function that Convert object to string:
   const objToStr = JSON.stringify(msg);
   return objToStr;
 }
 
+// A function that accepts 3 parameters and returns a string-object:
 export function sendError(
   type: string,
   problem: string,

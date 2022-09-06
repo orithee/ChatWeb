@@ -13,8 +13,8 @@ import {
 } from './serverFunctions';
 
 init();
+// A function that initializes the database and the server:
 async function init() {
-  // A function that initializes the server and the database:
   try {
     await postgresConnect();
     await createTables();
@@ -24,16 +24,16 @@ async function init() {
   }
 }
 
+// Websocket server:
 async function webSocketConnect() {
-  /* 1. Turning the express server to 'WebSocket'.
-     2. Connection to websocket.
-     3. Filtering of message types.
-     4. Answer to the client.  */
+  // 1. Turning the express server to 'WebSocket':
   const ws = new Server({ server: expressServer });
 
+  // 2. Connection to websocket:
   ws.on('connection', (client: Client) => {
     console.log('New client connected!');
 
+    // 3. Filters messages and returns a reply to the client:
     client.on('message', async (msg) => {
       const message: MessagesTypes = toObj(msg);
       const type = message.type;
@@ -51,7 +51,6 @@ async function webSocketConnect() {
 
       if (type === 'groupMessage') messageSentFunction(ws, client, message);
 
-      // Sending an error message to the client:
       if (type === 'error') {
         client.send(sendError('error', 'string', 'This message is a string!'));
       }

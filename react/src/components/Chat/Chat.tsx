@@ -60,6 +60,13 @@ function Chat() {
     };
   };
 
+  const convertTime = (str: string) => {
+    // Displaying the current time to the user:
+    let hour = Number(str.slice(0, 2)) + 3;
+    if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
+    else return hour + str.slice(2, 5);
+  };
+
   return (
     <div className={style.container}>
       <div className={style.up}>
@@ -94,7 +101,7 @@ function Chat() {
                           : 'start',
                     }}
                   >
-                    {message.created_at.slice(0, 5)}
+                    {convertTime(message.created_at)}
                   </div>
                 </div>
               </ListGroup.Item>

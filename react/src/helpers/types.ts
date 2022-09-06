@@ -1,3 +1,5 @@
+import { IndexRouteProps } from 'react-router-dom';
+
 // Messages Types:
 export type MessageTypes =
   | LoginFromServer
@@ -76,4 +78,29 @@ export interface UserGroup {
   user_id: number;
   group_id: number;
   group_name: string;
+}
+
+export interface newGroupMessageAction {
+  payload: GroupMessage | undefined;
+  type: string;
+}
+
+export interface getGroupMessagesAction {
+  payload: GroupMessage[] | undefined;
+  type: string;
+}
+
+export interface updateCurrentGroupAction {
+  payload: Group | undefined;
+  type: string;
+}
+
+export interface newGroupToGroupListAction {
+  payload: Group;
+  type: string;
+}
+
+export interface getGroupListAction {
+  payload: Group[] | undefined;
+  type: string;
 }

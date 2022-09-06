@@ -1,5 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Group, GroupMessage } from '../helpers/types';
+import {
+  getGroupListAction,
+  getGroupMessagesAction,
+  Group,
+  GroupMessage,
+  newGroupMessageAction,
+  newGroupToGroupListAction,
+  updateCurrentGroupAction,
+} from '../helpers/types';
 
 export interface ChatInterface {
   groupList: Group[] | undefined;
@@ -19,47 +27,43 @@ export const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    updateGroupList: (state, action) => {
+    getGroupList: (state, action: getGroupListAction) => {
       state.groupList = action.payload;
     },
-    newGroupToGroupList: (state, action) => {
+
+    newGroupToGroupList: (state, action: newGroupToGroupListAction) => {
       if (state.groupList === undefined) state.groupList = [action.payload];
       else state.groupList = [action.payload, ...state.groupList];
     },
-    updateCurrentGroup: (state, action) => {
+
+    updateCurrentGroup: (state, action: updateCurrentGroupAction) => {
       state.currentGroup = action.payload;
     },
-    getGroupMessages: (state, action) => {
+
+    getGroupMessages: (state, action: getGroupMessagesAction) => {
       state.groupMessages = action.payload;
     },
-    updateNewMessage: (
-      state,
-      action: {
-        payload: GroupMessage;
-        type: string;
-      }
-    ) => {
+
+    updateNewGroupMessage: (state, action: newGroupMessageAction) => {
       if (state.groupMessages === undefined) {
         if (action.payload !== undefined) {
           state.groupMessages = [action.payload];
         }
-      } else if (action.payload.group_id === state.currentGroup?.group_id) {
-        state.groupMessages = [...state.groupMessages, action.payload];
+      } else if (action.payload !== undefined) {
+        if (action.payload.group_id === state.currentGroup?.group_id) {
+          state.groupMessages = [...state.groupMessages, action.payload];
+        }
       }
-    },
-    updateCurrentGroupMessage: (state, action) => {
-      state.currentMessage = action.payload;
     },
   },
 });
 
 export const {
-  updateGroupList,
-  updateCurrentGroup,
-  getGroupMessages,
-  updateNewMessage,
-  updateCurrentGroupMessage,
+  getGroupList,
   newGroupToGroupList,
+  getGroupMessages,
+  updateNewGroupMessage,
+  updateCurrentGroup,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

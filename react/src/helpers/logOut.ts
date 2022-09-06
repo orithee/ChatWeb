@@ -5,8 +5,8 @@ import { updateCurrentMessage, updateUserLogged } from '../redux/globalSlice';
 import {
   getGroupMessages,
   updateCurrentGroup,
-  updateCurrentGroupMessage,
-  updateGroupList,
+  updateNewGroupMessage,
+  getGroupList,
 } from '../redux/chatSlice';
 
 export default function logOut(
@@ -19,9 +19,9 @@ export default function logOut(
   dispatch(updateCurrentMessage({ type: 'initial' }));
 
   // Reset mainSlice:
-  dispatch(updateGroupList(undefined));
+  dispatch(getGroupList(undefined));
   dispatch(updateCurrentGroup(undefined));
-  dispatch(updateCurrentGroupMessage(undefined));
+  dispatch(updateNewGroupMessage(undefined));
   dispatch(getGroupMessages(undefined));
 
   // Reset token:

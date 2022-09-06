@@ -3,9 +3,9 @@ import { Dispatch } from 'react';
 import { updateUserLogged, updateCurrentMessage } from '../redux/globalSlice';
 import { toObj, setToken } from './auxiliaryFunc';
 import {
-  updateGroupList,
+  getGroupList,
   getGroupMessages,
-  updateNewMessage,
+  updateNewGroupMessage,
   updateCurrentGroup,
   newGroupToGroupList,
 } from '../redux/chatSlice';
@@ -26,7 +26,7 @@ export default function messageFilter(
 
     // List of groups (from the server):
   } else if (message.type === 'groupListFromServer') {
-    dispatch(updateGroupList(message.list));
+    dispatch(getGroupList(message.list));
 
     // Group messages (from the server):
   } else if (message.type === 'groupMessagesFromServer') {
@@ -34,7 +34,7 @@ export default function messageFilter(
 
     // A new message has been created (from the server):
   } else if (message.type === 'newGroupMessageFromServer') {
-    dispatch(updateNewMessage(message.data));
+    dispatch(updateNewGroupMessage(message.data));
 
     // A new group has been created (from the server):
   } else if (message.type === 'newGroupFromServer') {

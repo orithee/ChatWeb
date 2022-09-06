@@ -20,7 +20,7 @@ import {
 } from '../db/read';
 import { Server } from 'ws';
 
-// Checks if the token is worth some token on the database:
+// Checks if the token exists in the database - if exists returns the user:
 export async function initialFunction(client: Client, message: Initial) {
   if (!message.token) client.send(sendError('error', 'initial', 'no token'));
   else {
@@ -97,7 +97,7 @@ export async function groupMessagesFunction(
   client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
 }
 
-// A New group message:
+// Add a new group message to the database, and returns to all clients:
 export async function messageSentFunction(
   ws: Server,
   client: Client,

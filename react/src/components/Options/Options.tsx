@@ -6,6 +6,7 @@ interface Props {
   addGroupBtn: Function;
 }
 
+// A component that creates the options to log out, create a group, etc...
 function Options({ addGroupBtn }: Props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();

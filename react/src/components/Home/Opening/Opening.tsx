@@ -1,6 +1,7 @@
 import style from './Opening.module.scss';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
+// Component that opens the site (default):
 function Opening() {
   const navigate = useNavigate();
   const signAsGuest = useOutletContext<Function>();

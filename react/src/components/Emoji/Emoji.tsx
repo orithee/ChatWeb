@@ -5,6 +5,7 @@ interface Props {
   currentInput: string;
 }
 
+//A component that creates the emoji template:
 function Emoji({ updateInput, currentInput }: Props) {
   const onEmojiClickk = (data: any) => {
     updateInput(currentInput + data.emoji);

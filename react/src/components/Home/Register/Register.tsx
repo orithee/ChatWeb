@@ -7,6 +7,7 @@ import { WsConnection } from '../../../App';
 import { globalState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
 
+// Registration component:
 function Register() {
   const connection = useContext<WebSocket>(WsConnection);
   const signAsGuest = useOutletContext<Function>();

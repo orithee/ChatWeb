@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
 
+// This component presents the introduction of the website. Within this component is the login or registration.
 function Home() {
   const user = useSelector((state: globalState) => state.global.user);
   const connection = useContext<WebSocket>(WsConnection);

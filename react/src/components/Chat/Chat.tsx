@@ -8,6 +8,7 @@ import { toStr } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 
+// A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
@@ -63,7 +64,7 @@ function Chat() {
     <div className={style.container}>
       <div className={style.up}>
         <div className={style.up_left}>
-          {/* TODO: Add profile img option */}
+          {/* // TODO: Add profile img option */}
           <p>{group?.group_name}</p>
         </div>
       </div>

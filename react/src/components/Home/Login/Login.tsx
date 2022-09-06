@@ -7,6 +7,7 @@ import { globalState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
+// Login component:
 function Login() {
   const connection = useContext<WebSocket>(WsConnection);
   const signAsGuest = useOutletContext<Function>();

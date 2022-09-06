@@ -61,16 +61,6 @@ export const chatSlice = createSlice({
         }
         // TODO: Adding option to update the other groups that they receive a new message ...
       }
-
-      if (state.groupMessages === undefined) {
-        if (action.payload !== undefined) {
-          state.groupMessages = [action.payload];
-        }
-      } else if (action.payload !== undefined) {
-        if (action.payload.group_id === state.currentGroup?.group_id) {
-          state.groupMessages = [...state.groupMessages, action.payload];
-        }
-      }
     },
   },
 });

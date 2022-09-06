@@ -11,7 +11,7 @@ interface Props {
   openNew: Function;
   user: User;
 }
-
+// A component that creates the new group template:
 function CreateNewGroup({ openNew, user }: Props) {
   const connection = useContext<WebSocket>(WsConnection);
   const message = useSelector(

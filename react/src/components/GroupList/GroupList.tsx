@@ -9,6 +9,7 @@ import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
 import { Group } from '../../helpers/types';
 
+// A component that creates the user's group list:
 function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);
   const groupList = useSelector((state: chatState) => state.chat.groupList);

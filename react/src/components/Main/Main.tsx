@@ -7,6 +7,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Options from '../Options/Options';
 import GroupList from '../GroupList/GroupList';
 
+// The main component of the chat page:
 function Main() {
   const user = useSelector((state: globalState) => state.global.user);
   const message = useSelector(

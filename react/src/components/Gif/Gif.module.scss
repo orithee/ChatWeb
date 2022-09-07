@@ -7,7 +7,7 @@
   border-radius: 10px;
   padding: 10px;
   z-index: 1;
-  width: 45%;
+  width: 25%;
   .label {
     display: flex;
     align-items: flex-start;
@@ -21,6 +21,11 @@
     border-radius: 5px;
   }
 
+  .close {
+    position: absolute;
+    left: 3%;
+  }
+
   .memberBtn {
     background-color: #e3e2e2;
     color: black;
@@ -28,8 +33,10 @@
     border: none;
   }
 
-  .member_input {
+  .gif_input {
     display: flex;
+    text-indent: 30%;
+    padding: 0px 15%;
   }
 
   .members_container {

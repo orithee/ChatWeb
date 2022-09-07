@@ -48,7 +48,7 @@
       border-radius: 8px;
       width: fit-content;
       min-width: 25%;
-      max-width: 65%;
+      max-width: 57%;
       margin: 1%;
       .sent_by {
         color: greenyellow;
@@ -59,10 +59,13 @@
         inline-size: 100%;
         overflow-wrap: break-word;
         font-size: large;
-        img {
-          padding: 10px;
-          width: 90%;
+        span {
+          display: table;
           background-color: white !important;
+          img {
+            display: table-row;
+            width: 100%;
+          }
         }
       }
       .hour {
@@ -121,5 +124,12 @@
     position: absolute;
     left: 43px;
     bottom: 48px;
+  }
+
+  .gif_container {
+    // position: absolute;
+    // left: 43%;
+    // bottom: 10%;
+    // width: auto;
   }
 }

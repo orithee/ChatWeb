@@ -90,18 +90,10 @@ function Chat() {
   return (
     <div className={style.container}>
       <div className={style.up}>
-        {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
         <div className={style.up_left}>
           {/* // TODO: Add profile img option */}
           <p>{group?.group_name}</p>
-          <button
-            onClick={() => {
-              sendMessage(
-                true,
-                'https://media2.giphy.com/media/28GHfhGFWpFgsQB4wR/giphy-downsized.gif?cid=026825aa11hrenmjgr2gqa3g69c5imi70iq8o7g40q0qsckz&rid=giphy-downsized.gif&ct=g'
-              );
-            }}
-          ></button>
+          {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
         </div>
       </div>
       <div ref={mainContainer} className={style.main}>
@@ -121,7 +113,9 @@ function Chat() {
                   <div className={style.text} style={textDirection(message)}>
                     {!message.is_image && message.message_text}
                     {message.is_image && (
-                      <img src={message.message_text} alt="img" />
+                      <span>
+                        <img src={message.message_text} alt="img" />
+                      </span>
                     )}
                   </div>
                   <div
@@ -169,6 +163,8 @@ function Chat() {
         >
           <Emoji updateInput={setInputMsg} currentInput={inputMsg} />
         </div>
+        {/* <div className={style.gif_container}> */}
+        {/* </div> */}
         <form onSubmit={(e) => submitForm(e)}>
           <input
             type="text"

@@ -7,6 +7,7 @@ import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { toStr } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
+import Gif from '../Gif/Gif';
 
 // TODO: 1. V Open a new branch.
 // TODO: 2. V Try to send gif in image. create a container.
@@ -25,6 +26,7 @@ function Chat() {
 
   const [inputMsg, setInputMsg] = useState<string>('');
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
+  const [gifOpen, setGifOpen] = useState<boolean>(false);
   const mainContainer = useRef<null | HTMLDivElement>(null);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -88,6 +90,7 @@ function Chat() {
   return (
     <div className={style.container}>
       <div className={style.up}>
+        {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
         <div className={style.up_left}>
           {/* // TODO: Add profile img option */}
           <p>{group?.group_name}</p>
@@ -147,6 +150,16 @@ function Chat() {
           }}
         >
           😀
+        </span>
+        <span
+          className={style.gif_button}
+          onClick={() => setGifOpen(!gifOpen)}
+          style={{
+            border: gifOpen ? 'dotted 1px greenyellow' : 'none',
+            borderRadius: gifOpen ? '25%' : 'none',
+          }}
+        >
+          gif
         </span>
         <div
           className={style.emoji_container}

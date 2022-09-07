@@ -10,14 +10,14 @@ export function WsConnect() {
     ws.send(toStr({ type: 'initial', token: getToken() }));
   };
 
-  ws.onclose = () => {
-    console.log('WebSocket is closed!');
-    if (process.env.NODE_ENV === 'development') {
-      setTimeout(() => {
-        document.location.reload();
-      }, 2000);
-    }
-  };
+  // ws.onclose = () => {
+  //   console.log('WebSocket is closed!');
+  //   if (process.env.NODE_ENV === 'development') {
+  //     setTimeout(() => {
+  //       document.location.reload();
+  //     }, 2000);
+  //   }
+  // };
 
   return ws;
 }

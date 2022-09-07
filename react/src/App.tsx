@@ -5,7 +5,7 @@ import Login from './components/Home/Login/Login';
 import Register from './components/Home/Register/Register';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { WsConnect } from './helpers/WsConnect';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useSelector, useDispatch } from 'react-redux';
 import messageFilter from './helpers/messageFilter';
@@ -19,14 +19,20 @@ export const WsConnection = React.createContext<WebSocket>(WebSocketConnection);
 function App() {
   const dispatch = useDispatch();
   const user = useSelector((state: globalState) => state.global.user);
+  const [wsConnect, setWsConnect] = useState<WebSocket>(WebSocketConnection);
 
-  WebSocketConnection.onmessage = (event) => {
+  wsConnect.onmessage = (event) => {
     messageFilter(event, dispatch, user);
+  };
+
+  wsConnect.onclose = () => {
+    console.log('WebSocket is closed!');
+    setWsConnect(WsConnect());
   };
 
   return (
     <div className={style}>
-      <WsConnection.Provider value={WebSocketConnection}>
+      <WsConnection.Provider value={wsConnect}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />}>

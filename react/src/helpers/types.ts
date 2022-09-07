@@ -54,6 +54,7 @@ export interface GroupMessage {
   sent_by_id: number;
   sent_by_name: string;
   group_id: number;
+  is_image: boolean;
   was_read: boolean;
 }
 

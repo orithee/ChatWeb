@@ -68,6 +68,7 @@ export async function createTables() {
               sent_by_id INTEGER,
               sent_by_name TEXT,
               group_id INTEGER,
+              is_image BOOLEAN DEFAULT FALSE,
               was_read BOOLEAN DEFAULT FALSE,
               CONSTRAINT fk_sent_by_id FOREIGN KEY(sent_by_id)
               REFERENCES users(user_id),

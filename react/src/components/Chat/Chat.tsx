@@ -8,6 +8,14 @@ import { toStr } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 
+// TODO: 1. V Open a new branch.
+// TODO: 2. V Try to send gif in image. create a container.
+// TODO: 3. Create a component that create the container + URL.
+// TODO: 4. Check the limit of requests...
+// TODO: 5. Create a ui form to choose the gif.
+// TODO: 6. Think about how to save the URL(the key, the search term...).
+// TODO: 7. Checking all bugs.
+
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -21,19 +29,28 @@ function Chat() {
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputMsg && user && group) {
+    sendMessage(false);
+  };
+
+  const sendMessage = (img: boolean, url: string = inputMsg) => {
+    if (url === inputMsg && inputMsg === '') return;
+    console.log('sendMessage');
+    console.log(url);
+    if (user && group) {
       connection.send(
         toStr({
           type: 'groupMessage',
           userId: user.user_id,
           userName: user.user_name,
           groupId: group.group_id,
-          text: inputMsg,
+          text: url,
+          isImage: img,
         })
       );
       setInputMsg('');
     }
   };
+
   useEffect(() => {
     if (mainContainer.current) {
       const scrolling = mainContainer.current;
@@ -74,6 +91,14 @@ function Chat() {
         <div className={style.up_left}>
           {/* // TODO: Add profile img option */}
           <p>{group?.group_name}</p>
+          <button
+            onClick={() => {
+              sendMessage(
+                true,
+                'https://media2.giphy.com/media/28GHfhGFWpFgsQB4wR/giphy-downsized.gif?cid=026825aa11hrenmjgr2gqa3g69c5imi70iq8o7g40q0qsckz&rid=giphy-downsized.gif&ct=g'
+              );
+            }}
+          ></button>
         </div>
       </div>
       <div ref={mainContainer} className={style.main}>
@@ -91,7 +116,10 @@ function Chat() {
                     {message.sent_by_name}
                   </div>
                   <div className={style.text} style={textDirection(message)}>
-                    {message.message_text}
+                    {!message.is_image && message.message_text}
+                    {message.is_image && (
+                      <img src={message.message_text} alt="img" />
+                    )}
                   </div>
                   <div
                     className={style.hour}

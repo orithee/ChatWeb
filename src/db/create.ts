@@ -62,12 +62,14 @@ export async function createGroup(group: CreateNewGroup) {
 
 // Create a new group message - if the query succeeds, it will return the new group message.
 export async function insertGroupMessage(message: MessageSent) {
-  const insert = `INSERT INTO group_messages (message_text, sent_by_id, sent_by_name, group_id) VALUES ($1, $2, $3, $4) RETURNING *;`;
+  const insert = `INSERT INTO group_messages (message_text, sent_by_id, sent_by_name, group_id,
+    is_image) VALUES ($1, $2, $3, $4, $5) RETURNING *;`;
   const values = [
     message.text,
     message.userId,
     message.userName,
     message.groupId,
+    message.isImage,
   ];
   return new Promise<GroupMessage | undefined>((resolve, _reject) => {
     postgres.query(insert, values, (err, res) => {

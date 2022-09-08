@@ -58,4 +58,10 @@ async function webSocketConnect() {
 
     client.on('close', () => console.log('Client disconnected'));
   });
+  ws.on('error', (err) => {
+    console.log('error in ws server');
+  });
+  ws.on('close', () => {
+    console.log('client connection closed');
+  });
 }

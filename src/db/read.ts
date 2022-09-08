@@ -123,7 +123,7 @@ export async function getListOfGroups(userName: string) {
 
 // Pulling group messages from the database by group id:
 export async function getMessages(groupId: number) {
-  const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_at ASC, created_on ASC;`;
+  const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_on ASC, created_at ASC;`;
   const values = [groupId];
 
   return new Promise<GroupMessage[] | []>((resolve, _reject) => {

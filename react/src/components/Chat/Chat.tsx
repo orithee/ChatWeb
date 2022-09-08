@@ -27,7 +27,7 @@ function Chat() {
   const [inputMsg, setInputMsg] = useState<string>('');
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const [gifOpen, setGifOpen] = useState<boolean>(false);
-  const mainContainer = useRef<null | HTMLDivElement>(null);
+  const mainContainer = useRef<HTMLDivElement>(null);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +56,12 @@ function Chat() {
   useEffect(() => {
     if (mainContainer.current) {
       const scrolling = mainContainer.current;
-      scrolling.scrollTop = scrolling.scrollHeight;
+      setTimeout(() => {
+        scrolling.scrollTop = scrolling.scrollHeight;
+      }, 300);
+      setTimeout(() => {
+        scrolling.scrollTop = scrolling.scrollHeight;
+      }, 900);
     }
   }, [messages]);
 

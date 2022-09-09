@@ -19,14 +19,20 @@ export function toObj(msg: string): MessageTypes {
 
 export function setToken(value: string) {
   // 1. Delete the last token(if exists):
-  document.cookie = `token=; Expires=Thu, 01 Jan 2000 00:00:01 GMT;`;
+  document.cookie = `token=; expires=Thu, 01 Jan 2000 00:00:01 GMT;`;
 
   // 2. Define the new token:
   const expire = new Date();
   expire.setTime(new Date().getTime() + 3600000 * 24 * 14);
-  document.cookie = 'token=' + value + ';expires=' + expire.toUTCString();
+  document.cookie =
+    'token=' +
+    value +
+    ';path=/' +
+    ';expires=' +
+    'SameSite=Lax' +
+    expire.toUTCString();
 }
 
 export function deleteToken() {
-  document.cookie = 'token=; Expires=Thu, 01 Jan 2000 00:00:01 GMT;';
+  document.cookie = 'token=; expires=Thu, 01 Jan 2000 00:00:01 GMT;';
 }

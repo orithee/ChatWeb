@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import {
   GroupMessage,
   LoginToClient,
@@ -7,13 +8,12 @@ import {
   Group,
 } from 'src/server/types';
 import { postgres } from './buildDB';
-import sha1 from 'sha1';
 // TODO: String validation !!
 
 // Create a new user - if the query succeeds, it will return the user.
 export async function createUser(user: Register) {
   const insert = `INSERT INTO users (user_name, password, email, nickname) VALUES ($1, $2, $3, $4) RETURNING *;`;
-  const password = sha1(user.password + user.userName);
+  const password = await bcrypt.hash(user.password + user.userName, 10);
   const values = [user.userName, password, user.email, user.userName];
 
   return new Promise<undefined | LoginToClient>((resolve, _reject) => {

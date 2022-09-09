@@ -2,8 +2,9 @@
   "name": "chat-web",
   "scripts": {
     "start": "nodemon --watch ./src ./src/server/server.ts",
-    "deploy": "gulp deploy",
-    "heroku": "git add -A && git commit -m 'update' && git push heroku master",
+    "deploy": "npm run build-react && gulp deploy && npm run heroku",
+    "build-react": "cd ./react && npm run build && cd ..",
+    "heroku": "cd ./deploy && git add -A && git commit -m 'update' && git push heroku master && cd ..",
     "jest": "jest"
   },
   "dependencies": {
@@ -17,7 +18,6 @@
     "express": "^4.18.1",
     "node-fetch": "^3.2.6",
     "pg": "^8.7.3",
-    "sha1": "^1.1.1",
     "ws": "^8.8.1"
   },
   "devDependencies": {

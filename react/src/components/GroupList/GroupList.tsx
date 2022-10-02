@@ -9,6 +9,15 @@ import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
 import { Group } from '../../helpers/types';
 
+import * as React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+
 // A component that creates the user's group list:
 function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -39,10 +48,48 @@ function GroupList() {
 
   return (
     <div className={style.container}>
-      <ListGroup className={style.list}>
-        {/* 
+      <List
+        className={style.list}
+        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+      >
+        <ListItem alignItems="flex-start">
+          <ListItemAvatar>
+            <Avatar
+              alt="image"
+              src="https://services.prod.bcomo.com/GetResource?namespace=resourceGroup_6933&resourceId=phoenix_icon_fbFace64&version=0"
+            />
+          </ListItemAvatar>
+          <ListItemText
+            primary={groupList ? groupList[0].group_name : 'no gorup'}
+            secondary={
+              <React.Fragment>
+                {/* <Typography
+                  sx={{ display: 'inline' }}
+                  component="span"
+                  variant="body2"
+                  color="text.primary"
+                >
+                  Ali Connors
+                </Typography> */}
+                {" — I'll bes…"}
+                {groupList
+                  ? groupList[0].lastMessage?.message_text
+                  : 'no messages...'}
+
+                {/* 
+                  // TODO: Check that the last message is not a image ! 
+                  // TODO: Limit the number of characters in the text message... 
+                  */}
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+        <Divider variant="inset" component="li" />
+      </List>
+      {/* 
         // TODO: 1. If this group does not opening now - add green indication about the message on the group list.
       */}
+      {/* <ListGroup className={style.list}>
         {groupList &&
           groupList.map((group, index) => {
             return (
@@ -56,7 +103,7 @@ function GroupList() {
               </ListGroup.Item>
             );
           })}
-      </ListGroup>
+      </ListGroup> */}
     </div>
   );
 }

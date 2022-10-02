@@ -1,2 +1,17 @@
 @use '../../style/mixins' as *;
 @use '../../style/variables' as *;
+
+.main_container {
+  @include centerAbs();
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.777);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 1;
+  width: 25%;
+  .close {
+    position: absolute;
+    left: 1%;
+    top: 1%;
+  }
+}

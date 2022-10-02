@@ -6,6 +6,7 @@ import { toStr } from '../../helpers/auxiliaryFunc';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
 import { User } from '../../helpers/types';
+import CloseButton from 'react-bootstrap/esm/CloseButton';
 
 interface Props {
   openNew: Function;
@@ -62,6 +63,7 @@ function CreateNewGroup({ openNew, user }: Props) {
   return (
     <div className={style.main_container}>
       <h3>Create Group</h3>
+      <CloseButton className={style.close} onClick={() => openNew(false)} />
       <Form onSubmit={(e) => submitNewGroupForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label className={style.label}>Group</Form.Label>
@@ -136,7 +138,6 @@ function CreateNewGroup({ openNew, user }: Props) {
         </Form.Group>
         <div>
           <button type="submit">create</button>
-          <button onClick={() => openNew(false)}>close</button>
         </div>
       </Form>
     </div>

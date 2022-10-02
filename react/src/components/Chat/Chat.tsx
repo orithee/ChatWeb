@@ -9,14 +9,6 @@ import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
 
-// TODO: 1. V Open a new branch.
-// TODO: 2. V Try to send gif in image. create a container.
-// TODO: 3. Create a component that create the container + URL.
-// TODO: 4. Check the limit of requests...
-// TODO: 5. Create a ui form to choose the gif.
-// TODO: 6. Think about how to save the URL(the key, the search term...).
-// TODO: 7. Checking all bugs.
-
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
@@ -49,6 +41,7 @@ function Chat() {
           isImage: img,
         })
       );
+      setEmojiOpen(false);
       setInputMsg('');
     }
   };
@@ -64,6 +57,14 @@ function Chat() {
       }, 900);
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (emojiOpen) setGifOpen(false);
+  }, [emojiOpen]);
+
+  useEffect(() => {
+    if (gifOpen) setEmojiOpen(false);
+  }, [gifOpen]);
 
   const textDirection = (message: GroupMessage): React.CSSProperties => {
     const condition = message.sent_by_name === user?.user_name;
@@ -166,10 +167,12 @@ function Chat() {
             display: emojiOpen ? 'block' : 'none',
           }}
         >
-          <Emoji updateInput={setInputMsg} currentInput={inputMsg} />
+          <Emoji
+            setEmojiOpen={setEmojiOpen}
+            updateInput={setInputMsg}
+            currentInput={inputMsg}
+          />
         </div>
-        {/* <div className={style.gif_container}> */}
-        {/* </div> */}
         <form onSubmit={(e) => submitForm(e)}>
           <input
             type="text"

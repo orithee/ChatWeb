@@ -1,5 +1,3 @@
-import { IndexRouteProps } from 'react-router-dom';
-
 // Messages Types:
 export type MessageTypes =
   | LoginFromServer
@@ -73,6 +71,7 @@ export interface Group {
   admin_id: number;
   group_name: string;
   image: string;
+  lastMessage: GroupMessage | undefined;
 }
 
 export interface UserGroup {

@@ -66,10 +66,12 @@ export interface User {
 }
 
 export interface Group {
+  group: Promise<GroupMessage | undefined>;
   group_id: number;
   admin_id: number;
   group_name: string;
   image: string;
+  lastMessage: GroupMessage | undefined;
 }
 
 export interface UserGroups {

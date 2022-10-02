@@ -117,11 +117,38 @@ export async function getListOfGroups(userName: string) {
   const values = [userName];
 
   return new Promise<Group[] | []>((resolve, _reject) => {
-    postgres.query(sql, values, (err, res) => {
+    postgres.query(sql, values, async (err, res) => {
       if (err) {
         console.log(err.stack);
         resolve([]);
-      } else resolve(res.rows);
+      } else {
+        resolve(await groupsWithLastMessages(res.rows));
+      }
+    });
+  });
+}
+
+async function groupsWithLastMessages(groups: Group[]) {
+  return await Promise.all(
+    groups.map(async (group) => {
+      group.lastMessage = await getLastMessage(group.group_id);
+      return group;
+    })
+  );
+}
+
+async function getLastMessage(groupId: number) {
+  const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_on DESC, created_at DESC LIMIT 1;`;
+  const values = [groupId];
+
+  return new Promise<GroupMessage | undefined>((resolve, _reject) => {
+    postgres.query(sql, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(undefined);
+      } else {
+        resolve(res.rows[0]);
+      }
     });
   });
 }

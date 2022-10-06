@@ -128,6 +128,8 @@ export async function getListOfGroups(userName: string) {
   });
 }
 
+// TODO: Add a message_id column to user_groups  and pull the last message automatically.
+// TODO --  In addition - update every message sent to be the last message..
 async function groupsWithLastMessages(groups: Group[]) {
   return await Promise.all(
     groups.map(async (group) => {

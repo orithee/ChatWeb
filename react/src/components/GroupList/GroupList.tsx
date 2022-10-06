@@ -49,8 +49,10 @@ function GroupList() {
 
   const cutText = (group: Group | undefined) => {
     if (group === undefined) return '';
-    else if (group.lastMessage?.is_image) return ': image..';
-    else return ': ' + group.lastMessage?.message_text.slice(0, 10) + '...';
+    else if (group.lastMessage?.is_image) return ': image';
+    else if (group.lastMessage && group.lastMessage?.message_text.length > 10) {
+      return ': ' + group.lastMessage?.message_text.slice(0, 10) + '...';
+    } else return ': ' + group.lastMessage?.message_text;
   };
 
   const convertTime = (str: string) => {
@@ -126,11 +128,12 @@ function GroupList() {
                                 : '-'}
                             </Typography>
                           </div>
-                          <div>
+                          {/* //TODO: return this badge after fixing the redux... */}
+                          {/* <div>
                             <Badge className={style.badge} bg="primary">
                               14
                             </Badge>
-                          </div>
+                          </div> */}
                         </div>
                       </React.Fragment>
                     }

@@ -17,6 +17,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import Badge from 'react-bootstrap/Badge';
 
 // A component that creates the user's group list:
 function GroupList() {
@@ -52,6 +53,14 @@ function GroupList() {
     else return ': ' + group.lastMessage?.message_text.slice(0, 10) + '...';
   };
 
+  const convertTime = (str: string) => {
+    // Displaying the current time to the user:
+    let hour = Number(str.slice(0, 2)) + 3;
+    if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
+    if (10 > hour) return '0' + hour + str.slice(2, 5);
+    else return hour + str.slice(2, 5);
+  };
+
   return (
     <div className={style.container}>
       <List
@@ -77,27 +86,52 @@ function GroupList() {
                     />
                   </ListItemAvatar>
                   <ListItemText
-                    primary={group ? group.group_name : 'no group'}
+                    primary={
+                      <div className={style.space_between}>
+                        {group ? group.group_name : 'no group'}
+                        <Typography
+                          sx={{ textAlignLast: 'right' }}
+                          alignItems="flex-end"
+                          component="span"
+                          variant="body2"
+                          color="#beb8ae"
+                        >
+                          {group.lastMessage &&
+                            convertTime(group.lastMessage.created_at)}
+                        </Typography>
+                      </div>
+                    }
                     secondary={
                       <React.Fragment>
-                        <Typography
-                          sx={{ display: 'inline' }}
-                          component="span"
-                          variant="body2"
-                          color="#beb8ae"
-                        >
-                          {group ? group.lastMessage?.sent_by_name : '-'}
-                        </Typography>
-                        <Typography
-                          sx={{ display: 'inline' }}
-                          component="span"
-                          variant="body2"
-                          color="#beb8ae"
-                        >
-                          {group.lastMessage?.message_text
-                            ? cutText(group)
-                            : '-'}
-                        </Typography>
+                        <div className={style.space_between}>
+                          <div>
+                            <Typography
+                              sx={{ textAlignLast: 'right' }}
+                              alignItems="flex-end"
+                              component="span"
+                              variant="body2"
+                              color="#beb8ae"
+                            >
+                              {group ? group.lastMessage?.sent_by_name : '-'}
+                            </Typography>
+                            ;
+                            <Typography
+                              sx={{ display: 'inline' }}
+                              component="span"
+                              variant="body2"
+                              color="#beb8ae"
+                            >
+                              {group.lastMessage?.message_text
+                                ? cutText(group)
+                                : '-'}
+                            </Typography>
+                          </div>
+                          <div>
+                            <Badge className={style.badge} bg="primary">
+                              14
+                            </Badge>
+                          </div>
+                        </div>
                       </React.Fragment>
                     }
                   />

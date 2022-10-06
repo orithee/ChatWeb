@@ -24,6 +24,13 @@
       .image {
         z-index: 1;
       }
+      .space_between {
+        display: flex;
+        justify-content: space-between;
+      }
+      .badge {
+        background-color: aqua;
+      }
     }
   }
 }

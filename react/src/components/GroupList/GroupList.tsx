@@ -46,45 +46,66 @@ function GroupList() {
     return { backgroundColor: condition ? '#2a3942' : '#202c33' };
   };
 
+  const cutText = (group: Group | undefined) => {
+    if (group === undefined) return '';
+    else if (group.lastMessage?.is_image) return ': image..';
+    else return ': ' + group.lastMessage?.message_text.slice(0, 10) + '...';
+  };
+
   return (
     <div className={style.container}>
       <List
         className={style.list}
         sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
       >
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            <Avatar
-              alt="image"
-              src="https://services.prod.bcomo.com/GetResource?namespace=resourceGroup_6933&resourceId=phoenix_icon_fbFace64&version=0"
-            />
-          </ListItemAvatar>
-          <ListItemText
-            primary={groupList ? groupList[0].group_name : 'no gorup'}
-            secondary={
-              <React.Fragment>
-                {/* <Typography
-                  sx={{ display: 'inline' }}
-                  component="span"
-                  variant="body2"
-                  color="text.primary"
+        {groupList &&
+          groupList.map((group, index) => {
+            return (
+              <>
+                <ListItem
+                  alignItems="flex-start"
+                  onClick={() => openChat(group)}
+                  className={style.item}
+                  style={backgroundColor(group)}
+                  key={index}
                 >
-                  Ali Connors
-                </Typography> */}
-                {" — I'll bes…"}
-                {groupList
-                  ? groupList[0].lastMessage?.message_text
-                  : 'no messages...'}
-
-                {/* 
-                  // TODO: Check that the last message is not a image ! 
-                  // TODO: Limit the number of characters in the text message... 
-                  */}
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-        <Divider variant="inset" component="li" />
+                  <ListItemAvatar>
+                    <Avatar
+                      className={style.image}
+                      alt="image"
+                      src="https://services.prod.bcomo.com/GetResource?namespace=resourceGroup_6933&resourceId=phoenix_icon_fbFace64&version=0"
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={group ? group.group_name : 'no group'}
+                    secondary={
+                      <React.Fragment>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="#beb8ae"
+                        >
+                          {group ? group.lastMessage?.sent_by_name : '-'}
+                        </Typography>
+                        <Typography
+                          sx={{ display: 'inline' }}
+                          component="span"
+                          variant="body2"
+                          color="#beb8ae"
+                        >
+                          {group.lastMessage?.message_text
+                            ? cutText(group)
+                            : '-'}
+                        </Typography>
+                      </React.Fragment>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </>
+            );
+          })}
       </List>
       {/* 
         // TODO: 1. If this group does not opening now - add green indication about the message on the group list.

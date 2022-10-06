@@ -6,9 +6,8 @@
   height: 80%;
   width: 100%;
   .list {
-    // background-color: $chat-background1;
+    background-color: $chat-background1;
     border-radius: 3%;
-    display: flex;
     height: 100%;
     width: 100%;
     scroll-behavior: smooth;
@@ -21,6 +20,9 @@
       cursor: pointer;
       &:hover {
         color: aquamarine;
+      }
+      .image {
+        z-index: 1;
       }
     }
   }

@@ -71,7 +71,8 @@ export interface Group {
   admin_id: number;
   group_name: string;
   image: string;
-  lastMessage: GroupMessage | undefined;
+  last_message: GroupMessage | undefined;
+  not_read: number;
 }
 
 export interface UserGroup {
@@ -92,6 +93,11 @@ export interface getGroupMessagesAction {
 
 export interface updateCurrentGroupAction {
   payload: Group | undefined;
+  type: string;
+}
+
+export interface resetNotReadAction {
+  payload: number;
   type: string;
 }
 

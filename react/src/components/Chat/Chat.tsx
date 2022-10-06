@@ -28,8 +28,6 @@ function Chat() {
 
   const sendMessage = (img: boolean, url: string = inputMsg) => {
     if (url === inputMsg && inputMsg === '') return;
-    console.log('sendMessage');
-    console.log(url);
     if (user && group) {
       connection.send(
         toStr({

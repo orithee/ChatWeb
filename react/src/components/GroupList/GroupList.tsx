@@ -2,8 +2,8 @@ import style from './GroupList.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
-import { chatState } from '../../redux/store';
-import { updateCurrentGroup } from '../../redux/chatSlice';
+import { chatState, globalState } from '../../redux/store';
+import { updateCurrentGroup, resetNotRead } from '../../redux/chatSlice';
 import { useContext, useEffect } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
@@ -23,6 +23,7 @@ import Badge from 'react-bootstrap/Badge';
 function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);
   const groupList = useSelector((state: chatState) => state.chat.groupList);
+  const user = useSelector((state: globalState) => state.global.user);
   const currentGroup = useSelector(
     (state: chatState) => state.chat.currentGroup
   );
@@ -32,8 +33,13 @@ function GroupList() {
 
   const openChat = (group: Group) => {
     dispatch(updateCurrentGroup(group));
+    // dispatch(resetNotRead(group.group_id));
     connection.send(
-      toStr({ type: 'getGroupMessages', groupId: group.group_id })
+      toStr({
+        type: 'getGroupMessages',
+        groupId: group.group_id,
+        userName: user?.user_name,
+      })
     );
     navigate('/main/' + group.group_id);
   };
@@ -49,10 +55,13 @@ function GroupList() {
 
   const cutText = (group: Group | undefined) => {
     if (group === undefined) return '';
-    else if (group.lastMessage?.is_image) return ': image';
-    else if (group.lastMessage && group.lastMessage?.message_text.length > 10) {
-      return ': ' + group.lastMessage?.message_text.slice(0, 10) + '...';
-    } else return ': ' + group.lastMessage?.message_text;
+    else if (group.last_message?.is_image) return ': image';
+    else if (
+      group.last_message &&
+      group.last_message?.message_text.length > 10
+    ) {
+      return ': ' + group.last_message?.message_text.slice(0, 10) + '...';
+    } else return ': ' + group.last_message?.message_text;
   };
 
   const convertTime = (str: string) => {
@@ -72,13 +81,12 @@ function GroupList() {
         {groupList &&
           groupList.map((group, index) => {
             return (
-              <>
+              <div key={index}>
                 <ListItem
                   alignItems="flex-start"
                   onClick={() => openChat(group)}
                   className={style.item}
                   style={backgroundColor(group)}
-                  key={index}
                 >
                   <ListItemAvatar>
                     <Avatar
@@ -98,8 +106,8 @@ function GroupList() {
                           variant="body2"
                           color="#beb8ae"
                         >
-                          {group.lastMessage &&
-                            convertTime(group.lastMessage.created_at)}
+                          {group.last_message &&
+                            convertTime(group.last_message?.created_at)}
                         </Typography>
                       </div>
                     }
@@ -108,39 +116,41 @@ function GroupList() {
                         <div className={style.space_between}>
                           <div>
                             <Typography
+                              key={1}
                               sx={{ textAlignLast: 'right' }}
                               alignItems="flex-end"
                               component="span"
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group ? group.lastMessage?.sent_by_name : '-'}
+                              {group ? group.last_message?.sent_by_name : '-'}
                             </Typography>
                             ;
                             <Typography
+                              key={2}
                               sx={{ display: 'inline' }}
                               component="span"
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group.lastMessage?.message_text
+                              {group.last_message?.message_text
                                 ? cutText(group)
                                 : '-'}
                             </Typography>
                           </div>
                           {/* //TODO: return this badge after fixing the redux... */}
-                          {/* <div>
+                          <div>
                             <Badge className={style.badge} bg="primary">
-                              14
+                              {group.not_read}
                             </Badge>
-                          </div> */}
+                          </div>
                         </div>
                       </React.Fragment>
                     }
                   />
                 </ListItem>
                 <Divider variant="inset" component="li" />
-              </>
+              </div>
             );
           })}
       </List>

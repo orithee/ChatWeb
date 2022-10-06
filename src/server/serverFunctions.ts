@@ -19,6 +19,7 @@ import {
   getMessages,
 } from '../db/read';
 import { Server } from 'ws';
+import { resetNotRead } from '../db/update';
 
 // Checks if the token exists in the database - if exists returns the user:
 export async function initialFunction(client: Client, message: Initial) {
@@ -94,6 +95,7 @@ export async function groupMessagesFunction(
   message: GetGroupMessages
 ) {
   const messages = await getMessages(message.groupId);
+  await resetNotRead(message.userName, message.groupId);
   client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
 }
 

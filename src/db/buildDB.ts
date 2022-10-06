@@ -42,6 +42,7 @@ export async function createTables() {
               admin_id INTEGER,
               group_name TEXT NOT NULL,
               image TEXT DEFAULT 'empty',
+              last_message INTEGER DEFAULT 0,
               CONSTRAINT fk_admin_id FOREIGN KEY(admin_id)
               REFERENCES users(user_id)
               );`
@@ -53,6 +54,7 @@ export async function createTables() {
               user_name TEXT,
               group_id INTEGER,
               group_name TEXT,
+              not_read INTEGER DEFAULT 0,
               CONSTRAINT fk_group_id FOREIGN KEY(group_id)
               REFERENCES groups(group_id)
               );`

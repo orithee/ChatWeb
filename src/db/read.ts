@@ -133,7 +133,7 @@ export async function getListOfGroups(userName: string) {
 async function groupsWithLastMessages(groups: Group[]) {
   return await Promise.all(
     groups.map(async (group) => {
-      group.lastMessage = await getLastMessage(group.group_id);
+      group.last_message = await getLastMessage(group.group_id);
       return group;
     })
   );

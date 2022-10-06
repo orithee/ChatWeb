@@ -50,6 +50,16 @@ export const chatSlice = createSlice({
 
     // Insert a new message to the 'groupMessages' state:
     updateNewGroupMessage: (state, action: newGroupMessageAction) => {
+      // Update the last message in the groupList:
+      if (state.groupList != undefined) {
+        for (const group of state.groupList) {
+          if (group.group_id == action.payload?.group_id) {
+            group.lastMessage = action.payload;
+            break;
+          }
+        }
+      }
+
       if (action.payload === undefined) {
         state.groupMessages = action.payload;
       } else {

@@ -107,6 +107,7 @@ export async function messageSentFunction(
 ) {
   const insertMsg = await insertGroupMessage(message);
   if (insertMsg) {
+    await resetNotRead(message.userName, message.groupId);
     ws.clients.forEach((client) => {
       client.send(
         toStr({ type: 'newGroupMessageFromServer', data: insertMsg })

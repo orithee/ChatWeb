@@ -6,7 +6,6 @@ import {
   GroupMessage,
   newGroupMessageAction,
   newGroupToGroupListAction,
-  resetNotReadAction,
   updateCurrentGroupAction,
 } from '../helpers/types';
 
@@ -42,14 +41,16 @@ export const chatSlice = createSlice({
     // Update the currentGroup that is open in the chat:
     updateCurrentGroup: (state, action: updateCurrentGroupAction) => {
       state.currentGroup = action.payload;
-      // if (state.groupList != undefined) {
-      //   for (const group of state.groupList) {
-      //     if (group.group_id === action.payload?.group_id) {
-      //       group.not_read = 0;
-      //       break;
-      //     }
-      //   }
-      // }
+
+      // Reset the 'not_read' number of currentGroup:
+      if (state.groupList != undefined) {
+        for (const group of state.groupList) {
+          if (group.group_id === action.payload?.group_id) {
+            group.not_read = 0;
+            break;
+          }
+        }
+      }
     },
 
     // Update the messages of the specific group chat that is open:
@@ -57,20 +58,9 @@ export const chatSlice = createSlice({
       state.groupMessages = action.payload;
     },
 
-    // Reset the not_read number of currentGroup:
-    resetNotRead: (state, action: resetNotReadAction) => {
-      // if (state.groupList != undefined) {
-      //   for (const group of state.groupList) {
-      //     if (group.group_id == action.payload) {
-      //       group.not_read = 0;
-      //       break;
-      //     }
-      //   }
-      // }
-    },
-
     // Insert a new message to the 'groupMessages' state:
     updateNewGroupMessage: (state, action: newGroupMessageAction) => {
+      // TODO: Write here explanatory notes..(Why the undefined?)
       if (action.payload === undefined) {
         state.groupMessages = action.payload;
       } else {
@@ -80,7 +70,6 @@ export const chatSlice = createSlice({
         } else if (action.payload.group_id === state.currentGroup?.group_id) {
           state.groupMessages = [...state.groupMessages, action.payload];
         }
-        // TODO: Adding option to update the other groups that they receive a new message ...
       }
 
       // Update the last message in the groupList:
@@ -105,7 +94,6 @@ export const {
   getGroupMessages,
   updateNewGroupMessage,
   updateCurrentGroup,
-  resetNotRead,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

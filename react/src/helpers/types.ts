@@ -96,11 +96,6 @@ export interface updateCurrentGroupAction {
   type: string;
 }
 
-export interface resetNotReadAction {
-  payload: number;
-  type: string;
-}
-
 export interface newGroupToGroupListAction {
   payload: Group;
   type: string;

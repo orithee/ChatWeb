@@ -1,9 +1,8 @@
 import style from './GroupList.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { chatState, globalState } from '../../redux/store';
-import { updateCurrentGroup, resetNotRead } from '../../redux/chatSlice';
+import { updateCurrentGroup } from '../../redux/chatSlice';
 import { useContext, useEffect } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
@@ -33,7 +32,6 @@ function GroupList() {
 
   const openChat = (group: Group) => {
     dispatch(updateCurrentGroup(group));
-    // dispatch(resetNotRead(group.group_id));
     connection.send(
       toStr({
         type: 'getGroupMessages',
@@ -45,7 +43,9 @@ function GroupList() {
   };
 
   useEffect(() => {
-    if (groupList !== undefined && groupList.length > 0) openChat(groupList[0]);
+    if (groupList !== undefined && groupList.length > 0) {
+      if (currentGroup === undefined) openChat(groupList[0]);
+    }
   }, [groupList]);
 
   const backgroundColor = (group: Group): React.CSSProperties => {
@@ -54,6 +54,7 @@ function GroupList() {
   };
 
   const cutText = (group: Group | undefined) => {
+    const lastMsg = group.last_message;
     if (group === undefined) return '';
     else if (group.last_message?.is_image) return ': image';
     else if (
@@ -138,11 +139,12 @@ function GroupList() {
                                 : '-'}
                             </Typography>
                           </div>
-                          {/* //TODO: return this badge after fixing the redux... */}
                           <div>
-                            <Badge className={style.badge} bg="primary">
-                              {group.not_read}
-                            </Badge>
+                            {group.not_read > 0 && (
+                              <Badge className={style.badge} bg="primary">
+                                {group.not_read}
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </React.Fragment>

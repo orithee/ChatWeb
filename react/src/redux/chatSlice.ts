@@ -60,7 +60,6 @@ export const chatSlice = createSlice({
 
     // Insert a new message to the 'groupMessages' state:
     updateNewGroupMessage: (state, action: newGroupMessageAction) => {
-      // TODO: Write here explanatory notes..(Why the undefined?)
       if (action.payload === undefined) {
         state.groupMessages = action.payload;
       } else {
@@ -72,17 +71,23 @@ export const chatSlice = createSlice({
         }
       }
 
-      // Update the last message in the groupList:
-      if (state.groupList != undefined) {
-        for (const group of state.groupList) {
-          if (group.group_id == action.payload?.group_id) {
-            group.last_message = action.payload;
+      // Update the last message in the 'groupList':
+      if (state.groupList !== undefined) {
+        state.groupList.forEach((group, index) => {
+          if (group.group_id === action.payload?.group_id) {
+            group.row_to_json = action.payload;
+            group.last_message = action.payload.message_id;
             if (state.currentGroup?.group_id !== group.group_id) {
-              group.not_read = group.not_read + 1;
+              group.not_read++;
             }
-            break;
+
+            // Update the 'groupList' order:
+            if (index > 0) {
+              state.groupList?.splice(index, 1);
+              state.groupList?.splice(0, 0, group);
+            }
           }
-        }
+        });
       }
     },
   },

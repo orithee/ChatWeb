@@ -26,7 +26,7 @@ export function convertTime(str: string) {
 }
 
 export function cutMessageText(group: Group) {
-  const lastMsg = group.last_message;
+  const lastMsg = group.row_to_json;
   if (group === undefined) return '';
   else if (lastMsg?.is_image) return ': image';
   else if (lastMsg && lastMsg.message_text.length > 10) {

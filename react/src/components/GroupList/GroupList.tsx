@@ -48,6 +48,8 @@ function GroupList() {
 
   useEffect(() => {
     if (groupList !== undefined && groupList.length > 0) {
+      // console.log(groupList[0].not_read);
+      // console.log(groupList[1].not_read);
       if (currentGroup === undefined) openChat(groupList[0]);
     }
   }, [groupList]);
@@ -91,8 +93,8 @@ function GroupList() {
                           variant="body2"
                           color="#beb8ae"
                         >
-                          {group.last_message
-                            ? convertTime(group.last_message?.created_at)
+                          {group.last_message > 0
+                            ? convertTime(group.row_to_json.created_at)
                             : ''}
                         </Typography>
                       </div>
@@ -109,8 +111,8 @@ function GroupList() {
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group.last_message
-                                ? group.last_message?.sent_by_name
+                              {group.last_message > 0
+                                ? group.row_to_json.sent_by_name
                                 : '-'}
                             </Typography>
                             ;
@@ -121,7 +123,7 @@ function GroupList() {
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group.last_message
+                              {group.last_message > 0
                                 ? cutMessageText(group)
                                 : 'no messages'}
                             </Typography>

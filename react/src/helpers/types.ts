@@ -71,7 +71,8 @@ export interface Group {
   admin_id: number;
   group_name: string;
   image: string;
-  last_message: GroupMessage | undefined;
+  last_message: number;
+  row_to_json: GroupMessage;
   not_read: number;
 }
 

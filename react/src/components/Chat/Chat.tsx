@@ -4,7 +4,7 @@ import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
-import { toStr } from '../../helpers/auxiliaryFunc';
+import { toStr, convertTime } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
@@ -81,14 +81,6 @@ function Chat() {
     return {
       backgroundColor: condition ? '#202c33' : '#005c4b',
     };
-  };
-
-  const convertTime = (str: string) => {
-    // Displaying the current time to the user:
-    let hour = Number(str.slice(0, 2)) + 3;
-    if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
-    if (10 > hour) return '0' + hour + str.slice(2, 5);
-    else return hour + str.slice(2, 5);
   };
 
   return (

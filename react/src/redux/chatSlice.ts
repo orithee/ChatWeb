@@ -76,9 +76,9 @@ export const chatSlice = createSlice({
       if (state.groupList != undefined) {
         for (const group of state.groupList) {
           if (group.group_id == action.payload?.group_id) {
+            group.last_message = action.payload;
             if (state.currentGroup?.group_id !== group.group_id) {
               group.not_read = group.not_read + 1;
-              group.last_message = action.payload;
             }
             break;
           }

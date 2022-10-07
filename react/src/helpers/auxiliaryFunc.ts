@@ -1,4 +1,4 @@
-import { MessageTypes } from './types';
+import { Group, MessageTypes } from './types';
 
 export function toStr(msg: Object): string {
   // A function that Convert object to string:
@@ -15,6 +15,23 @@ export function toObj(msg: string): MessageTypes {
     console.log('Error!  This message is not object');
     return { type: 'error', problem: 'convert', title: 'is string' };
   }
+}
+
+export function convertTime(str: string) {
+  // Displaying the current time to the user:
+  let hour = Number(str.slice(0, 2)) + 3;
+  if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
+  if (10 > hour) return '0' + hour + str.slice(2, 5);
+  else return hour + str.slice(2, 5);
+}
+
+export function cutMessageText(group: Group) {
+  const lastMsg = group.last_message;
+  if (group === undefined) return '';
+  else if (lastMsg?.is_image) return ': image';
+  else if (lastMsg && lastMsg.message_text.length > 10) {
+    return ': ' + lastMsg?.message_text.slice(0, 10) + '...';
+  } else return ': ' + lastMsg?.message_text;
 }
 
 export function setToken(value: string) {

@@ -5,7 +5,11 @@ import { chatState, globalState } from '../../redux/store';
 import { updateCurrentGroup } from '../../redux/chatSlice';
 import { useContext, useEffect } from 'react';
 import { WsConnection } from '../../App';
-import { toStr } from '../../helpers/auxiliaryFunc';
+import {
+  toStr,
+  convertTime,
+  cutMessageText,
+} from '../../helpers/auxiliaryFunc';
 import { Group } from '../../helpers/types';
 
 import * as React from 'react';
@@ -53,26 +57,6 @@ function GroupList() {
     return { backgroundColor: condition ? '#2a3942' : '#202c33' };
   };
 
-  const cutText = (group: Group | undefined) => {
-    const lastMsg = group.last_message;
-    if (group === undefined) return '';
-    else if (group.last_message?.is_image) return ': image';
-    else if (
-      group.last_message &&
-      group.last_message?.message_text.length > 10
-    ) {
-      return ': ' + group.last_message?.message_text.slice(0, 10) + '...';
-    } else return ': ' + group.last_message?.message_text;
-  };
-
-  const convertTime = (str: string) => {
-    // Displaying the current time to the user:
-    let hour = Number(str.slice(0, 2)) + 3;
-    if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
-    if (10 > hour) return '0' + hour + str.slice(2, 5);
-    else return hour + str.slice(2, 5);
-  };
-
   return (
     <div className={style.container}>
       <List
@@ -99,7 +83,7 @@ function GroupList() {
                   <ListItemText
                     primary={
                       <div className={style.space_between}>
-                        {group ? group.group_name : 'no group'}
+                        {group.group_name}
                         <Typography
                           sx={{ textAlignLast: 'right' }}
                           alignItems="flex-end"
@@ -107,8 +91,9 @@ function GroupList() {
                           variant="body2"
                           color="#beb8ae"
                         >
-                          {group.last_message &&
-                            convertTime(group.last_message?.created_at)}
+                          {group.last_message
+                            ? convertTime(group.last_message?.created_at)
+                            : ''}
                         </Typography>
                       </div>
                     }
@@ -124,7 +109,9 @@ function GroupList() {
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group ? group.last_message?.sent_by_name : '-'}
+                              {group.last_message
+                                ? group.last_message?.sent_by_name
+                                : '-'}
                             </Typography>
                             ;
                             <Typography
@@ -134,9 +121,9 @@ function GroupList() {
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group.last_message?.message_text
-                                ? cutText(group)
-                                : '-'}
+                              {group.last_message
+                                ? cutMessageText(group)
+                                : 'no messages'}
                             </Typography>
                           </div>
                           <div>
@@ -156,24 +143,6 @@ function GroupList() {
             );
           })}
       </List>
-      {/* 
-        // TODO: 1. If this group does not opening now - add green indication about the message on the group list.
-      */}
-      {/* <ListGroup className={style.list}>
-        {groupList &&
-          groupList.map((group, index) => {
-            return (
-              <ListGroup.Item
-                onClick={() => openChat(group)}
-                className={style.item}
-                style={backgroundColor(group)}
-                key={index}
-              >
-                {group.group_name}
-              </ListGroup.Item>
-            );
-          })}
-      </ListGroup> */}
     </div>
   );
 }

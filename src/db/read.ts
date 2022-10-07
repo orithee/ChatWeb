@@ -112,8 +112,11 @@ export async function checkMembers(members: string[]) {
 
 // Pulling a list of groups from the database by username:
 export async function getListOfGroups(userName: string) {
-  const sql = `SELECT * FROM groups LEFT OUTER JOIN user_groups 
-  ON groups.group_id=user_groups.group_id WHERE user_groups.user_name=$1;`;
+  const sql = `SELECT user_groups.not_read, groups.*, row_to_json(group_messages.*) FROM groups
+  JOIN group_messages ON groups.last_message=group_messages.message_id  
+  LEFT OUTER JOIN user_groups 
+  ON groups.group_id=user_groups.group_id 
+  WHERE user_groups.user_name=$1 ORDER BY group_messages.created_on DESC, group_messages.created_at DESC;`;
   const values = [userName];
 
   return new Promise<Group[] | []>((resolve, _reject) => {
@@ -122,34 +125,7 @@ export async function getListOfGroups(userName: string) {
         console.log(err.stack);
         resolve([]);
       } else {
-        resolve(await groupsWithLastMessages(res.rows));
-      }
-    });
-  });
-}
-
-// TODO: Add a message_id column to user_groups  and pull the last message automatically.
-// TODO --  In addition - update every message sent to be the last message..
-async function groupsWithLastMessages(groups: Group[]) {
-  return await Promise.all(
-    groups.map(async (group) => {
-      group.last_message = await getLastMessage(group.group_id);
-      return group;
-    })
-  );
-}
-
-async function getLastMessage(groupId: number) {
-  const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_on DESC, created_at DESC LIMIT 1;`;
-  const values = [groupId];
-
-  return new Promise<GroupMessage | undefined>((resolve, _reject) => {
-    postgres.query(sql, values, (err, res) => {
-      if (err) {
-        console.log(err.stack);
-        resolve(undefined);
-      } else {
-        resolve(res.rows[0]);
+        resolve(res.rows);
       }
     });
   });

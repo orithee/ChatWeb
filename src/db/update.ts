@@ -37,7 +37,6 @@ export function updateNotReadByOne(groupId: number) {
 export function resetNotRead(userName: string, groupId: number) {
   // Reset the number of unread messages of specific user:
   const update = `UPDATE user_groups SET not_read=0 WHERE user_name=$1 AND group_id=$2;`;
-  console.log([userName, groupId]);
   const values = [userName, groupId];
 
   return new Promise<boolean>((resolve, _reject) => {
@@ -46,7 +45,6 @@ export function resetNotRead(userName: string, groupId: number) {
         console.log(err.stack);
         resolve(false);
       } else {
-        console.log('success:');
         resolve(true);
       }
     });

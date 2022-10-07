@@ -48,8 +48,6 @@ function GroupList() {
 
   useEffect(() => {
     if (groupList !== undefined && groupList.length > 0) {
-      // console.log(groupList[0].not_read);
-      // console.log(groupList[1].not_read);
       if (currentGroup === undefined) openChat(groupList[0]);
     }
   }, [groupList]);

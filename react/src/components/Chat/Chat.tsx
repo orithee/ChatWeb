@@ -8,12 +8,12 @@ import { toStr, convertTime } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
+import GroupMembers from '../GroupMembers/GroupMembers';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
-  const members = useSelector((state: chatState) => state.chat.groupMembers);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
   const user = useSelector((state: globalState) => state.global.user);
 
@@ -87,11 +87,12 @@ function Chat() {
   return (
     <div className={style.container}>
       <div className={style.up}>
-        <div className={style.up_left}>
+        <div>
           {/* // TODO: Add profile img option */}
-          <p>{group?.group_name}</p>
+          {group?.group_name}
           {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
         </div>
+        <GroupMembers />
       </div>
       <div ref={mainContainer} className={style.main}>
         {messages &&

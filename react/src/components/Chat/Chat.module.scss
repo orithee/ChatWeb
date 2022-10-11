@@ -16,13 +16,8 @@
   background-color: $chat-background1;
   border-radius: 8px;
   @include center();
-  .up_left {
-    position: absolute;
-    left: 3%;
-    p {
-      font-weight: 700;
-    }
-  }
+  justify-content: space-around;
+  font-weight: 700;
 }
 
 .main {

@@ -7,12 +7,15 @@ import {
   newGroupMessageAction,
   newGroupToGroupListAction,
   updateCurrentGroupAction,
+  GroupMember,
+  getGroupMembersAction,
 } from '../helpers/types';
 
 export interface ChatInterface {
   groupList: Group[] | undefined;
   currentGroup: Group | undefined;
   groupMessages: GroupMessage[] | undefined;
+  groupMembers: GroupMember[] | undefined;
   currentMessage: GroupMessage | undefined;
 }
 
@@ -20,6 +23,7 @@ const initialState: ChatInterface = {
   groupList: undefined,
   currentGroup: undefined,
   groupMessages: undefined,
+  groupMembers: undefined,
   currentMessage: undefined,
 };
 
@@ -56,6 +60,11 @@ export const chatSlice = createSlice({
     // Update the messages of the specific group chat that is open:
     getGroupMessages: (state, action: getGroupMessagesAction) => {
       state.groupMessages = action.payload;
+    },
+
+    // Update the 'groupMembers':
+    getGroupMembers: (state, action: getGroupMembersAction) => {
+      state.groupMembers = action.payload;
     },
 
     // Insert a new message to the 'groupMessages' state:
@@ -99,6 +108,7 @@ export const {
   getGroupMessages,
   updateNewGroupMessage,
   updateCurrentGroup,
+  getGroupMembers,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

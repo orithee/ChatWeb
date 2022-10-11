@@ -17,6 +17,7 @@ import {
   checkMembers,
   getListOfGroups,
   getMessages,
+  getGroupMembers,
 } from '../db/read';
 import { Server } from 'ws';
 import { resetNotRead } from '../db/update';
@@ -94,9 +95,11 @@ export async function groupMessagesFunction(
   client: Client,
   message: GetGroupMessages
 ) {
-  const messages = await getMessages(message.groupId);
   await resetNotRead(message.userName, message.groupId);
+  const messages = await getMessages(message.groupId);
+  const members = await getGroupMembers(message.groupId);
   client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
+  client.send(toStr({ type: 'groupMembersFromServer', members: members }));
 }
 
 // Add a new group message to the database, and returns to all clients:

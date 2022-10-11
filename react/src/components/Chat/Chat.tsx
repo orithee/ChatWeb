@@ -13,6 +13,7 @@ import Gif from '../Gif/Gif';
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
+  const members = useSelector((state: chatState) => state.chat.groupMembers);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
   const user = useSelector((state: globalState) => state.global.user);
 

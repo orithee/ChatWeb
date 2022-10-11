@@ -77,6 +77,11 @@ export interface Group {
   not_read: number;
 }
 
+export interface GroupMember {
+  user_name: string;
+  not_read: number;
+}
+
 export interface UserGroups {
   user_name: string;
   group_id: number;

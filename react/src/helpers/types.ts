@@ -6,7 +6,8 @@ export type MessageTypes =
   | Initial
   | GroupMessagesFromServer
   | GroupListFromServer
-  | NewGroupMessageFromServer;
+  | NewGroupMessageFromServer
+  | groupMembersFromServer;
 
 export interface LoginFromServer {
   type: 'loginFromServer';
@@ -85,6 +86,21 @@ export interface UserGroup {
 export interface newGroupMessageAction {
   payload: GroupMessage | undefined;
   type: string;
+}
+
+export interface getGroupMembersAction {
+  payload: GroupMember[];
+  type: string;
+}
+
+export interface GroupMember {
+  user_name: string;
+  not_read: number;
+}
+
+interface groupMembersFromServer {
+  type: 'groupMembersFromServer';
+  members: GroupMember[];
 }
 
 export interface getGroupMessagesAction {

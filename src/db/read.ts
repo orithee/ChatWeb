@@ -7,6 +7,7 @@ import {
   CreateNewGroup,
   Register,
   Group,
+  GroupMember,
 } from '../server/types';
 import { postgres } from './buildDB';
 
@@ -137,11 +138,29 @@ export async function getMessages(groupId: number) {
   const values = [groupId];
 
   return new Promise<GroupMessage[] | []>((resolve, _reject) => {
-    postgres.query(sql, values, (err, res) => {
+    postgres.query(sql, values, async (err, res) => {
       if (err) {
         console.log(err.stack);
         resolve([]);
-      } else resolve(res.rows);
+      } else {
+        resolve(res.rows);
+      }
+    });
+  });
+}
+// Pulling the list of group members:
+export async function getGroupMembers(groupId: number) {
+  const sql = `SELECT user_name, not_read FROM user_groups WHERE group_id=$1;`;
+  const values = [groupId];
+
+  return new Promise<GroupMember[] | []>((resolve, _reject) => {
+    postgres.query(sql, values, async (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve([]);
+      } else {
+        resolve(res.rows);
+      }
     });
   });
 }

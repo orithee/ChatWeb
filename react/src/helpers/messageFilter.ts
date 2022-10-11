@@ -8,6 +8,7 @@ import {
   updateNewGroupMessage,
   updateCurrentGroup,
   newGroupToGroupList,
+  getGroupMembers,
 } from '../redux/chatSlice';
 import { NewGroupFromServer, User } from './types';
 
@@ -32,6 +33,9 @@ export default function messageFilter(
   } else if (message.type === 'groupMessagesFromServer') {
     dispatch(getGroupMessages(message.messages));
 
+    // Group members (from the server):
+  } else if (message.type === 'groupMembersFromServer') {
+    dispatch(getGroupMembers(message.members));
     // A new message has been created (from the server):
   } else if (message.type === 'newGroupMessageFromServer') {
     dispatch(updateNewGroupMessage(message.data));

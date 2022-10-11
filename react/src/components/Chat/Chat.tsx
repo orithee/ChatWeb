@@ -79,7 +79,7 @@ function Chat() {
   const msgColor = (message: GroupMessage): React.CSSProperties => {
     const condition = message.sent_by_name === user?.user_name;
     return {
-      backgroundColor: condition ? '#202c33' : '#005c4b',
+      backgroundColor: condition ? '#005c4b' : '#202c33',
     };
   };
 

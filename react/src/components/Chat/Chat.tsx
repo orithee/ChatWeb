@@ -30,6 +30,17 @@ function Chat() {
     sendMessage(false);
   };
 
+  const sendWasRead = () => {
+    connection.send(
+      toStr({
+        type: 'wasReadMsg',
+        userName: user?.user_name,
+        groupId: group?.group_id,
+        lastMsgId: group?.last_message,
+      })
+    );
+  };
+
   const sendMessage = (img: boolean, url: string = inputMsg) => {
     if (url === inputMsg && inputMsg === '') return;
     if (user && group) {
@@ -57,6 +68,9 @@ function Chat() {
       setTimeout(() => {
         scrolling.scrollTop = scrolling.scrollHeight;
       }, 900);
+    }
+    if (group && group?.row_to_json) {
+      if (group?.row_to_json.sent_by_name !== user?.user_name) sendWasRead();
     }
   }, [messages]);
 
@@ -97,7 +111,6 @@ function Chat() {
       for (const member of members) {
         if (member.not_read > max) max = member.not_read;
       }
-      console.log(max);
       setMaxNotRead(max);
     }
   };

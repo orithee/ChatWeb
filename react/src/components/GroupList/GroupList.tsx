@@ -21,6 +21,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Badge from 'react-bootstrap/Badge';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 // A component that creates the user's group list:
 function GroupList() {
@@ -55,6 +56,10 @@ function GroupList() {
   const backgroundColor = (group: Group): React.CSSProperties => {
     const condition = group.group_id === currentGroup?.group_id;
     return { backgroundColor: condition ? '#2a3942' : '#202c33' };
+  };
+
+  const wasReadColor = (group: Group): React.CSSProperties => {
+    return { color: group.row_to_json.was_read ? '#4fc3f7' : '#beb8ae' };
   };
 
   return (
@@ -109,9 +114,20 @@ function GroupList() {
                               variant="body2"
                               color="#beb8ae"
                             >
-                              {group.last_message > 0
-                                ? group.row_to_json.sent_by_name
-                                : '-'}
+                              {group.last_message > 0 ? (
+                                <span>
+                                  <span>
+                                    <DoneAllIcon
+                                      style={wasReadColor(group)}
+                                      fontSize={'inherit'}
+                                    ></DoneAllIcon>
+                                    <span> </span>
+                                  </span>
+                                  {group.row_to_json.sent_by_name}
+                                </span>
+                              ) : (
+                                '-'
+                              )}
                             </Typography>
                             ;
                             <Typography

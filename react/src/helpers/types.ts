@@ -7,7 +7,8 @@ export type MessageTypes =
   | GroupMessagesFromServer
   | GroupListFromServer
   | NewGroupMessageFromServer
-  | groupMembersFromServer;
+  | groupMembersFromServer
+  | LastMessageWasReadFromServer;
 
 export interface LoginFromServer {
   type: 'loginFromServer';
@@ -101,6 +102,16 @@ export interface GroupMember {
 interface groupMembersFromServer {
   type: 'groupMembersFromServer';
   members: GroupMember[];
+}
+
+export interface LastMessageWasReadFromServer {
+  type: 'lastMessageWasRead';
+  groupId: number;
+}
+
+export interface LastMessageWasReadAction {
+  payload: number;
+  type: string;
 }
 
 export interface getGroupMessagesAction {

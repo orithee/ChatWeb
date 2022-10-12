@@ -6,6 +6,7 @@ import {
   CreateNewGroup,
   GetGroupMessages,
   MessageSent,
+  WasReadMsg,
 } from './types';
 import { createGroup, createUser, insertGroupMessage } from '../db/create';
 import { toStr, sendError } from './auxiliaryFunc';
@@ -18,9 +19,14 @@ import {
   getListOfGroups,
   getMessages,
   getGroupMembers,
+  checkLastMessageStatus,
 } from '../db/read';
 import { Server } from 'ws';
-import { resetNotRead } from '../db/update';
+import {
+  resetNotRead,
+  updateLastMessage,
+  updateLastMessageOnDb,
+} from '../db/update';
 
 // Checks if the token exists in the database - if exists returns the user:
 export async function initialFunction(client: Client, message: Initial) {
@@ -117,4 +123,22 @@ export async function messageSentFunction(
       );
     });
   } else client.send(sendError('error', 'chatMessage', 'failed'));
+}
+
+// Update the not_read on user_groups :
+export async function messageWasReadFunction(
+  ws: Server,
+  client: Client,
+  message: WasReadMsg
+) {
+  // Update...
+  resetNotRead(message.userName, message.groupId);
+  if (await checkLastMessageStatus(message.groupId)) {
+    updateLastMessageOnDb(message.lastMsgId);
+    ws.clients.forEach((client) => {
+      client.send(
+        toStr({ type: 'lastMessageWasRead', groupId: message.groupId })
+      );
+    });
+  }
 }

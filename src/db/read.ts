@@ -164,3 +164,23 @@ export async function getGroupMembers(groupId: number) {
     });
   });
 }
+
+export async function checkLastMessageStatus(groupId: number) {
+  // Check if all group members have seen the last message:
+  const sql = `SELECT not_read FROM user_groups WHERE group_id=$1;`;
+  const values = [groupId];
+
+  return new Promise<boolean>((resolve, _reject) => {
+    postgres.query(sql, values, async (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(false);
+      } else {
+        for (const row of res.rows) {
+          if (row.not_read > 0) resolve(false);
+        }
+        resolve(true);
+      }
+    });
+  });
+}

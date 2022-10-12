@@ -10,6 +10,7 @@ import {
   groupMessagesFunction,
   registerFunction,
   messageSentFunction,
+  messageWasReadFunction,
 } from './serverFunctions';
 
 init();
@@ -50,6 +51,8 @@ async function webSocketConnect() {
       if (type === 'getGroupMessages') groupMessagesFunction(client, message);
 
       if (type === 'groupMessage') messageSentFunction(ws, client, message);
+
+      if (type === 'wasReadMsg') messageWasReadFunction(ws, client, message);
 
       if (type === 'error') {
         client.send(sendError('error', 'string', 'This message is a string!'));

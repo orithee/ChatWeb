@@ -9,6 +9,7 @@ import {
   updateCurrentGroup,
   newGroupToGroupList,
   getGroupMembers,
+  updateLastMessageWasRead,
 } from '../redux/chatSlice';
 import { NewGroupFromServer, User } from './types';
 
@@ -33,9 +34,14 @@ export default function messageFilter(
   } else if (message.type === 'groupMessagesFromServer') {
     dispatch(getGroupMessages(message.messages));
 
+    // Update the last message - 'was_read' (from the server):
+  } else if (message.type === 'lastMessageWasRead') {
+    dispatch(updateLastMessageWasRead(message.groupId));
+
     // Group members (from the server):
   } else if (message.type === 'groupMembersFromServer') {
     dispatch(getGroupMembers(message.members));
+
     // A new message has been created (from the server):
   } else if (message.type === 'newGroupMessageFromServer') {
     dispatch(updateNewGroupMessage(message.data));
@@ -49,6 +55,7 @@ export default function messageFilter(
   } else {
     dispatch(updateGlobalMessage(message));
   }
+  // { type: 'lastMessageWasRead', groupId: message.groupId }
 }
 
 function showTheNewGroup(

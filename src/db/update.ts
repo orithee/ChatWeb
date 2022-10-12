@@ -50,3 +50,21 @@ export function resetNotRead(userName: string, groupId: number) {
     });
   });
 }
+
+export function updateLastMessageOnDb(lastMsgId: number) {
+  // Reset the number of unread messages of specific user:
+  const update = `UPDATE group_messages SET was_read=true WHERE message_id=$1;`;
+  const values = [lastMsgId];
+
+  return new Promise<boolean>((resolve, _reject) => {
+    postgres.query(update, values, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve(false);
+      } else {
+        console.log('Finish to update last message on DB');
+        resolve(true);
+      }
+    });
+  });
+}

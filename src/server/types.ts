@@ -7,6 +7,7 @@ export type MessagesTypes =
   | GetGroupList
   | GetGroupMessages
   | MessageSent
+  | WasReadMsg
   | Error;
 
 export interface Login {
@@ -45,6 +46,13 @@ export interface GetGroupMessages {
   type: 'getGroupMessages';
   groupId: number;
   userName: string;
+  lastMsgId: number;
+}
+export interface WasReadMsg {
+  type: 'wasReadMsg';
+  userName: string;
+  groupId: number;
+  lastMsgId: number;
 }
 
 export interface MessageSent {

@@ -9,6 +9,7 @@ import {
   updateCurrentGroupAction,
   GroupMember,
   getGroupMembersAction,
+  LastMessageWasReadAction,
 } from '../helpers/types';
 
 export interface ChatInterface {
@@ -40,6 +41,18 @@ export const chatSlice = createSlice({
     newGroupToGroupList: (state, action: newGroupToGroupListAction) => {
       if (state.groupList === undefined) state.groupList = [action.payload];
       else state.groupList = [action.payload, ...state.groupList];
+    },
+
+    // Update the last message - 'was_read' state on specific group:
+    updateLastMessageWasRead: (state, action: LastMessageWasReadAction) => {
+      if (state.groupList !== undefined) {
+        for (const group of state.groupList) {
+          if (group.group_id === action.payload) {
+            group.row_to_json.was_read = true;
+            return;
+          }
+        }
+      }
     },
 
     // Update the currentGroup that is open in the chat:
@@ -117,6 +130,7 @@ export const {
   updateNewGroupMessage,
   updateCurrentGroup,
   getGroupMembers,
+  updateLastMessageWasRead,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

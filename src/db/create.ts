@@ -79,13 +79,10 @@ export async function insertGroupMessage(message: MessageSent) {
         console.log(err.stack);
         resolve(undefined);
       } else {
-        // TODO: Call the update and define the current message_id in groups.
         if (res.rows.length === 1) {
           updateLastMessage(res.rows[0].message_id, res.rows[0].group_id);
           updateNotReadByOne(res.rows[0].group_id);
         }
-        // TODO: Call the update and add 1 to "not_read" column.
-        console.log('res.rows', res.rows);
         resolve(res.rows[0]);
       }
     });

@@ -98,6 +98,14 @@ export const chatSlice = createSlice({
           }
         });
       }
+
+      // Update 'not_read' number:
+      if (state.groupMembers) {
+        for (const member of state.groupMembers) {
+          if (member.user_name === action.payload?.sent_by_name) continue;
+          member.not_read++;
+        }
+      }
     },
   },
 });

@@ -9,15 +9,18 @@ import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
 import GroupMembers from '../GroupMembers/GroupMembers';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
+  const members = useSelector((state: chatState) => state.chat.groupMembers);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
   const user = useSelector((state: globalState) => state.global.user);
 
   const [inputMsg, setInputMsg] = useState<string>('');
+  const [maxNotRead, setMaxNotRead] = useState<number>(0);
   const [emojiOpen, setEmojiOpen] = useState<boolean>(false);
   const [gifOpen, setGifOpen] = useState<boolean>(false);
   const mainContainer = useRef<HTMLDivElement>(null);
@@ -58,6 +61,10 @@ function Chat() {
   }, [messages]);
 
   useEffect(() => {
+    calculateMaxNotRead();
+  }, [members]);
+
+  useEffect(() => {
     if (emojiOpen) setGifOpen(false);
   }, [emojiOpen]);
 
@@ -82,6 +89,25 @@ function Chat() {
     return {
       backgroundColor: condition ? '#005c4b' : '#202c33',
     };
+  };
+
+  const calculateMaxNotRead = () => {
+    if (members !== undefined) {
+      let max = members[0].not_read;
+      for (const member of members) {
+        if (member.not_read > max) max = member.not_read;
+      }
+      console.log(max);
+      setMaxNotRead(max);
+    }
+  };
+
+  const wasReadColor = (index: number): React.CSSProperties => {
+    if (messages !== undefined) {
+      if (messages.length - maxNotRead > index) return { color: '#4fc3f7' };
+      else return { color: '#beb8ae' };
+    }
+    return { color: '#4fc3f7' };
   };
 
   return (
@@ -125,6 +151,13 @@ function Chat() {
                           : 'start',
                     }}
                   >
+                    <span>
+                      <DoneAllIcon
+                        style={wasReadColor(index)}
+                        fontSize={'small'}
+                      ></DoneAllIcon>
+                      <span> </span>
+                    </span>
                     {convertTime(message.created_at)}
                   </div>
                 </div>

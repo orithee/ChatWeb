@@ -4,11 +4,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { chatState } from '../../redux/store';
+import { chatState, globalState } from '../../redux/store';
 import { useSelector } from 'react-redux';
 
 export default function GroupMembers() {
   const members = useSelector((state: chatState) => state.chat.groupMembers);
+  const user = useSelector((state: globalState) => state.global.user);
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -48,7 +49,16 @@ export default function GroupMembers() {
                     },
                   }}
                 >
-                  <ListItemText primary={member.user_name} />
+                  <ListItemText
+                    sx={{
+                      color:
+                        member.user_name === user?.user_name
+                          ? 'aquamarine'
+                          : 'auto',
+                    }}
+                    primary={member.user_name}
+                  />{' '}
+                  ({member.not_read})
                 </ListItem>
               ))}
             </List>

@@ -62,7 +62,6 @@ export function updateLastMessageOnDb(lastMsgId: number) {
         console.log(err.stack);
         resolve(false);
       } else {
-        console.log('Finish to update last message on DB');
         resolve(true);
       }
     });

@@ -81,6 +81,7 @@ export async function newGroupFunction(
     if (await checkGroupName(message)) {
       const newGroup = await createGroup(message);
       if (newGroup) {
+        const members = await getGroupMembers(newGroup.group_id);
         ws.clients.forEach((client) => {
           client.send(
             toStr({
@@ -89,6 +90,9 @@ export async function newGroupFunction(
               group: newGroup,
               members: message.members,
             })
+          );
+          client.send(
+            toStr({ type: 'groupMembersFromServer', members: members })
           );
         });
       } else client.send(sendError('error', 'createNewGroup', 'failed'));

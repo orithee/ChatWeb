@@ -6,11 +6,17 @@ import ListItemText from '@mui/material/ListItemText';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { chatState, globalState } from '../../redux/store';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 export default function GroupMembers() {
   const members = useSelector((state: chatState) => state.chat.groupMembers);
   const user = useSelector((state: globalState) => state.global.user);
+  const group = useSelector((state: chatState) => state.chat.currentGroup);
   const [open, setOpen] = React.useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [group]);
 
   return (
     <div>

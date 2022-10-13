@@ -72,9 +72,19 @@ function Chat() {
     if (group && group?.row_to_json) {
       if (group?.row_to_json.sent_by_name !== user?.user_name) sendWasRead();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   useEffect(() => {
+    const calculateMaxNotRead = () => {
+      if (members !== undefined) {
+        let max = members[0].not_read;
+        for (const member of members) {
+          if (member.not_read > max) max = member.not_read;
+        }
+        setMaxNotRead(max);
+      }
+    };
     calculateMaxNotRead();
   }, [members]);
 
@@ -103,16 +113,6 @@ function Chat() {
     return {
       backgroundColor: condition ? '#005c4b' : '#202c33',
     };
-  };
-
-  const calculateMaxNotRead = () => {
-    if (members !== undefined) {
-      let max = members[0].not_read;
-      for (const member of members) {
-        if (member.not_read > max) max = member.not_read;
-      }
-      setMaxNotRead(max);
-    }
   };
 
   const wasReadColor = (index: number): React.CSSProperties => {

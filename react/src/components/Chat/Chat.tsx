@@ -1,5 +1,5 @@
 import style from './Chat.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
@@ -10,6 +10,7 @@ import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import { updateWasReadSlice } from '../../redux/chatSlice';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
@@ -18,6 +19,8 @@ function Chat() {
   const members = useSelector((state: chatState) => state.chat.groupMembers);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
   const user = useSelector((state: globalState) => state.global.user);
+
+  const dispatch = useDispatch();
 
   const [inputMsg, setInputMsg] = useState<string>('');
   const [maxNotRead, setMaxNotRead] = useState<number>(0);
@@ -69,15 +72,17 @@ function Chat() {
         scrolling.scrollTop = scrolling.scrollHeight;
       }, 900);
     }
-    if (group && group?.row_to_json) {
-      if (group?.row_to_json.sent_by_name !== user?.user_name) sendWasRead();
+    if (group) {
+      sendWasRead();
+      if (user) dispatch(updateWasReadSlice(user.user_name));
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 
   useEffect(() => {
     const calculateMaxNotRead = () => {
-      if (members !== undefined) {
+      if (members) {
         let max = members[0].not_read;
         for (const member of members) {
           if (member.not_read > max) max = member.not_read;

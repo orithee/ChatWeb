@@ -45,12 +45,30 @@ export const chatSlice = createSlice({
 
     // Update the last message - 'was_read' state on specific group:
     updateLastMessageWasRead: (state, action: LastMessageWasReadAction) => {
-      if (state.groupList !== undefined) {
+      if (state.groupMembers && action.payload.userName) {
+        for (const member of state.groupMembers) {
+          if (member.user_name === action.payload.userName) {
+            member.not_read = 0;
+            break;
+          }
+        }
+      } else if (state.groupList !== undefined) {
         for (const group of state.groupList) {
-          if (group.group_id === action.payload) {
+          if (group.group_id === action.payload.groupId && group.row_to_json) {
             group.row_to_json.was_read = true;
+            if (state.groupMembers) {
+              for (const member of state.groupMembers) member.not_read = 0;
+            }
             return;
           }
+        }
+      }
+    },
+
+    updateWasReadSlice: (state, action) => {
+      if (state.groupMembers) {
+        for (const member of state.groupMembers) {
+          if (member.user_name === action.payload) member.not_read = 0;
         }
       }
     },
@@ -60,7 +78,7 @@ export const chatSlice = createSlice({
       state.currentGroup = action.payload;
 
       // Reset the 'not_read' number of currentGroup:
-      if (state.groupList != undefined) {
+      if (state.groupList !== undefined) {
         for (const group of state.groupList) {
           if (group.group_id === action.payload?.group_id) {
             group.not_read = 0;
@@ -131,6 +149,7 @@ export const {
   updateCurrentGroup,
   getGroupMembers,
   updateLastMessageWasRead,
+  updateWasReadSlice,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

@@ -28,9 +28,7 @@ function GroupList() {
   const connection = useContext<WebSocket>(WsConnection);
   const groupList = useSelector((state: chatState) => state.chat.groupList);
   const user = useSelector((state: globalState) => state.global.user);
-  const currentGroup = useSelector(
-    (state: chatState) => state.chat.currentGroup
-  );
+  const group = useSelector((state: chatState) => state.chat.currentGroup);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -49,12 +47,12 @@ function GroupList() {
 
   useEffect(() => {
     if (groupList !== undefined && groupList.length > 0) {
-      if (currentGroup === undefined) openChat(groupList[0]);
+      if (group !== undefined) openChat(group);
     }
-  }, [groupList]);
+  }, [group]);
 
-  const backgroundColor = (group: Group): React.CSSProperties => {
-    const condition = group.group_id === currentGroup?.group_id;
+  const backgroundColor = (groupVar: Group): React.CSSProperties => {
+    const condition = groupVar.group_id === group?.group_id;
     return { backgroundColor: condition ? '#2a3942' : '#202c33' };
   };
 

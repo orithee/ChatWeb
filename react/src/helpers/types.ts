@@ -107,10 +107,11 @@ interface groupMembersFromServer {
 export interface LastMessageWasReadFromServer {
   type: 'lastMessageWasRead';
   groupId: number;
+  userName?: string;
 }
 
 export interface LastMessageWasReadAction {
-  payload: number;
+  payload: { groupId: number; userName?: string | undefined };
   type: string;
 }
 

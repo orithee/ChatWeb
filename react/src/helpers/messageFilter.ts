@@ -36,7 +36,8 @@ export default function messageFilter(
 
     // Update the last message - 'was_read' (from the server):
   } else if (message.type === 'lastMessageWasRead') {
-    dispatch(updateLastMessageWasRead(message.groupId));
+    const msg = { groupId: message.groupId, userName: message.userName };
+    dispatch(updateLastMessageWasRead(msg));
 
     // Group members (from the server):
   } else if (message.type === 'groupMembersFromServer') {

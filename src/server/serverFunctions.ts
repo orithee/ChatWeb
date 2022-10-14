@@ -136,12 +136,18 @@ export async function messageWasReadFunction(
   message: WasReadMsg
 ) {
   // Update...
-  resetNotRead(message.userName, message.groupId);
+  await resetNotRead(message.userName, message.groupId);
   if (await checkLastMessageStatus(message.groupId)) {
     updateLastMessageOnDb(message.lastMsgId);
     ws.clients.forEach((client) => {
       client.send(
         toStr({ type: 'lastMessageWasRead', groupId: message.groupId })
+      );
+    });
+  }else {
+    ws.clients.forEach((client) => {
+      client.send(
+        toStr({ type: 'lastMessageWasRead', groupId: message.groupId, userName: message.userName  })
       );
     });
   }

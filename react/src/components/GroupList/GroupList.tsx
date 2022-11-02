@@ -151,7 +151,6 @@ function GroupList() {
                     }
                   />
                 </ListItem>
-                <Divider variant="inset" component="li" />
               </div>
             );
           })}

@@ -1,6 +1,6 @@
 import { toStr } from './auxiliaryFunc';
 
-export function WsConnect() {
+export function WsConnectFunc() {
   // A function that starts the connection with the WebSocket:
   const URL = getUrlString();
   let ws = new WebSocket(URL);

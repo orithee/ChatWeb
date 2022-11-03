@@ -127,7 +127,7 @@ function GroupList() {
                               '-'
                             )}
                           </Typography>
-                          ;
+
                           <Typography
                             key={2}
                             sx={{ display: 'inline' }}

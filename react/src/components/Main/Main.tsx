@@ -33,10 +33,7 @@ function Main() {
   }, [message]);
 
   useEffect(() => {
-    if (windowSize.innerWidth <= 700) {
-      console.log('no desktop');
-      setIsDesktop(false);
-    } else console.log('is desktop');
+    if (windowSize.innerWidth <= 700) setIsDesktop(false);
   }, []);
 
   if (!isDesktop)

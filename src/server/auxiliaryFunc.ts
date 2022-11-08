@@ -1,4 +1,8 @@
-import { MessagesTypes } from './types';
+import { Client, MessagesTypes } from './types';
+import dotenv from 'dotenv';
+import { join } from 'path';
+import axios from 'axios';
+dotenv.config({ path: join(__dirname, '../../.env') });
 
 // A function that checks the value from the client and converts it to JSON:
 export function toObj(msg: any): MessagesTypes {
@@ -28,4 +32,25 @@ export function sendError(
     problem: problem,
     title: title,
   });
+}
+
+// A function that makes an api for gif:
+export async function gifApiFunction(client: Client, term: string) {
+  try {
+    const key = process.env.GIF_API_KEY;
+    let url = `https://api.giphy.com/v1/gifs/search?api_key=${key}&limit=3&q=`;
+    url = url.concat(term.trim());
+    const content = await axios.get(url);
+    if (content.data.data[0].images.downsized.url) {
+      client.send(
+        toStr({
+          type: 'gifRes',
+          success: true,
+          url: content.data.data[0].images.downsized.url,
+        })
+      );
+    }
+  } catch (error) {
+    client.send(toStr({ type: 'gifRes', success: false, url: '' }));
+  }
 }

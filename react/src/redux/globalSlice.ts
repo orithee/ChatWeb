@@ -6,11 +6,12 @@ import {
   Initial,
   User,
   updateUserLoggedAction,
+  GifFromServer,
 } from '../helpers/types';
 
 export interface GlobalInterface {
   user: User | undefined;
-  globalMessage: Initial | ErrorFromServer | NewGroupFromServer;
+  globalMessage: Initial | ErrorFromServer | NewGroupFromServer | GifFromServer;
 }
 
 const initialState: GlobalInterface = {

@@ -8,11 +8,17 @@ export type MessageTypes =
   | GroupListFromServer
   | NewGroupMessageFromServer
   | groupMembersFromServer
-  | LastMessageWasReadFromServer;
+  | LastMessageWasReadFromServer
+  | GifFromServer;
 
 export interface LoginFromServer {
   type: 'loginFromServer';
   userData: User;
+}
+export interface GifFromServer {
+  type: 'gifRes';
+  success: boolean;
+  url: string;
 }
 
 export interface ErrorFromServer {
@@ -136,7 +142,7 @@ export interface getGroupListAction {
 }
 
 export interface updateGlobalMessageAction {
-  payload: Initial | ErrorFromServer | NewGroupFromServer;
+  payload: Initial | ErrorFromServer | NewGroupFromServer | GifFromServer;
   type: string;
 }
 

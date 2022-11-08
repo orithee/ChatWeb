@@ -8,6 +8,7 @@ export type MessagesTypes =
   | GetGroupMessages
   | MessageSent
   | WasReadMsg
+  | TryGif
   | Error;
 
 export interface Login {
@@ -116,6 +117,12 @@ export interface LoginToClient {
   type: 'loginFromServer';
   userData: User;
 }
+
+export interface TryGif {
+  type: 'tryGif';
+  termStr: string;
+}
+
 // Client type:
 export type Client = {
   send: (arg0: string) => void;

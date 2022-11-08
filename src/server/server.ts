@@ -2,7 +2,7 @@ import { Server } from 'ws';
 import { MessagesTypes, Client } from './types';
 import { expressServer } from './express';
 import { postgresConnect, createTables } from '../db/buildDB';
-import { toObj, sendError } from './auxiliaryFunc';
+import { toObj, sendError, gifApiFunction } from './auxiliaryFunc';
 import {
   newGroupFunction,
   initialFunction,
@@ -53,6 +53,8 @@ async function webSocketConnect() {
       if (type === 'groupMessage') messageSentFunction(ws, client, message);
 
       if (type === 'wasReadMsg') messageWasReadFunction(ws, client, message);
+
+      if (type === 'tryGif') gifApiFunction(client, message.termStr);
 
       if (type === 'error') {
         client.send(sendError('error', 'string', 'This message is a string!'));

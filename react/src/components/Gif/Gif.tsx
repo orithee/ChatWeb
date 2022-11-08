@@ -1,7 +1,11 @@
 import style from './Gif.module.scss';
-import { useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
+import { WsConnection } from '../../App';
+import { toStr } from '../../helpers/auxiliaryFunc';
+import { useSelector } from 'react-redux';
+import { globalState } from '../../redux/store';
 
 interface Props {
   sendMessage: Function;
@@ -9,22 +13,38 @@ interface Props {
 }
 
 function Gif({ sendMessage, setGifOpen }: Props) {
+  const connection = useContext<WebSocket>(WsConnection);
+  const message = useSelector(
+    (state: globalState) => state.global.globalMessage
+  );
+  const firstUpdate = useRef(true);
+
   const [term, setTerm] = useState<string>('');
   const [noGif, setNoGif] = useState<boolean>(false);
   const sendGifMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const key = 'i51BipA21Bvx8NDvHOJDEv53L4LiQDhp';
-      let url = `https://api.giphy.com/v1/gifs/search?api_key=${key}&limit=3&q=`;
-      url = url.concat(term.trim());
-      const content = await (await fetch(url)).json();
-      const gifUrl = content.data[0].images.downsized.url;
-      sendMessage(true, gifUrl);
-      setGifOpen(false);
-    } catch (error) {
-      setNoGif(true);
+    if (term) {
+      connection.send(
+        toStr({
+          type: 'tryGif',
+          termStr: term,
+        })
+      );
     }
   };
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+    if (message.type === 'gifRes') {
+      if (message.success === true) {
+        sendMessage(true, message.url);
+        setGifOpen(false);
+      } else setNoGif(true);
+    }
+  }, [message]);
 
   return (
     <div className={style.main_container}>

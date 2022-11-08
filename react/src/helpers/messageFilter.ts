@@ -56,7 +56,6 @@ export default function messageFilter(
   } else {
     dispatch(updateGlobalMessage(message));
   }
-  // { type: 'lastMessageWasRead', groupId: message.groupId }
 }
 
 function showTheNewGroup(

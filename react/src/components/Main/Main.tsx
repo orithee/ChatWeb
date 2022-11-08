@@ -83,10 +83,14 @@ function Main() {
           <CreateNewGroup openNew={setAddGroupBtn} user={user} />
         )}
         <div style={{ height: 'auto', margin: '2%' }}>
-          {user && <div style={{ color: 'white' }}>{user.user_name}</div>}
+          {user && (
+            <div style={{ color: 'white', fontSize: 'large' }}>
+              {user.user_name}
+            </div>
+          )}
           <Options addGroupBtn={setAddGroupBtn} />
         </div>
-        <div style={{ height: '100%' }}>
+        <div style={{ height: '100%', width: '95%' }}>
           <GroupList setBarOpen={setBarOpen} />
         </div>
       </div>

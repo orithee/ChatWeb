@@ -14,6 +14,9 @@
   height: 100%;
   width: 33%;
   padding: 1.2%;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 }
 
 .chat_container {
@@ -25,6 +28,9 @@
   width: 67%;
   height: 100%;
   position: relative;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 }
 
 .options {
@@ -35,4 +41,11 @@
 .button {
   margin: 0.4rem;
   border-radius: 5px;
+}
+
+.change_side {
+  position: fixed;
+  left: 3%;
+  top: 3%;
+  z-index: 2;
 }

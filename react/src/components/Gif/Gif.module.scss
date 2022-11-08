@@ -8,6 +8,9 @@
   padding: 10px;
   z-index: 1;
   width: 25%;
+  @media (max-width: 700px) {
+    width: 85%;
+  }
   .label {
     display: flex;
     align-items: flex-start;

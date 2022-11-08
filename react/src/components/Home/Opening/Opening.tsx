@@ -14,15 +14,18 @@ function Opening() {
         <div>Keep your social circles close to you.</div>
         <div>Enjoy a unique user experience. </div>
         <div>Choose only Chat Web ! </div>
-        <div className={style.call_for_action}>
-          👇 Log in / register now 👇{' '}
-        </div>
+        <div className={style.call_for_action}>👇 Register now 👇 </div>
       </div>
       <div className={style.bottom}>
         <button onClick={() => navigate('/login')}>login</button>
         <button onClick={() => navigate('/register')}>register</button>
         <div>
-          <p onClick={() => signAsGuest()}>Continue as guest</p>
+          <p className={style.normal_size} onClick={() => signAsGuest()}>
+            Continue as guest
+          </p>
+          <p className={style.short_size} onClick={() => signAsGuest()}>
+            guest &#8658;
+          </p>
         </div>
       </div>
     </div>

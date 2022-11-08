@@ -15,18 +15,18 @@ export default function logOut(
   navigate: NavigateFunction
 ) {
   // A function that reset all - delete the token and return to the initial state:
-  // 1. Reset appSlice:
+  // 1. Reset token:
+  deleteToken();
+
+  // 2. Reset appSlice:
   dispatch(updateUserLogged(undefined));
   dispatch(updateGlobalMessage({ type: 'initial' }));
 
-  // 2. Reset mainSlice:
+  // 3. Reset mainSlice:
   dispatch(getGroupList(undefined));
   dispatch(updateCurrentGroup(undefined));
   dispatch(updateNewGroupMessage(undefined));
   dispatch(getGroupMessages(undefined));
-
-  // 3. Reset token:
-  deleteToken();
 
   // 4. Return home
   navigate('/', { replace: true });

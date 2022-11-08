@@ -46,8 +46,9 @@ export function setToken(value: string) {
     value +
     ';path=/' +
     ';expires=' +
-    'SameSite=Lax' +
-    expire.toUTCString();
+    expire.toUTCString() +
+    ';SameSite=Lax';
+  // + ';secure';
 }
 
 export function deleteToken() {

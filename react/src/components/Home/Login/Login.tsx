@@ -67,7 +67,12 @@ function Login() {
             Back
           </button>
           <div>
-            <p onClick={() => signAsGuest()}>Continue as guest</p>
+            <p className={style.normal_size} onClick={() => signAsGuest()}>
+              Continue as guest
+            </p>
+            <p className={style.short_size} onClick={() => signAsGuest()}>
+              guest &#8658;
+            </p>
           </div>
         </div>
       </Form>

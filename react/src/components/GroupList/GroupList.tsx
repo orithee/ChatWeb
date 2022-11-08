@@ -23,8 +23,12 @@ import Typography from '@mui/material/Typography';
 import Badge from 'react-bootstrap/Badge';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 
+interface Props {
+  setBarOpen: Function;
+}
+
 // A component that creates the user's group list:
-function GroupList() {
+function GroupList({ setBarOpen }: Props) {
   const connection = useContext<WebSocket>(WsConnection);
   const groupList = useSelector((state: chatState) => state.chat.groupList);
   const user = useSelector((state: globalState) => state.global.user);
@@ -72,7 +76,10 @@ function GroupList() {
               <div key={index}>
                 <ListItem
                   alignItems="flex-start"
-                  onClick={() => openChat(group)}
+                  onClick={() => {
+                    openChat(group);
+                    setBarOpen(false);
+                  }}
                   className={style.item}
                   style={backgroundColor(group)}
                 >

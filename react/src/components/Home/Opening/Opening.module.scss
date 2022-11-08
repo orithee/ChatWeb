@@ -50,6 +50,19 @@
         &:hover {
           transform: scale(1.06);
         }
+        @media only screen and (max-width: 500px) {
+          padding-right: 10%;
+        }
+      }
+      .normal_size {
+        @media only screen and (max-width: 501px) {
+          display: none;
+        }
+      }
+      .short_size {
+        @media only screen and (min-width: 500px) {
+          display: none;
+        }
       }
     }
   }

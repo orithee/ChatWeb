@@ -11,10 +11,15 @@ import Gif from '../Gif/Gif';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { updateWasReadSlice } from '../../redux/chatSlice';
+import MicIcon from '@mui/icons-material/Mic';
+import { useOutletContext } from 'react-router-dom';
+import DehazeIcon from '@mui/icons-material/Dehaze';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
   const connection = useContext<WebSocket>(WsConnection);
+  const setBarOpen = useOutletContext<Function>();
+
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
   const members = useSelector((state: chatState) => state.chat.groupMembers);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
@@ -131,12 +136,16 @@ function Chat() {
   return (
     <div className={style.container}>
       <div className={style.up}>
-        <div>
-          {/* // TODO: Add profile img option */}
-          {group?.group_name}
-          {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
-        </div>
-        <GroupMembers />
+        {/* setBarOpen */}
+        <span className={style.bar_open} onClick={() => setBarOpen(true)}>
+          <DehazeIcon />
+        </span>
+        <span className={style.group_name}>{group?.group_name}</span>
+        <span className={style.margin}></span>
+        {gifOpen && <Gif sendMessage={sendMessage} setGifOpen={setGifOpen} />}
+        <span className={style.group_members}>
+          <GroupMembers />
+        </span>
       </div>
       <div ref={mainContainer} className={style.main}>
         {messages &&
@@ -216,14 +225,19 @@ function Chat() {
             currentInput={inputMsg}
           />
         </div>
-        <form onSubmit={(e) => submitForm(e)}>
-          <input
-            type="text"
-            onChange={(e) => setInputMsg(e.target.value)}
-            value={inputMsg}
-            placeholder="Type a message"
-          />
-        </form>
+        <span className={style.message_form}>
+          <form onSubmit={(e) => submitForm(e)}>
+            <input
+              type="text"
+              onChange={(e) => setInputMsg(e.target.value)}
+              value={inputMsg}
+              placeholder="Type a message"
+            />
+          </form>
+        </span>
+        <span className={style.mic}>
+          <MicIcon />
+        </span>
       </div>
     </div>
   );

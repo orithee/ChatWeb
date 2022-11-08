@@ -44,16 +44,6 @@ function Main() {
       <div className={style.main_container}>
         {barOpen ? (
           <div className={style.bar_container}>
-            {group && (
-              <div
-                className={style.change_side}
-                onClick={() => {
-                  setBarOpen(false);
-                }}
-              >
-                <DehazeIcon style={{ color: 'white', cursor: 'pointer' }} />
-              </div>
-            )}
             {addGroupBtn && user && (
               <CreateNewGroup openNew={setAddGroupBtn} user={user} />
             )}
@@ -67,10 +57,7 @@ function Main() {
           </div>
         ) : (
           <div className={style.chat_container}>
-            <div className={style.change_side} onClick={() => setBarOpen(true)}>
-              <DehazeIcon style={{ color: 'white', cursor: 'pointer' }} />
-            </div>
-            <Outlet />
+            <Outlet context={setBarOpen} />
           </div>
         )}
       </div>
@@ -95,7 +82,7 @@ function Main() {
         </div>
       </div>
       <div className={style.chat_container}>
-        <Outlet />
+        <Outlet context={setBarOpen} />
       </div>
     </div>
   );

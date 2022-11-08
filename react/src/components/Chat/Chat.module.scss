@@ -15,9 +15,32 @@
   height: 10%;
   background-color: $chat-background1;
   border-radius: 8px;
+  padding-left: 3%;
+  padding-right: 3%;
   @include center();
   justify-content: space-around;
   font-weight: 700;
+  .bar_open {
+    display: none;
+    padding: 2%;
+    flex-grow: 1;
+    cursor: pointer;
+    @media only screen and (max-width: 700px) {
+      display: block;
+    }
+  }
+  .margin {
+    min-width: 60%;
+    @media only screen and (max-width: 500px) {
+      min-width: 15%;
+    }
+  }
+  .group_name {
+    flex-grow: 2;
+  }
+  .group_members {
+    flex-grow: 1;
+  }
 }
 
 .main {
@@ -74,29 +97,32 @@
 .bottom {
   position: relative;
   height: 9%;
+  padding-left: 2%;
+  padding-right: 2%;
   background-color: $chat-background1;
   border-radius: 8px;
   @include center();
   display: flex;
-  justify-content: center;
-
-  form {
-    justify-content: center;
-    position: absolute;
-    input {
-      width: 100%;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 0.988);
+  .message_form {
+    flex-grow: 1;
+    min-width: 40%;
+    @media (min-width: 700px) {
+      min-width: 80%;
     }
-    min-width: 20%;
-    max-width: 40%;
+    form {
+      input {
+        text-align: center;
+        width: 90%;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.988);
+      }
+    }
   }
 
   .emoji_button {
     background-color: 'none';
     font-size: x-large;
-    position: absolute;
-    left: 7%;
+    flex-grow: 1;
     cursor: pointer;
     transition: transform 0.1s;
     &:hover {
@@ -106,9 +132,19 @@
 
   .gif_button {
     background-color: 'none';
+    flex-grow: 1;
+
     font-size: x-large;
-    position: absolute;
-    left: 15%;
+    cursor: pointer;
+    transition: transform 0.1s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  .mic {
+    flex-grow: 1;
+
+    font-size: x-large;
     cursor: pointer;
     transition: transform 0.1s;
     &:hover {

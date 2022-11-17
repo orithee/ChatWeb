@@ -4,10 +4,9 @@ export type MessageTypes =
   | ErrorFromServer
   | NewGroupFromServer
   | Initial
-  | GroupMessagesFromServer
   | GroupListFromServer
   | NewGroupMessageFromServer
-  | groupMembersFromServer
+  | OpenGroupData
   | LastMessageWasReadFromServer
   | GifFromServer;
 
@@ -31,7 +30,7 @@ export interface NewGroupFromServer {
   type: 'newGroupFromServer';
   userName: string;
   group: Group;
-  members: string[];
+  members: GroupMember[];
 }
 
 export interface Initial {
@@ -42,9 +41,11 @@ interface GroupListFromServer {
   type: 'groupListFromServer';
   list: Group[];
 }
-export interface GroupMessagesFromServer {
-  type: 'groupMessagesFromServer';
+export interface OpenGroupData {
+  type: 'openGroup';
   messages: GroupMessage[] | [];
+  members: GroupMember[];
+  group: Group;
 }
 
 export interface NewGroupMessageFromServer {
@@ -103,11 +104,6 @@ export interface getGroupMembersAction {
 export interface GroupMember {
   user_name: string;
   not_read: number;
-}
-
-interface groupMembersFromServer {
-  type: 'groupMembersFromServer';
-  members: GroupMember[];
 }
 
 export interface LastMessageWasReadFromServer {

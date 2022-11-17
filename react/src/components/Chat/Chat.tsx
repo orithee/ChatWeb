@@ -10,7 +10,6 @@ import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
 import GroupMembers from '../GroupMembers/GroupMembers';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import { updateWasReadSlice } from '../../redux/chatSlice';
 import MicIcon from '@mui/icons-material/Mic';
 import { useOutletContext } from 'react-router-dom';
 import DehazeIcon from '@mui/icons-material/Dehaze';
@@ -79,7 +78,6 @@ function Chat() {
     }
     if (group) {
       sendWasRead();
-      if (user) dispatch(updateWasReadSlice(user.user_name));
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

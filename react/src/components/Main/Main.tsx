@@ -1,17 +1,15 @@
 import style from './Main.module.scss';
 import { useSelector } from 'react-redux';
-import { chatState, globalState } from '../../redux/store';
+import { globalState } from '../../redux/store';
 import { useEffect, useState } from 'react';
 import CreateNewGroup from '../CreateNewGroup/CreateNewGroup';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Options from '../Options/Options';
 import GroupList from '../GroupList/GroupList';
-import DehazeIcon from '@mui/icons-material/Dehaze';
 
 // The main component of the chat page:
 function Main() {
   const user = useSelector((state: globalState) => state.global.user);
-  const group = useSelector((state: chatState) => state.chat.currentGroup);
   const message = useSelector(
     (state: globalState) => state.global.globalMessage
   );

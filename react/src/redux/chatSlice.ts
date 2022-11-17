@@ -43,33 +43,35 @@ export const chatSlice = createSlice({
       else state.groupList = [action.payload, ...state.groupList];
     },
 
-    // Update the last message - 'was_read' state on specific group:
-    updateLastMessageWasRead: (state, action: LastMessageWasReadAction) => {
-      if (state.groupMembers && action.payload.userName) {
-        for (const member of state.groupMembers) {
-          if (member.user_name === action.payload.userName) {
-            member.not_read = 0;
-            break;
-          }
-        }
-      } else if (state.groupList !== undefined) {
-        for (const group of state.groupList) {
-          if (group.group_id === action.payload.groupId && group.row_to_json) {
-            group.row_to_json.was_read = true;
-            if (state.groupMembers) {
-              for (const member of state.groupMembers) member.not_read = 0;
+    // Update that a specific user has read the messages in a specific (current) group:
+    updateNotReadSpecificMember: (state, action: LastMessageWasReadAction) => {
+      if (state.groupMembers && state.currentGroup) {
+        if (state.currentGroup.group_id === action.payload.groupId)
+          for (const member of state.groupMembers) {
+            if (member.user_name === action.payload.userName) {
+              member.not_read = 0;
+              break;
             }
-            return;
           }
-        }
       }
     },
 
-    updateWasReadSlice: (state, action) => {
-      if (state.groupMembers) {
-        for (const member of state.groupMembers) {
-          if (member.user_name === action.payload) member.not_read = 0;
+    // A function that updates that all the messages in the group have been read:
+    updateWas_readToTrue: (state, action: LastMessageWasReadAction) => {
+      // Update the last message - 'was_read' to true on specific group:
+      if (state.groupList !== undefined) {
+        for (const group of state.groupList) {
+          if (group.group_id === action.payload.groupId && group.row_to_json) {
+            group.row_to_json.was_read = true;
+            break;
+          }
         }
+      }
+
+      // Update all 'not_read' members to 0 if the update is on the current group:
+      if (state.groupMembers && state.currentGroup) {
+        if (state.currentGroup.group_id === action.payload.groupId)
+          for (const member of state.groupMembers) member.not_read = 0;
       }
     },
 
@@ -148,8 +150,8 @@ export const {
   updateNewGroupMessage,
   updateCurrentGroup,
   getGroupMembers,
-  updateLastMessageWasRead,
-  updateWasReadSlice,
+  updateNotReadSpecificMember,
+  updateWas_readToTrue,
 } = chatSlice.actions;
 
 export default chatSlice.reducer;

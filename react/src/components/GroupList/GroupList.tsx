@@ -15,7 +15,6 @@ import { Group } from '../../helpers/types';
 import * as React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -38,22 +37,16 @@ function GroupList({ setBarOpen }: Props) {
   const dispatch = useDispatch();
 
   const openChat = (group: Group) => {
-    dispatch(updateCurrentGroup(group));
     connection.send(
       toStr({
         type: 'getGroupMessages',
         groupId: group.group_id,
         userName: user?.user_name,
+        groupName: group.group_name,
       })
     );
     navigate('/main/' + group.group_id);
   };
-
-  useEffect(() => {
-    if (groupList !== undefined && groupList.length > 0) {
-      if (group !== undefined) openChat(group);
-    }
-  }, [group]);
 
   const backgroundColor = (groupVar: Group): React.CSSProperties => {
     const condition = groupVar.group_id === group?.group_id;
@@ -164,106 +157,6 @@ function GroupList({ setBarOpen }: Props) {
       </List>
     </div>
   );
-
-  // return (
-  //   <div className={style.container}>
-  //     <List
-  //       className={style.list}
-  //       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-  //     >
-  //       {groupList &&
-  //         groupList.map((group, index) => {
-  //           return (
-  //             <div key={index}>
-  //               <ListItem
-  //                 alignItems="flex-start"
-  //                 onClick={() => openChat(group)}
-  //                 className={style.item}
-  //                 style={backgroundColor(group)}
-  //               >
-  //                 <ListItemAvatar>
-  //                   <Avatar
-  //                     className={style.image}
-  //                     alt="image"
-  //                     src="https://services.prod.bcomo.com/GetResource?namespace=resourceGroup_6933&resourceId=phoenix_icon_fbFace64&version=0"
-  //                   />
-  //                 </ListItemAvatar>
-  //                 <ListItemText
-  //                   primary={
-  //                     <div className={style.space_between}>
-  //                       {group.group_name}
-  //                       <Typography
-  //                         sx={{ textAlignLast: 'right' }}
-  //                         alignItems="flex-end"
-  //                         component="span"
-  //                         variant="body2"
-  //                         color="#beb8ae"
-  //                       >
-  //                         {group.last_message > 0
-  //                           ? convertTime(group.row_to_json.created_at)
-  //                           : ''}
-  //                       </Typography>
-  //                     </div>
-  //                   }
-  //                   secondary={
-  //                     <React.Fragment>
-  //                       <div className={style.space_between}>
-  //                         <div>
-  //                           <Typography
-  //                             key={1}
-  //                             sx={{ textAlignLast: 'right' }}
-  //                             alignItems="flex-end"
-  //                             component="span"
-  //                             variant="body2"
-  //                             color="#beb8ae"
-  //                           >
-  //                             {group.last_message > 0 ? (
-  //                               <span>
-  //                                 <span>
-  //                                   <DoneAllIcon
-  //                                     style={wasReadColor(group)}
-  //                                     fontSize={'inherit'}
-  //                                   ></DoneAllIcon>
-  //                                   <span> </span>
-  //                                 </span>
-  //                                 {group.row_to_json.sent_by_name}
-  //                               </span>
-  //                             ) : (
-  //                               '-'
-  //                             )}
-  //                           </Typography>
-  //                           ;
-  //                           <Typography
-  //                             key={2}
-  //                             sx={{ display: 'inline' }}
-  //                             component="span"
-  //                             variant="body2"
-  //                             color="#beb8ae"
-  //                           >
-  //                             {group.last_message > 0
-  //                               ? cutMessageText(group)
-  //                               : 'no messages'}
-  //                           </Typography>
-  //                         </div>
-  //                         <div>
-  //                           {group.not_read > 0 && (
-  //                             <Badge className={style.badge} bg="primary">
-  //                               {group.not_read}
-  //                             </Badge>
-  //                           )}
-  //                         </div>
-  //                       </div>
-  //                     </React.Fragment>
-  //                   }
-  //                 />
-  //               </ListItem>
-  //               <Divider variant="inset" component="li" />
-  //             </div>
-  //           );
-  //         })}
-  //     </List>
-  //   </div>
-  // );
 }
 
 export default GroupList;

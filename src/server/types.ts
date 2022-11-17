@@ -48,6 +48,7 @@ export interface GetGroupMessages {
   groupId: number;
   userName: string;
   lastMsgId: number;
+  groupName: string;
 }
 export interface WasReadMsg {
   type: 'wasReadMsg';

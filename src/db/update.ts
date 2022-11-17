@@ -52,7 +52,7 @@ export function resetNotRead(userName: string, groupId: number) {
 }
 
 export function updateLastMessageOnDb(lastMsgId: number) {
-  // Reset the number of unread messages of specific user:
+  // Reset 'was_read' row of specific group last message to true:
   const update = `UPDATE group_messages SET was_read=true WHERE message_id=$1;`;
   const values = [lastMsgId];
 

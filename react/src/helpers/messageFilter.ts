@@ -9,7 +9,8 @@ import {
   updateCurrentGroup,
   newGroupToGroupList,
   getGroupMembers,
-  updateLastMessageWasRead,
+  updateNotReadSpecificMember,
+  updateWas_readToTrue,
 } from '../redux/chatSlice';
 import { NewGroupFromServer, User } from './types';
 
@@ -25,37 +26,34 @@ export default function messageFilter(
   if (message.type === 'loginFromServer') {
     dispatch(updateUserLogged(message.userData));
     setToken(message.userData.password);
-
-    // List of groups (from the server):
-  } else if (message.type === 'groupListFromServer') {
+  }
+  // List of groups (from the server):
+  else if (message.type === 'groupListFromServer') {
     dispatch(getGroupList(message.list));
-
-    // Group messages (from the server):
-  } else if (message.type === 'groupMessagesFromServer') {
-    dispatch(getGroupMessages(message.messages));
-
-    // Update the last message - 'was_read' (from the server):
-  } else if (message.type === 'lastMessageWasRead') {
-    const msg = { groupId: message.groupId, userName: message.userName };
-    dispatch(updateLastMessageWasRead(msg));
-
-    // Group members (from the server):
-  } else if (message.type === 'groupMembersFromServer') {
+  }
+  // Group data (from the server):
+  else if (message.type === 'openGroup') {
+    dispatch(updateCurrentGroup(message.group));
     dispatch(getGroupMembers(message.members));
-
-    // A new message has been created (from the server):
-  } else if (message.type === 'newGroupMessageFromServer') {
+    dispatch(getGroupMessages(message.messages));
+  }
+  // Update the last message - 'was_read' (from the server):
+  else if (message.type === 'lastMessageWasRead') {
+    const msg = { groupId: message.groupId, userName: message.userName };
+    if (message.userName) dispatch(updateNotReadSpecificMember(msg));
+    else dispatch(updateWas_readToTrue(msg));
+  }
+  // A new message has been created (from the server):
+  else if (message.type === 'newGroupMessageFromServer') {
     dispatch(updateNewGroupMessage(message.data));
-
-    // A new group has been created (from the server):
-  } else if (message.type === 'newGroupFromServer') {
+  }
+  // A new group has been created (from the server):
+  else if (message.type === 'newGroupFromServer') {
     dispatch(updateGlobalMessage(message));
     showTheNewGroup(dispatch, message, user);
-
-    // initial, error:
-  } else {
-    dispatch(updateGlobalMessage(message));
   }
+  // initial, error:
+  else dispatch(updateGlobalMessage(message));
 }
 
 function showTheNewGroup(
@@ -66,11 +64,14 @@ function showTheNewGroup(
   /* A function that updates the current group and the group list if
      the member list includes the current user */
   if (user) {
-    const userInMembers = message.members.includes(user.user_name);
-    if (userInMembers || user.user_name === message.userName) {
+    const userInGroup = message.members.filter(
+      (member) => member.user_name === user.user_name
+    );
+    if (userInGroup[0] !== undefined) {
       dispatch(updateCurrentGroup(message.group));
       dispatch(newGroupToGroupList(message.group));
       dispatch(getGroupMessages(undefined));
+      dispatch(getGroupMembers(message.members));
     }
   }
 }

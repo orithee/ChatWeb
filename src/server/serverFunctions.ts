@@ -20,13 +20,10 @@ import {
   getMessages,
   getGroupMembers,
   checkLastMessageStatus,
+  getGroup,
 } from '../db/read';
 import { Server } from 'ws';
-import {
-  resetNotRead,
-  updateLastMessage,
-  updateLastMessageOnDb,
-} from '../db/update';
+import { resetNotRead, updateLastMessageOnDb } from '../db/update';
 
 // Checks if the token exists in the database - if exists returns the user:
 export async function initialFunction(client: Client, message: Initial) {
@@ -88,11 +85,8 @@ export async function newGroupFunction(
               type: 'newGroupFromServer',
               userName: message.userName,
               group: newGroup,
-              members: message.members,
+              members: members,
             })
-          );
-          client.send(
-            toStr({ type: 'groupMembersFromServer', members: members })
           );
         });
       } else client.send(sendError('error', 'createNewGroup', 'failed'));
@@ -106,10 +100,17 @@ export async function groupMessagesFunction(
   message: GetGroupMessages
 ) {
   await resetNotRead(message.userName, message.groupId);
+  const group = await getGroup(message.groupId);
   const messages = await getMessages(message.groupId);
   const members = await getGroupMembers(message.groupId);
-  client.send(toStr({ type: 'groupMessagesFromServer', messages: messages }));
-  client.send(toStr({ type: 'groupMembersFromServer', members: members }));
+  client.send(
+    toStr({
+      type: 'openGroup',
+      messages: messages,
+      members: members,
+      group: group[0],
+    })
+  );
 }
 
 // Add a new group message to the database, and returns to all clients:
@@ -144,10 +145,14 @@ export async function messageWasReadFunction(
         toStr({ type: 'lastMessageWasRead', groupId: message.groupId })
       );
     });
-  }else {
+  } else {
     ws.clients.forEach((client) => {
       client.send(
-        toStr({ type: 'lastMessageWasRead', groupId: message.groupId, userName: message.userName  })
+        toStr({
+          type: 'lastMessageWasRead',
+          groupId: message.groupId,
+          userName: message.userName,
+        })
       );
     });
   }

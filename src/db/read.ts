@@ -132,6 +132,23 @@ export async function getListOfGroups(userName: string) {
   });
 }
 
+// Pulling group from the database by group id:
+export async function getGroup(groupId: number) {
+  const sql = `SELECT * FROM groups WHERE group_id=$1;`;
+  const values = [groupId];
+
+  return new Promise<Group[] | []>((resolve, _reject) => {
+    postgres.query(sql, values, async (err, res) => {
+      if (err) {
+        console.log(err.stack);
+        resolve([]);
+      } else {
+        resolve(res.rows);
+      }
+    });
+  });
+}
+
 // Pulling group messages from the database by group id:
 export async function getMessages(groupId: number) {
   const sql = `SELECT * FROM group_messages WHERE group_id=$1 ORDER BY created_on ASC, created_at ASC;`;
@@ -176,6 +193,7 @@ export async function checkLastMessageStatus(groupId: number) {
         console.log(err.stack);
         resolve(false);
       } else {
+        console.log('checkLastMessageStatus:', groupId, res.rows);
         for (const row of res.rows) {
           if (row.not_read > 0) resolve(false);
         }

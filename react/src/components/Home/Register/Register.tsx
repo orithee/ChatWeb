@@ -52,7 +52,6 @@ function Register() {
   return (
     <div>
       <h2>Register</h2>
-
       <Form onSubmit={(e) => submitRegisterForm(e)}>
         <Form.Group className="mb-3">
           <Form.Label>Username</Form.Label>

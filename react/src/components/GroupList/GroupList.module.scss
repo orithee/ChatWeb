@@ -5,6 +5,8 @@
   display: flex;
   height: 95%;
   width: 100%;
+  justify-content: center;
+  align-items: flex-start;
   .list {
     background-color: $chat-background1;
     border-radius: 3%;

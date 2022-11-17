@@ -42,11 +42,11 @@ function Main() {
             {addGroupBtn && user && (
               <CreateNewGroup openNew={setAddGroupBtn} user={user} />
             )}
-            <div style={{ height: 'auto', margin: '2%' }}>
+            <div>
               {user && <div style={{ color: 'white' }}>{user.user_name}</div>}
               <Options addGroupBtn={setAddGroupBtn} />
             </div>
-            <div style={{ height: '100%' }}>
+            <div style={{ height: '80vh' }}>
               <GroupList setBarOpen={setBarOpen} />
             </div>
           </div>
@@ -64,7 +64,7 @@ function Main() {
         {addGroupBtn && user && (
           <CreateNewGroup openNew={setAddGroupBtn} user={user} />
         )}
-        <div style={{ height: 'auto', margin: '2%' }}>
+        <div>
           {user && (
             <div style={{ color: 'white', fontSize: 'large' }}>
               {user.user_name}
@@ -72,7 +72,7 @@ function Main() {
           )}
           <Options addGroupBtn={setAddGroupBtn} />
         </div>
-        <div style={{ height: '100%', width: '95%' }}>
+        <div style={{ height: '80vh', width: '95%' }}>
           <GroupList setBarOpen={setBarOpen} />
         </div>
       </div>

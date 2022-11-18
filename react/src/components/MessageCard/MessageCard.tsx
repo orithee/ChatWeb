@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/esm/ListGroup';
 import { convertTime } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import { useMemo } from 'react';
 
 interface Props {
   index: number;
@@ -17,44 +18,46 @@ function MessageCard(props: Props) {
   const user = useSelector((state: globalState) => state.global.user);
   const messages = useSelector((state: chatState) => state.chat.groupMessages);
 
-  const textDirection = (message: GroupMessage): React.CSSProperties => {
-    const condition = message.sent_by_name === user?.user_name;
+  const textDirection = useMemo((): React.CSSProperties => {
+    const condition = props.message.sent_by_name === user?.user_name;
     return { textAlign: condition ? 'start' : 'end' };
-  };
+  }, [props.message]);
 
-  const msgDirection = (message: GroupMessage): React.CSSProperties => {
-    const condition = message.sent_by_name === user?.user_name;
+  const msgDirection = useMemo((): React.CSSProperties => {
+    const condition = props.message.sent_by_name === user?.user_name;
     return {
       justifyContent: condition ? 'flex-start' : 'flex-end',
     };
-  };
+  }, [props.message]);
 
-  const msgColor = (message: GroupMessage): React.CSSProperties => {
-    const condition = message.sent_by_name === user?.user_name;
+  const msgColor = useMemo((): React.CSSProperties => {
+    const condition = props.message.sent_by_name === user?.user_name;
     return {
       backgroundColor: condition ? '#005c4b' : '#202c33',
     };
-  };
+  }, [props.message]);
 
-  const wasReadColor = (index: number): React.CSSProperties => {
+  const timeFormat = useMemo(() => {
+    return convertTime(props.message.created_at);
+  }, [props.message]);
+
+  const wasReadColor = useMemo((): React.CSSProperties => {
+    console.log('dd');
     if (messages !== undefined) {
-      if (messages.length - props.maxNotRead > index)
+      if (messages.length - props.maxNotRead > props.index)
         return { color: '#4fc3f7' };
       else return { color: '#beb8ae' };
     }
     return { color: '#4fc3f7' };
-  };
+  }, [props.message, props.maxNotRead]);
+
   return (
-    <ListGroup.Item
-      className={style.item}
-      style={msgDirection(props.message)}
-      key={props.index}
-    >
-      <div className={style.message} style={msgColor(props.message)}>
-        <div className={style.sent_by} style={textDirection(props.message)}>
+    <ListGroup.Item className={style.item} style={msgDirection}>
+      <div className={style.message} style={msgColor}>
+        <div className={style.sent_by} style={textDirection}>
           {props.message.sent_by_name}
         </div>
-        <div className={style.text} style={textDirection(props.message)}>
+        <div className={style.text} style={textDirection}>
           {!props.message.is_image && props.message.message_text}
           {props.message.is_image && (
             <span>
@@ -70,13 +73,10 @@ function MessageCard(props: Props) {
           }}
         >
           <span>
-            <DoneAllIcon
-              style={wasReadColor(props.index)}
-              fontSize={'small'}
-            ></DoneAllIcon>
+            <DoneAllIcon style={wasReadColor} fontSize={'small'}></DoneAllIcon>
             <span> </span>
           </span>
-          {convertTime(props.message.created_at)}
+          {timeFormat}
         </div>
       </div>
     </ListGroup.Item>

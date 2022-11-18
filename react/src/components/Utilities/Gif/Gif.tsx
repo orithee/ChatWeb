@@ -2,10 +2,10 @@ import style from './Gif.module.scss';
 import { useContext, useEffect, useRef, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
-import { WsConnection } from '../../App';
-import { toStr } from '../../helpers/auxiliaryFunc';
+import { WsConnection } from '../../../App';
+import { toStr } from '../../../helpers/auxiliaryFunc';
 import { useSelector } from 'react-redux';
-import { globalState } from '../../redux/store';
+import { globalState } from '../../../redux/store';
 
 interface Props {
   sendMessage: Function;

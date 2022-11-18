@@ -20,7 +20,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Badge from 'react-bootstrap/Badge';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import Loading from '../Loading';
+import Loading from '../Utilities/Loading';
 
 interface Props {
   setBarOpen: Function;

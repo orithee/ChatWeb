@@ -1,15 +1,15 @@
 import style from './GroupList.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { chatState, globalState } from '../../redux/store';
+import { chatState, globalState } from '../../../redux/store';
 import { useContext, useEffect, useState } from 'react';
-import { WsConnection } from '../../App';
+import { WsConnection } from '../../../App';
 import {
   toStr,
   convertTime,
   cutMessageText,
-} from '../../helpers/auxiliaryFunc';
-import { Group } from '../../helpers/types';
+} from '../../../helpers/auxiliaryFunc';
+import { Group } from '../../../helpers/types';
 
 import * as React from 'react';
 import List from '@mui/material/List';
@@ -20,7 +20,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Badge from 'react-bootstrap/Badge';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
-import Loading from '../Utilities/Loading';
+import Loading from '../../Utilities/Loading';
 
 interface Props {
   setBarOpen: Function;

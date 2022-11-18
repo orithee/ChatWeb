@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import { chatState, globalState } from '../../redux/store';
+import { chatState, globalState } from '../../../redux/store';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 

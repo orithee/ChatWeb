@@ -1,9 +1,9 @@
 import style from './MessageCard.module.scss';
 import { useSelector } from 'react-redux';
-import { chatState, globalState } from '../../redux/store';
+import { chatState, globalState } from '../../../redux/store';
 import ListGroup from 'react-bootstrap/esm/ListGroup';
-import { convertTime } from '../../helpers/auxiliaryFunc';
-import { GroupMessage } from '../../helpers/types';
+import { convertTime } from '../../../helpers/auxiliaryFunc';
+import { GroupMessage } from '../../../helpers/types';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import { useMemo } from 'react';
 

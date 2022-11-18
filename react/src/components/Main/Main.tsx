@@ -2,10 +2,10 @@ import style from './Main.module.scss';
 import { useSelector } from 'react-redux';
 import { globalState } from '../../redux/store';
 import { useEffect, useState } from 'react';
-import CreateNewGroup from '../CreateNewGroup/CreateNewGroup';
+import CreateNewGroup from '../SideBar/CreateNewGroup/CreateNewGroup';
 import { Outlet, useNavigate } from 'react-router-dom';
-import Options from '../Options/Options';
-import GroupList from '../GroupList/GroupList';
+import Options from '../SideBar/Options/Options';
+import GroupList from '../SideBar/GroupList/GroupList';
 
 // The main component of the chat page:
 function Main() {

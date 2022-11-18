@@ -1,11 +1,11 @@
 import style from './CreateNewGroup.module.scss';
 import { useContext, useState } from 'react';
 import Form from 'react-bootstrap/esm/Form';
-import { WsConnection } from '../../App';
-import { toStr } from '../../helpers/auxiliaryFunc';
+import { WsConnection } from '../../../App';
+import { toStr } from '../../../helpers/auxiliaryFunc';
 import { useSelector } from 'react-redux';
-import { globalState } from '../../redux/store';
-import { User } from '../../helpers/types';
+import { globalState } from '../../../redux/store';
+import { User } from '../../../helpers/types';
 import CloseButton from 'react-bootstrap/esm/CloseButton';
 
 interface Props {

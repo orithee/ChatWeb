@@ -1,16 +1,16 @@
 import style from './Chat.module.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
 import { toStr } from '../../helpers/auxiliaryFunc';
 import Emoji from '../Utilities/Emoji/Emoji';
 import Gif from '../Utilities/Gif/Gif';
-import GroupMembers from '../GroupMembers/GroupMembers';
+import GroupMembers from './GroupMembers/GroupMembers';
 import MicIcon from '@mui/icons-material/Mic';
 import { useOutletContext } from 'react-router-dom';
 import DehazeIcon from '@mui/icons-material/Dehaze';
-import MessageCard from '../MessageCard/MessageCard';
+import MessageCard from './MessageCard/MessageCard';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {

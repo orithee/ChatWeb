@@ -3,16 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { chatState, globalState } from '../../redux/store';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { WsConnection } from '../../App';
-import ListGroup from 'react-bootstrap/esm/ListGroup';
-import { toStr, convertTime } from '../../helpers/auxiliaryFunc';
+import { toStr } from '../../helpers/auxiliaryFunc';
 import { GroupMessage } from '../../helpers/types';
 import Emoji from '../Emoji/Emoji';
 import Gif from '../Gif/Gif';
 import GroupMembers from '../GroupMembers/GroupMembers';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import MicIcon from '@mui/icons-material/Mic';
 import { useOutletContext } from 'react-router-dom';
 import DehazeIcon from '@mui/icons-material/Dehaze';
+import MessageCard from '../MessageCard/MessageCard';
 
 // A component that contains the group messages and the option to send emojis:
 function Chat() {
@@ -150,43 +149,11 @@ function Chat() {
           messages.length !== 0 &&
           messages.map((message, index) => {
             return (
-              <ListGroup.Item
-                className={style.item}
-                style={msgDirection(message)}
-                key={index}
-              >
-                <div className={style.message} style={msgColor(message)}>
-                  <div className={style.sent_by} style={textDirection(message)}>
-                    {message.sent_by_name}
-                  </div>
-                  <div className={style.text} style={textDirection(message)}>
-                    {!message.is_image && message.message_text}
-                    {message.is_image && (
-                      <span>
-                        <img src={message.message_text} alt="img" />
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    className={style.hour}
-                    style={{
-                      textAlign:
-                        message.sent_by_name === user?.user_name
-                          ? 'end'
-                          : 'start',
-                    }}
-                  >
-                    <span>
-                      <DoneAllIcon
-                        style={wasReadColor(index)}
-                        fontSize={'small'}
-                      ></DoneAllIcon>
-                      <span> </span>
-                    </span>
-                    {convertTime(message.created_at)}
-                  </div>
-                </div>
-              </ListGroup.Item>
+              <MessageCard
+                index={index}
+                message={message}
+                maxNotRead={maxNotRead}
+              />
             );
           })}
       </div>

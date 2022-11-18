@@ -54,44 +54,6 @@
   margin-bottom: 2%;
   scroll-behavior: smooth;
   overflow: auto;
-  .item {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    .message {
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      padding: 2%;
-      border-radius: 8px;
-      width: fit-content;
-      min-width: 25%;
-      max-width: 57%;
-      margin: 1%;
-      .sent_by {
-        color: greenyellow;
-        inline-size: 100%;
-      }
-      .text {
-        color: white;
-        inline-size: 100%;
-        overflow-wrap: break-word;
-        font-size: large;
-        span {
-          display: table;
-          background-color: white !important;
-          img {
-            display: table-row;
-            width: 100%;
-          }
-        }
-      }
-      .hour {
-        color: aquamarine;
-        inline-size: 100%;
-      }
-    }
-  }
 }
 
 .bottom {

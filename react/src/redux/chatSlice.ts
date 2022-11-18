@@ -103,6 +103,7 @@ export const chatSlice = createSlice({
     // Insert a new message to the 'groupMessages' state:
     updateNewGroupMessage: (state, action: newGroupMessageAction) => {
       if (action.payload === undefined) {
+        // In the case of disconnection there is a situation where the operation is equal to undefined:
         state.groupMessages = action.payload;
       } else {
         // - Now: action.payload = GroupMessage... -
@@ -119,7 +120,7 @@ export const chatSlice = createSlice({
           if (group.group_id === action.payload?.group_id) {
             group.row_to_json = action.payload;
             group.last_message = action.payload.message_id;
-            if (state.currentGroup?.group_id !== group.group_id) {
+            if (group.group_id !== state.currentGroup?.group_id) {
               group.not_read++;
             }
 

@@ -19,7 +19,8 @@ export function toObj(msg: string): MessageTypes {
 
 export function convertTime(str: string) {
   // Displaying the current time to the user:
-  let hour = Number(str.slice(0, 2)) + 3;
+  console.log(str);
+  let hour = Number(str.slice(0, 2)) + 2;
   if (hour > 24) return '0' + (hour -= 24) + str.slice(2, 5);
   if (10 > hour) return '0' + hour + str.slice(2, 5);
   else return hour + str.slice(2, 5);

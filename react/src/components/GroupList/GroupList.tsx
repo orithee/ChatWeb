@@ -36,17 +36,18 @@ function GroupList({ setBarOpen }: Props) {
 
   const navigate = useNavigate();
 
-  const openChat = (group: Group) => {
+  const openChat = (groupClicked: Group) => {
+    if (group && group.group_id === groupClicked.group_id) return;
     setLoading(true);
     connection.send(
       toStr({
         type: 'getGroupMessages',
-        groupId: group.group_id,
+        groupId: groupClicked.group_id,
         userName: user?.user_name,
-        groupName: group.group_name,
+        groupName: groupClicked.group_name,
       })
     );
-    navigate('/main/' + group.group_id);
+    navigate('/main/' + groupClicked.group_id);
   };
 
   useEffect(() => {
@@ -70,17 +71,17 @@ function GroupList({ setBarOpen }: Props) {
         sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
       >
         {groupList &&
-          groupList.map((group, index) => {
+          groupList.map((groupVar, index) => {
             return (
               <div key={index}>
                 <ListItem
                   alignItems="flex-start"
                   onClick={() => {
-                    openChat(group);
+                    openChat(groupVar);
                     setBarOpen(false);
                   }}
                   className={style.item}
-                  style={backgroundColor(group)}
+                  style={backgroundColor(groupVar)}
                 >
                   <ListItemAvatar>
                     <Avatar
@@ -93,7 +94,7 @@ function GroupList({ setBarOpen }: Props) {
                   <ListItemText
                     primary={
                       <div className={style.space_between}>
-                        {group.group_name}
+                        {groupVar.group_name}
                         <Typography
                           sx={{ textAlignLast: 'right' }}
                           alignItems="flex-end"
@@ -101,8 +102,8 @@ function GroupList({ setBarOpen }: Props) {
                           variant="body2"
                           color="#beb8ae"
                         >
-                          {group.last_message > 0
-                            ? convertTime(group.row_to_json.created_at)
+                          {groupVar.last_message > 0
+                            ? convertTime(groupVar.row_to_json.created_at)
                             : ''}
                         </Typography>
                       </div>
@@ -118,16 +119,16 @@ function GroupList({ setBarOpen }: Props) {
                             variant="body2"
                             color="#beb8ae"
                           >
-                            {group.last_message > 0 ? (
+                            {groupVar.last_message > 0 ? (
                               <span>
                                 <span>
                                   <DoneAllIcon
-                                    style={wasReadColor(group)}
+                                    style={wasReadColor(groupVar)}
                                     fontSize={'inherit'}
                                   ></DoneAllIcon>
                                   <span> </span>
                                 </span>
-                                {group.row_to_json.sent_by_name}
+                                {groupVar.row_to_json.sent_by_name}
                               </span>
                             ) : (
                               '-'
@@ -141,15 +142,15 @@ function GroupList({ setBarOpen }: Props) {
                             variant="body2"
                             color="#beb8ae"
                           >
-                            {group.last_message > 0
-                              ? cutMessageText(group)
+                            {groupVar.last_message > 0
+                              ? cutMessageText(groupVar)
                               : 'no messages'}
                           </Typography>
                         </span>
                         <span>
-                          {group.not_read > 0 && (
+                          {groupVar.not_read > 0 && (
                             <Badge className={style.badge} bg="primary">
-                              {group.not_read}
+                              {groupVar.not_read}
                             </Badge>
                           )}
                         </span>

@@ -42,7 +42,6 @@ function MessageCard(props: Props) {
   }, [props.message]);
 
   const wasReadColor = useMemo((): React.CSSProperties => {
-    console.log('dd');
     if (messages !== undefined) {
       if (messages.length - props.maxNotRead > props.index)
         return { color: '#4fc3f7' };

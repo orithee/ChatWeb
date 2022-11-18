@@ -1,9 +1,8 @@
 import style from './GroupList.module.scss';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { chatState, globalState } from '../../redux/store';
-import { updateCurrentGroup } from '../../redux/chatSlice';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { WsConnection } from '../../App';
 import {
   toStr,
@@ -21,6 +20,7 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import Badge from 'react-bootstrap/Badge';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import Loading from '../Loading';
 
 interface Props {
   setBarOpen: Function;
@@ -32,11 +32,12 @@ function GroupList({ setBarOpen }: Props) {
   const groupList = useSelector((state: chatState) => state.chat.groupList);
   const user = useSelector((state: globalState) => state.global.user);
   const group = useSelector((state: chatState) => state.chat.currentGroup);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const openChat = (group: Group) => {
+    setLoading(true);
     connection.send(
       toStr({
         type: 'getGroupMessages',
@@ -47,6 +48,10 @@ function GroupList({ setBarOpen }: Props) {
     );
     navigate('/main/' + group.group_id);
   };
+
+  useEffect(() => {
+    setLoading(false);
+  }, [group]);
 
   const backgroundColor = (groupVar: Group): React.CSSProperties => {
     const condition = groupVar.group_id === group?.group_id;
@@ -59,6 +64,7 @@ function GroupList({ setBarOpen }: Props) {
 
   return (
     <div className={style.container}>
+      {loading && <Loading />}
       <List
         className={style.list}
         sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}

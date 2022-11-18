@@ -19,8 +19,8 @@ export async function postgresConnect() {
   }
 }
 
+// Create the tables if their not exists:
 export async function createTables() {
-  // Create the tables if their not exists:
   try {
     // Users:
     await postgres.query(

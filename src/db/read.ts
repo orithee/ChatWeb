@@ -102,8 +102,6 @@ export async function checkMembers(members: string[]) {
         const membersNotExists = members.filter((member) => {
           if (!rows.includes(member)) return member;
         });
-
-        console.log('membersNotExists', membersNotExists);
         if (membersNotExists.length != 0) resolve(membersNotExists);
         else resolve([]);
       }
@@ -182,8 +180,8 @@ export async function getGroupMembers(groupId: number) {
   });
 }
 
+// Checks if all group members have seen the last message:
 export async function checkLastMessageStatus(groupId: number) {
-  // Check if all group members have seen the last message:
   const sql = `SELECT not_read FROM user_groups WHERE group_id=$1;`;
   const values = [groupId];
 
@@ -193,7 +191,6 @@ export async function checkLastMessageStatus(groupId: number) {
         console.log(err.stack);
         resolve(false);
       } else {
-        console.log('checkLastMessageStatus:', groupId, res.rows);
         for (const row of res.rows) {
           if (row.not_read > 0) resolve(false);
         }

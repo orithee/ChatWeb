@@ -9,7 +9,6 @@ import {
 } from 'src/server/types';
 import { postgres } from './buildDB';
 import { updateLastMessage, updateNotReadByOne } from './update';
-// TODO: String validation !!
 
 // Create a new user - if the query succeeds, it will return the user.
 export async function createUser(user: Register) {

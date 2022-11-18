@@ -8,19 +8,13 @@
   user-select: none;
   font-family: sans-serif;
 }
-html {
-  scroll-behavior: smooth;
-}
+
 body {
   font-family: 'Lato', sans-serif;
   min-height: 100vh;
   overflow: auto;
   margin: 0;
   user-select: none;
-}
-
-img {
-  mix-blend-mode: multiply;
 }
 
 ::-webkit-scrollbar {

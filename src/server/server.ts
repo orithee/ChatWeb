@@ -18,7 +18,7 @@ init();
 async function init() {
   try {
     await postgresConnect();
-    await createTables();
+    // await createTables();
     await webSocketConnect();
   } catch (error) {
     console.log(error);
